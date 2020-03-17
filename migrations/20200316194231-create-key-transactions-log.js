@@ -1,18 +1,36 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('bidding.transactions.logs', {
+    return queryInterface.createTable('KeyTransactionsLog', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      productId: {
-        type: Sequelize.INTEGER
+      keyTransId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'KeyTransactions',
+          key: 'id'
+        }
+      },
+      keyId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Keys',
+          key: 'id'
+        }
       },
       buyerId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
       },
       paymentMethod: {
         type: Sequelize.INTEGER
@@ -26,12 +44,6 @@ module.exports = {
       paymentDate: {
         type: Sequelize.DATE
       },
-      shippingType: {
-        type: Sequelize.INTEGER
-      },
-      shippingStatus: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -43,6 +55,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('bidding.transactions.logs');
+    return queryInterface.dropTable('KeyTransactionsLog');
   }
 };

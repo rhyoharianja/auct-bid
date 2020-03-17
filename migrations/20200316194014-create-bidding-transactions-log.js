@@ -1,18 +1,44 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('bidding.transactions', {
+    return queryInterface.createTable('BiddingTransactionsLogs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      bidTransId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'BiddingTransactions',
+          key: 'id'
+        }
+      },
+      storeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Stores',
+          key: 'id'
+        }
+      },
       productId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Products',
+          key: 'id'
+        }
       },
       buyerId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
       },
       paymentMethod: {
         type: Sequelize.INTEGER
@@ -43,6 +69,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('bidding.transactions');
+    return queryInterface.dropTable('BiddingTransactionsLogs');
   }
 };

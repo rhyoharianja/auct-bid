@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const key.transactions = sequelize.define('key.transactions', {
+  const KeyTransactions= sequelize.define('KeyTransactions', {
     keyId: DataTypes.INTEGER,
     buyerId: DataTypes.INTEGER,
     paymentMethod: DataTypes.INTEGER,
@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     paymentStatus: DataTypes.INTEGER,
     paymentDate: DataTypes.DATE
   }, {});
-  key.transactions.associate = function(models) {
+  KeyTransactions.associate = function(models) {
     // associations can be defined here
   };
-  return key.transactions;
+  return KeyTransactions;
 };

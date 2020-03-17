@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const bidding.transactions = sequelize.define('bidding.transactions', {
+  const BiddingTransactions = sequelize.define('BiddingTransactions', {
     productId: DataTypes.INTEGER,
     buyerId: DataTypes.INTEGER,
     paymentMethod: DataTypes.INTEGER,
@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     shippingType: DataTypes.INTEGER,
     shippingStatus: DataTypes.INTEGER
   }, {});
-  bidding.transactions.associate = function(models) {
+  BiddingTransactions.associate = function(models) {
     // associations can be defined here
   };
-  return bidding.transactions;
+  return BiddingTransactions;
 };

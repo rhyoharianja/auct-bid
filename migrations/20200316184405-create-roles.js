@@ -1,30 +1,21 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('key.transactions', {
+    return queryInterface.createTable('Roles', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      keyId: {
-        type: Sequelize.INTEGER
+      name: {
+        type: Sequelize.STRING
       },
-      buyerId: {
-        type: Sequelize.INTEGER
+      description: {
+        type: Sequelize.STRING
       },
-      paymentMethod: {
-        type: Sequelize.INTEGER
-      },
-      paymentType: {
-        type: Sequelize.INTEGER
-      },
-      paymentStatus: {
-        type: Sequelize.INTEGER
-      },
-      paymentDate: {
-        type: Sequelize.DATE
+      status: {
+        type: Sequelize.SMALLINT
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +28,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('key.transactions');
+    return queryInterface.dropTable('Roles');
   }
 };

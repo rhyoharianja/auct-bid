@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "add:modules": "npm install",
+    "db:install": "sequelize db:create && sequelize db:migrate",
     "start": "node ./bin/www"
   },
   "dependencies": {
