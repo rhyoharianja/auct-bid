@@ -8,7 +8,7 @@ let company = async function (req, res, next) {
     [err, company] = await to(Company.findOne({where:{id:company_id}}));
     if(err) return ReE(res, "err finding company");
 
-    if(!company) return ReE(res, "Company not found with id: "+company_id);
+    if(!company) return ReE(res, "Company not found with id: " + company_id);
     let user, users_array, users;
     user = req.user;
     [err, users] = await to(company.getUsers());
