@@ -22,7 +22,7 @@ models.sequelize.authenticate().then(() => {
     console.log('Connected to SQL database:', CONFIG.db_name);
 })
 .catch(err => {
-    console.error('Unable to connect to SQL database:',CONFIG.db_name);
+    console.error('Unable to connect to SQL database:',err);
 });
 if(CONFIG.app==='dev'){
     models.sequelize.sync();
@@ -35,7 +35,7 @@ app.use('/v1', v1);
 
 app.use('/', function(req, res){
    res.statusCode = 200;//send the appropriate status code
-   res.json({status:"success", message:"Parcel Pending API", data:{}})
+   res.json({status:"success", message:"Auction Pending API", data:{}})
 });
 
 // catch 404 and forward to error handler
