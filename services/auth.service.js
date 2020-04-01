@@ -30,7 +30,7 @@ const createUser = async function(userInfo){
     if(validator.isEmail(unique_key)){
         auth_info.method = 'email';
         userInfo.email = unique_key;
-
+        
         [err, user] = await to(User.create(userInfo));
         if(err) TE('user already exists with that email');
 

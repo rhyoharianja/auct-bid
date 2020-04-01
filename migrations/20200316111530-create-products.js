@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.FLOAT
       },
       images: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       status: {
         type: Sequelize.SMALLINT
