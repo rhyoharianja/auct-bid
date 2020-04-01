@@ -9,5 +9,11 @@ module.exports = (sequelize, DataTypes) => {
   ShippingTypes.associate = function(models) {
     // associations can be defined here
   };
+
+  ShippingTypes.prototype.toWeb = function () {
+    let json = this.toJSON();
+    return json;
+  };
+  
   return ShippingTypes;
 };

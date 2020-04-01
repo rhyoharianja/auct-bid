@@ -10,11 +10,6 @@ const create = async function(req, res) {
     [err, roles] = await to(Roles.create(roles_data));
     if(err) return ReE(res, err, 422);
 
-    roles.addUser(user, { through: { status: 'started' }});
-
-    [err, roles] = await to(Roles.save());
-    if(err) return ReE(res, err, 422);
-
     let roles_json = roles.toWeb();
 
     return ReS(res,{roles:roles_json}, 201);

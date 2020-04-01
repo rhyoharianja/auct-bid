@@ -14,5 +14,11 @@ module.exports = (sequelize, DataTypes) => {
   UserDetails.associate = function(models) {
     // associations can be defined here
   };
+
+  UserDetails.prototype.toWeb = function () {
+    let json = this.toJSON();
+    return json;
+  };
+
   return UserDetails;
 };

@@ -10,14 +10,9 @@ const create = async function(req, res) {
     [err, categories] = await to(Categories.create(cat_data));
     if(err) return ReE(res, err, 422);
 
-    categories.addUser(user, { through: { status: 'started' }});
-
-    [err, categories] = await to(Categories.save());
-    if(err) return ReE(res, err, 422);
-
     let cat_json = categories.toWeb();
 
-    return ReS(res,{categories:cat_json}, 201);
+    return ReS(res, {message:'Successfully created new Category.', categories:cat_json}, 201);
 }
 
 module.exports.create = create;
@@ -27,6 +22,7 @@ const getAll = async function(req, res){
     let err, categories;
 
     [err, categories] = await to(Categories.getAll());
+    if(err) return ReE(res, err, 422);
 
     let cat_json =[]
     for( let i in categories){
@@ -35,7 +31,7 @@ const getAll = async function(req, res){
         cat_json.push(cat_data);
     }
 
-    return ReS(res, {categories:cat_json});
+    return ReS(res, {message:'Category List Found', categories:cat_json}, 201);
 }
 module.exports.getAll = getAll;
 
@@ -53,7 +49,7 @@ const update = async function(req, res){
     data = req.body;
     category.set(data);
 
-    [err, company] = await to(category.save());
+    [err, category] = await to(category.save());
     if(err){
         return ReE(res, err);
     }

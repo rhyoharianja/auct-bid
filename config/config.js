@@ -17,10 +17,12 @@ CONFIG.jwt_expiration  = process.env.JWT_EXPIRATION || '10000';
 
 module.exports = CONFIG;
 
-module.exports = {
-    "username": process.env.DB_USER,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_NAME,
-    "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT,
-  }
+//Uncoment These below sections to execute first create db, migrate db, and seed db data
+
+// module.exports = {
+//     "username": process.env.DB_USER,
+//     "password": process.env.DB_PASSWORD,
+//     "database": process.env.DB_NAME,
+//     "host": process.env.DB_HOST,
+//     "dialect": process.env.DB_DIALECT,
+// }
