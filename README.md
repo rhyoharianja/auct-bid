@@ -5,13 +5,14 @@ Auction Bidding Store
 - Download And MariaDB or minimum mysql 5.6 +
 - Download and install latest stable nodejs and npm
 - Install global dependecies and cli :
-  * [express cli generator] (https://expressjs.com/en/starter/generator.html) 
+  * [express cli generator](https://expressjs.com/en/starter/generator.html) 
   - using command : 
     ```sh
     $ npm install -g express-generator
-  * [sequelize-cli] (https://sequelize.org/master/manual/migrations.html#installing-the-cli)
+  * [sequelize-cli](https://sequelize.org/master/manual/migrations.html#installing-the-cli)
   - using command :
     ```sh
+    $ npm install --save-dev sequelize-cli
 
 
 ## First Use Installation
