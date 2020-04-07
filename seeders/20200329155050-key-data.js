@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('keys', [{
+    return queryInterface.bulkInsert('Keys', [{
       name: 'Wooden Key',
       description: 'Wooden Key',
       price: 2000.00,
@@ -34,6 +34,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('keys', null, {});
+    return queryInterface.bulkDelete('Keys', null, {});
   }
 };

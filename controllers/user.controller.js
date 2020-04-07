@@ -65,3 +65,7 @@ const login = async function(req, res){
     return ReS(res, {token:user.getJWT(), user:user.toWeb()});
 }
 module.exports.login = login;
+
+const logout = async function() {
+    
+}

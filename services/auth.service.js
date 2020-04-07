@@ -26,12 +26,14 @@ const createUser = async function(userInfo){
 
     unique_key = getUniqueKeyFromBody(userInfo);
     if(!unique_key) TE('An email or phone number was not entered.');
+    console.log(userInfo);
 
     if(validator.isEmail(unique_key)){
         auth_info.method = 'email';
         userInfo.email = unique_key;
         
         [err, user] = await to(User.create(userInfo));
+        console.log(err);
         if(err) TE('user already exists with that email');
 
         return user;
