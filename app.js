@@ -6,6 +6,7 @@ const pe            = require('parse-error');
 const cors          = require('cors');
 
 const v1    = require('./routes/v1');
+const admin = require('./routes/admin');
 const app   = express();
 
 const CONFIG = require('./config/config');
@@ -32,6 +33,8 @@ if(CONFIG.app==='dev'){
 app.use(cors());
 
 app.use('/v1', v1);
+
+app.use('/admin', admin);
 
 app.use('/', function(req, res){
    res.statusCode = 200;//send the appropriate status code
