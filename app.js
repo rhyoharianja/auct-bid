@@ -11,8 +11,8 @@ const app   = express();
 
 const CONFIG = require('./config/config');
 
-const swaggerUi = require('swagger-ui-express');
-const swagadmin = require('./swagAdmin.json');
+// const swaggerUi = require('swagger-ui-express');
+// const swagadmin = require('./controllers/swagger/admin/index.json');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
