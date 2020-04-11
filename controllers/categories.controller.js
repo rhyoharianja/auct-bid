@@ -5,14 +5,14 @@ const create = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     let err, categories;
 
-    let cat_data = req.body;
+    let categories_data = req.body;
     
-    [err, categories] = await to(Categories.create(cat_data));
+    [err, categories] = await to(Categories.create(categories_data));
     if(err) return ReE(res, err, 422);
 
-    let cat_json = categories.toWeb();
+    let categories_json = categories.toWeb();
 
-    return ReS(res, {message:'Successfully created new Category.', categories:cat_json}, 201);
+    return ReS(res,{message: 'Success Add New Category', data:categories_json}, 201);
 }
 
 module.exports.create = create;
@@ -21,49 +21,54 @@ const getAll = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, categories;
 
-    [err, categories] = await to(Categories.getAll());
+    [err, categories] = await to(Categories.findAll());
     if(err) return ReE(res, err, 422);
 
-    let cat_json =[]
-    for( let i in categories){
-        let category = categories[i];
-        let cat_data = category.toWeb();
-        cat_json.push(cat_data);
-    }
-
-    return ReS(res, {message:'Category List Found', categories:cat_json}, 201);
+    return ReS(res, {message:'Successfully Load Categories List', data:categories}, 201);
 }
 module.exports.getAll = getAll;
 
-const get = function(req, res){
+const get = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
-    let category = req.category;
 
-    return ReS(res, {category:category.toWeb()});
+    let err, categories;
+
+    [err, categories] = await to(Categories.findOne());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Detail Categories', data:categories}, 201);
 }
 module.exports.get = get;
 
 const update = async function(req, res){
-    let err, category, data;
-    category = req.category;
+    let err, categories, data;
     data = req.body;
-    category.set(data);
 
-    [err, category] = await to(category.save());
-    if(err){
-        return ReE(res, err);
-    }
-    return ReS(res, {category:category.toWeb()});
+    [err, categories] = await to(Categories.update(
+        data,
+        {where: {id: data.id} }
+    ));
+    if(err) return ReE(res, err, 422);
+
+    [err, categories] = await to(Categories.findOne());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Update Detail Categories', data:categories}, 201);
 }
 module.exports.update = update;
 
 const remove = async function(req, res){
     let categories, err;
-    categories = req.categories;
 
-    [err, categories] = await to(categories.destroy());
-    if(err) return ReE(res, 'error occured trying to delete the categories');
+    [err, categories] = await to(Categories.destroy({
+        where: {
+          id: req.body.id
+        }
+      }));
+      if(err) return ReE(res, err, 422);
 
-    return ReS(res, {message:'Deleted Categories'}, 204);
+    if(err) return ReE(res, 'error occured trying to delete the Categories');
+
+    return ReS(res, {message:'Successfully Delete Role', data:categories}, 201);
 }
 module.exports.remove = remove;

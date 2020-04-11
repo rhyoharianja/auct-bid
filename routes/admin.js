@@ -17,38 +17,38 @@ const path              = require('path');
 
 // Roles CRUD
 
-router.get('/roles', passport.authenticate('jwt', {session:false}), rolesController.get);
-router.post('/roles', passport.authenticate('jwt', {session:false}), rolesController.create);
+router.get('/roles', rolesController.getAll);
+router.post('/roles', rolesController.create);
 
-router.get('/roles/:id', passport.authenticate('jwt', {session:false}), rolesController.getAll);
-router.put('/roles/:id', passport.authenticate('jwt', {session:false}), rolesController.update);
-router.delete('/roles:id', passport.authenticate('jwt', {session:false}), rolesController.remove);
+router.get('/roles/:id', rolesController.get);
+router.put('/roles/:id', rolesController.update);
+router.delete('/roles/:id', rolesController.remove);
 
 // Categories CRUD
 
-router.get('/categories', passport.authenticate('jwt', {session:false}), categoriesController.get);
-router.post('/categories', passport.authenticate('jwt', {session:false}), categoriesController.create);
+router.get('/categories', categoriesController.get);
+router.post('/categories', categoriesController.create);
 
-router.get('/categories/:id', passport.authenticate('jwt', {session:false}), categoriesController.getAll);
-router.put('/categories/:id', passport.authenticate('jwt', {session:false}), categoriesController.update);
-router.delete('/categories/:id', passport.authenticate('jwt', {session:false}), categoriesController.remove);
+router.get('/categories/:id', categoriesController.getAll);
+router.put('/categories/:id', categoriesController.update);
+router.delete('/categories/:id', categoriesController.remove);
 
 // Keys CRUD
 
-router.get('/keys', passport.authenticate('jwt', {session:false}), keysController.get);
-router.post('/keys', passport.authenticate('jwt', {session:false}), keysController.create);
+router.get('/keys', keysController.get);
+router.post('/keys', keysController.create);
 
-router.get('/keys/:id', passport.authenticate('jwt', {session:false}), keysController.getAll);
-router.put('/keys/:id', passport.authenticate('jwt', {session:false}), keysController.update);
-router.delete('/keys/:id', passport.authenticate('jwt', {session:false}), keysController.remove);
+router.get('/keys/:id', keysController.getAll);
+router.put('/keys/:id', keysController.update);
+router.delete('/keys/:id', keysController.remove);
 
 // products CRUD
 
-router.get('/product', passport.authenticate('jwt', {session:false}), productController.get);
-router.post('/product', passport.authenticate('jwt', {session:false}), productController.create);
+router.get('/product', productController.get);
+router.post('/product', productController.create);
 
-router.get('/product/:id', passport.authenticate('jwt', {session:false}), productController.getAll);
-router.put('/product/:id', passport.authenticate('jwt', {session:false}), productController.update);
-router.delete('/product/:id', passport.authenticate('jwt', {session:false}), productController.remove);
+router.get('/product/:id', productController.getAll);
+router.put('/product/:id', productController.update);
+router.delete('/product/:id', productController.remove);
 
 module.exports = router;

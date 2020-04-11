@@ -3,66 +3,72 @@ const { to, ReE, ReS } = require('../services/util.service');
 
 const create = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let err, products;
+    let err, product;
 
-    let products_data = req.body;
+    let product_data = req.body;
     
-    [err, products] = await to(Products.create(products_data));
+    [err, product] = await to(Products.create(product_data));
     if(err) return ReE(res, err, 422);
 
-    let products_json = products.toWeb();
+    let product_json = Products.toWeb();
 
-    return ReS(res,{products:products_json}, 201);
+    return ReS(res,{message: 'Success Add New Product', data:product_json}, 201);
 }
 
 module.exports.create = create;
 
 const getAll = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
-    let err, products;
+    let err, product;
 
-    [err, products] = await to(Products.getAll());
+    [err, product] = await to(Products.findAll());
+    if(err) return ReE(res, err, 422);
 
-    let products_json =[]
-    for( let i in products){
-        let products= products[i];
-        let role_data = Products.toWeb();
-        products_json.push(role_data);
-    }
-
-    return ReS(res, {products:products_json});
+    return ReS(res, {message:'Successfully Load Products List', data:product}, 201);
 }
 module.exports.getAll = getAll;
 
-const get = function(req, res){
+const get = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
-    let products = req.products;
 
-    return ReS(res, {products:Products.toWeb()});
+    let err, product;
+
+    [err, product] = await to(Products.findOne());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Detail Products', data:product}, 201);
 }
 module.exports.get = get;
 
 const update = async function(req, res){
-    let err, products, data;
-    products = req.products;
+    let err, product, data;
     data = req.body;
-    products.set(data);
 
-    [err, products] = await to(Products.save());
-    if(err){
-        return ReE(res, err);
-    }
-    return ReS(res, {products:Products.toWeb()});
+    [err, product] = await to(Products.update(
+        data,
+        {where: {id: data.id} }
+    ));
+    if(err) return ReE(res, err, 422);
+
+    [err, product] = await to(Products.findOne());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Update Detail Product', data:product}, 201);
 }
 module.exports.update = update;
 
 const remove = async function(req, res){
-    let products, err;
-    products = req.products;
+    let product, err;
 
-    [err, products] = await to(Products.destroy());
-    if(err) return ReE(res, 'error occured trying to delete the products');
+    [err, product] = await to(Products.destroy({
+        where: {
+          id: req.body.id
+        }
+      }));
+      if(err) return ReE(res, err, 422);
 
-    return ReS(res, {message:'Deleted products'}, 204);
+    if(err) return ReE(res, 'error occured trying to delete the Products');
+
+    return ReS(res, {message:'Successfully Delete Role', data:product}, 201);
 }
 module.exports.remove = remove;

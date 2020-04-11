@@ -12,7 +12,7 @@ const create = async function(req, res) {
 
     let roles_json = roles.toWeb();
 
-    return ReS(res,{roles:roles_json}, 201);
+    return ReS(res,{message: 'Success Add New Role', data:roles_json}, 201);
 }
 
 module.exports.create = create;
@@ -21,48 +21,54 @@ const getAll = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, roles;
 
-    [err, roles] = await to(Roles.getAll());
+    [err, roles] = await to(Roles.findAll());
+    if(err) return ReE(res, err, 422);
 
-    let roles_json =[]
-    for( let i in roles){
-        let roles= roles[i];
-        let role_data = roles.toWeb();
-        roles_json.push(role_data);
-    }
-
-    return ReS(res, {roles:roles_json});
+    return ReS(res, {message:'Successfully Load Roles List', data:roles}, 201);
 }
 module.exports.getAll = getAll;
 
-const get = function(req, res){
+const get = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
-    let roles = req.roles;
 
-    return ReS(res, {roles:roles.toWeb()});
+    let err, roles;
+
+    [err, roles] = await to(Roles.findOne());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Detail Roles', data:roles}, 201);
 }
 module.exports.get = get;
 
 const update = async function(req, res){
     let err, roles, data;
-    roles = req.roles;
     data = req.body;
-    roles.set(data);
 
-    [err, roles] = await to(roles.save());
-    if(err){
-        return ReE(res, err);
-    }
-    return ReS(res, {roles:roles.toWeb()});
+    [err, roles] = await to(Roles.update(
+        data,
+        {where: {id: data.id} }
+    ));
+    if(err) return ReE(res, err, 422);
+
+    [err, roles] = await to(Roles.findOne());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Update Detail Roles', data:roles}, 201);
 }
 module.exports.update = update;
 
 const remove = async function(req, res){
     let roles, err;
-    roles = req.roles;
 
-    [err, roles] = await to(roles.destroy());
+    [err, roles] = await to(Roles.destroy({
+        where: {
+          id: req.body.id
+        }
+      }));
+      if(err) return ReE(res, err, 422);
+
     if(err) return ReE(res, 'error occured trying to delete the roles');
 
-    return ReS(res, {message:'Deleted roles'}, 204);
+    return ReS(res, {message:'Successfully Delete Role', data:roles}, 201);
 }
 module.exports.remove = remove;

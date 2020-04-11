@@ -1,4 +1,10 @@
 'use strict';
+const bcrypt         = require('bcrypt');
+const bcrypt_p       = require('bcrypt-promise');
+const jwt            = require('jsonwebtoken');
+const {TE, to}       = require('../services/util.service');
+const CONFIG         = require('../config/config');
+
 module.exports = (sequelize, DataTypes) => {
   const Roles = sequelize.define('Roles', {
     name: DataTypes.STRING,

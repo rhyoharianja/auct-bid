@@ -23,9 +23,9 @@ module.exports.create = create;
 
 const get = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
-    let user = req.user;
+    // let user = req.user;
 
-    return ReS(res, {user:user.toWeb()});
+    return ReE(res, 'Please enter an email or phone number to register.');
 }
 module.exports.get = get;
 
