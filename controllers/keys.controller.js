@@ -29,7 +29,7 @@ const getAll = async function(req, res){
 
 module.exports.getAll = getAll;
 
-const get = function(req, res){
+const get = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     
     let err, keys;
