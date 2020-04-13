@@ -12,7 +12,7 @@ const app   = express();
 const CONFIG = require('./config/config');
 
 const swaggerUi = require('swagger-ui-express');
-const swagadmin = require('./swagAdmin.json');
+const swagadmin = require('./config/swagger');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -34,6 +34,8 @@ if(CONFIG.app==='dev'){
 }
 
 app.use(cors());
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagadmin));
 
 app.use('/v1', v1);
 
