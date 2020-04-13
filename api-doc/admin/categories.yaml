@@ -1,5 +1,5 @@
 paths:
-  /categories/:                # path of the user from your endpoint
+  /admin/categories/:                # path of the user from your endpoint
     post:                 # endpoint request type (post request)
       tags:               # Tag property
         - Categories            # Value of the tag
@@ -25,7 +25,7 @@ paths:
       responses:          # server responses
         201:
           description: An object with user details
-  /categories/:id:
+  /admin/categories/:id:
     get:                 # endpoint request type (post request)
       tags:               # Tag property
         - Categories            # Value of the tag

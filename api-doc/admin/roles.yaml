@@ -1,5 +1,5 @@
 paths:
-  /roles/:                # path of the user from your endpoint
+  /admin/roles/:                # path of the user from your endpoint
     post:                 # endpoint request type (post request)
       tags:               # Tag property
         - Roles            # Value of the tag
@@ -25,7 +25,7 @@ paths:
       responses:          # server responses
         201:
           description: An object with user details
-  /roles/:id:
+  /admin/roles/:id:
     get:                 # endpoint request type (post request)
       tags:               # Tag property
         - Roles            # Value of the tag

@@ -9,7 +9,7 @@ const definition = {
     description: 'Documentation For Using Rest API Auction - Bid Apps',
   },
   host: 'localhost:' + CONFIG.port,
-  basePath: '/v1', 
+  basePath: '/', 
 };
 
 // options for the swagger docs

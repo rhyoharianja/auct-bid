@@ -1,5 +1,5 @@
 paths:
-  /users/:                # path of the user from your endpoint
+  /v1/users/:                # path of the user from your endpoint
     post:                 # endpoint request type (post request)
       tags:               # Tag property
         - User            # Value of the tag
@@ -16,7 +16,7 @@ paths:
       responses:          # server responses
         201:
           description: An object with user details
-  /users/login:
+  /v1/users/login:
     post:
       tags:
         - User
@@ -30,7 +30,7 @@ paths:
         required: false
         schema:
           $ref: '#/definitions/login'
-  /users/:id:
+  /v1/users/:id:
     put:
       tags:
         - User
