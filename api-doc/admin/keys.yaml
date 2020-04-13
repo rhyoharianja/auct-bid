@@ -1,5 +1,5 @@
 paths:
-  /keys/:                # path of the key from your endpoint
+  /admin/keys/:                # path of the key from your endpoint
     post:                 # endpoint request type (post request)
       tags:               # Tag property
         - Keys            # Value of the tag
@@ -25,7 +25,7 @@ paths:
       responses:          # server responses
         201:
           description: An object with key details
-  /keys/:id:
+  /admin/keys/:id:
     get:                 # endpoint request type (post request)
       tags:               # Tag property
         - Keys            # Value of the tag

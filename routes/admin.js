@@ -26,28 +26,28 @@ router.delete('/roles/:id', rolesController.remove);
 
 // Categories CRUD
 
-router.get('/categories', categoriesController.get);
+router.get('/categories', categoriesController.getAll);
 router.post('/categories', categoriesController.create);
 
-router.get('/categories/:id', categoriesController.getAll);
+router.get('/categories/:id', categoriesController.get);
 router.put('/categories/:id', categoriesController.update);
 router.delete('/categories/:id', categoriesController.remove);
 
 // Keys CRUD
 
-router.get('/keys', keysController.get);
+router.get('/keys', keysController.getAll);
 router.post('/keys', keysController.create);
 
-router.get('/keys/:id', keysController.getAll);
+router.get('/keys/:id', keysController.get);
 router.put('/keys/:id', keysController.update);
 router.delete('/keys/:id', keysController.remove);
 
 // products CRUD
 
-router.get('/product', productController.get);
+router.get('/product', productController.getAll);
 router.post('/product', productController.create);
 
-router.get('/product/:id', productController.getAll);
+router.get('/product/:id', productController.get);
 router.put('/product/:id', productController.update);
 router.delete('/product/:id', productController.remove);
 
