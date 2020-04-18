@@ -1,10 +1,10 @@
 const express         = require('express');
 const router         = express.Router();
 
-const rolesController = require('../controllers/roles.controller');
-const categoriesController = require('../controllers/categories.controller');
-const keysController = require('../controllers/keys.controller');
-const productController = require('../controllers/products.controller');
+const rolesController = require('../controllers/admin/roles.controller');
+const categoriesController = require('../controllers/admin/categories.controller');
+const keysController = require('../controllers/admin/keys.controller');
+const productController = require('../controllers/admin/products.controller');
 
 const passport          = require('passport');
 const path              = require('path');

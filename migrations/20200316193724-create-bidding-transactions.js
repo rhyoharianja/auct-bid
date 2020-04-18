@@ -50,6 +50,10 @@ module.exports = {
       shippingStatus: {
         type: Sequelize.INTEGER
       },
+      paymentExpired: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

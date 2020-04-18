@@ -36,6 +36,10 @@ module.exports = {
       paymentDate: {
         type: Sequelize.DATE
       },
+      paymentExpired: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
