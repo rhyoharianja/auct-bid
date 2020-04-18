@@ -1,5 +1,5 @@
-const { Categories } = require('../models');
-const { to, ReE, ReS } = require('../services/util.service');
+const { Categories } = require('../../models');
+const { to, ReE, ReS } = require('../../services/util.service');
 
 const create = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -36,7 +36,7 @@ const get = async function(req, res){
     [err, categories] = await to(Categories.findOne());
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {message:'Successfully Load Detail Categories', data:categories}, 201);
+    return ReS(res, {message:'Successfully Load Detail Category', data:categories}, 201);
 }
 module.exports.get = get;
 
@@ -53,7 +53,7 @@ const update = async function(req, res){
     [err, categories] = await to(Categories.findOne());
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {message:'Successfully Update Detail Categories', data:categories}, 201);
+    return ReS(res, {message:'Successfully Update Detail Category', data:categories}, 201);
 }
 module.exports.update = update;
 
@@ -67,8 +67,8 @@ const remove = async function(req, res){
       }));
       if(err) return ReE(res, err, 422);
 
-    if(err) return ReE(res, 'error occured trying to delete the Categories');
+    if(err) return ReE(res, 'error occured trying to delete the Category');
 
-    return ReS(res, {message:'Successfully Delete Role', data:categories}, 201);
+    return ReS(res, {message:'Successfully Delete Category', data:categories}, 201);
 }
 module.exports.remove = remove;

@@ -12,7 +12,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       shippingType: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'ShippingTypes',
+          key: 'id'
+        }
       },
       firstName: {
         type: Sequelize.STRING

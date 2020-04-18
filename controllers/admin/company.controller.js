@@ -1,5 +1,5 @@
-const { Company } = require('../models');
-const { to, ReE, ReS } = require('../services/util.service');
+const { Company } = require('../../models');
+const { to, ReE, ReS } = require('../../services/util.service');
 
 const create = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
