@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const stores = sequelize.define('stores', {
+  const Stores = sequelize.define('Stores', {
     productId: DataTypes.INTEGER,
     allowKey: DataTypes.STRING,
     startBid: DataTypes.DATE,
@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     setWinnerBy: DataTypes.INTEGER,
     status: DataTypes.SMALLINT
   }, {});
-  stores.associate = function(models) {
+  Stores.associate = function(models) {
     // associations can be defined here
   };
 
-  stores.prototype.toWeb = function () {
+  Stores.prototype.toWeb = function () {
     let json = this.toJSON();
     return json;
   };
-  return stores;
+  return Stores;
 };

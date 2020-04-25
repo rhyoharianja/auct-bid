@@ -10,7 +10,7 @@ const create = async function(req, res) {
     [err, store] = await to(Stores.create(store_data));
     if(err) return ReE(res, err, 422);
 
-    let store_json = Stores.toWeb();
+    let store_json = store.toWeb();
 
     return ReS(res,{message: 'Success Add New stores', data:store_json}, 201);
 }
@@ -64,7 +64,7 @@ module.exports.update = update;
 const remove = async function(req, res){
     let store, err;
 
-    [err, store] = await to(Stores.destroy({
+    [err, store] = await to(stores.destroy({
         where: {
           id: req.body.id
         }
