@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.FLOAT,
     images: DataTypes.STRING,
     status: DataTypes.SMALLINT
-  }, {});
+  });
   products.associate = function(models) {
     // associations can be defined here
   };

@@ -2,8 +2,7 @@ const express         = require('express');
 const router         = express.Router();
 
 const UserController    = require('../controllers/admin/user.controller');
-
-const custom            = require('./../middleware/custom');
+const userKetTrans    = require('../controllers/transactions/keys.controller');
 
 const passport          = require('passport');
 const path              = require('path');
@@ -18,5 +17,8 @@ router.put('/users',passport.authenticate('users', {session:false}), UserControl
    
 router.delete('/users',passport.authenticate('users',{session:false}), UserController.remove); //delete
 router.post( '/users/login', UserController.login);
+router.get('/users/Key',passport.authenticate('users',{session:false}), userKetTrans.userKeyList);
+
+router.post('/order/Key',passport.authenticate('users',{session:false}), userKetTrans.orderKey);
 
 module.exports = router;

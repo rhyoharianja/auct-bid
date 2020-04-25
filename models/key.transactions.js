@@ -6,10 +6,17 @@ module.exports = (sequelize, DataTypes) => {
     paymentMethod: DataTypes.INTEGER,
     paymentType: DataTypes.INTEGER,
     paymentStatus: DataTypes.INTEGER,
-    paymentDate: DataTypes.DATE
+    paymentDate: DataTypes.DATE,
+    paymentExpired: DataTypes.DATE,
   }, {});
+  
   KeyTransactions.associate = function(models) {
-    // associations can be defined here
+    KeyTransactions.hasMany(models.KeyTransactionsLog);
+  };
+
+  KeyTransactions.prototype.toWeb = function () {
+    let json = this.toJSON();
+    return json;
   };
   return KeyTransactions;
 };

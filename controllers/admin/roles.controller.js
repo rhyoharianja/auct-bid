@@ -33,7 +33,11 @@ const get = async function(req, res){
 
     let err, roles;
 
-    [err, roles] = await to(Roles.findOne());
+    [err, roles] = await to(Roles.findOne({
+        where: {
+          id: req.params.id
+        }
+      }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Detail Roles', data:roles}, 201);
@@ -50,7 +54,7 @@ const update = async function(req, res){
     ));
     if(err) return ReE(res, err, 422);
 
-    [err, roles] = await to(Roles.findOne());
+    [err, roles] = await to(Roles.findOne({where: {id: data.id} }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Update Detail Roles', data:roles}, 201);

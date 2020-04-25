@@ -22,11 +22,16 @@ const create = async function(req, res){
 module.exports.create = create;
 
 const get = async function(req, res){
+    console.log("disini param" +req.params.user_id);
     res.setHeader('Content-Type', 'application/json');
     // let user = req.user;
     let err, users;
 
-    [err, users] = await to(User.findOne());
+    [err, users] = await to(User.findOne({
+        where: {
+          id: req.params.id
+        }
+      }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Detail Users', data:users}, 201);
@@ -55,7 +60,7 @@ const update = async function(req, res){
     ));
     if(err) return ReE(res, err, 422);
 
-    [err, user] = await to(User.findOne());
+    [err, user] = await to(User.findOne({where: {id: data.id} }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Update Detail Users', data:user}, 201);
@@ -67,7 +72,7 @@ const remove = async function(req, res){
 
     [err, user] = await to(User.destroy({
         where: {
-          id: req.body.id
+          id: req.params.id
         }
       }));
       if(err) return ReE(res, err, 422);

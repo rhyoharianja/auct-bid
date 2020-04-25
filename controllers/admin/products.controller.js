@@ -1,4 +1,4 @@
-const { Products } = require('../../models');
+const { products } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 
 const create = async function(req, res) {
@@ -7,10 +7,10 @@ const create = async function(req, res) {
 
     let product_data = req.body;
     
-    [err, product] = await to(Products.create(product_data));
+    [err, product] = await to(products.create(product_data));
     if(err) return ReE(res, err, 422);
 
-    let product_json = Products.toWeb();
+    let product_json = product.toWeb();
 
     return ReS(res,{message: 'Success Add New Product', data:product_json}, 201);
 }
@@ -21,7 +21,7 @@ const getAll = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, product;
 
-    [err, product] = await to(Products.findAll());
+    [err, product] = await to(products.findAll());
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Products List', data:product}, 201);
@@ -33,7 +33,7 @@ const get = async function(req, res){
 
     let err, product;
 
-    [err, product] = await to(Products.findOne());
+    [err, product] = await to(products.findOne({where: {id: req.params.id} }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Detail Products', data:product}, 201);
@@ -44,13 +44,13 @@ const update = async function(req, res){
     let err, product, data;
     data = req.body;
 
-    [err, product] = await to(Products.update(
+    [err, product] = await to(products.update(
         data,
         {where: {id: data.id} }
     ));
     if(err) return ReE(res, err, 422);
 
-    [err, product] = await to(Products.findOne());
+    [err, product] = await to(products.findOne({where: {id: data.id} }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Update Detail Product', data:product}, 201);
@@ -60,7 +60,7 @@ module.exports.update = update;
 const remove = async function(req, res){
     let product, err;
 
-    [err, product] = await to(Products.destroy({
+    [err, product] = await to(products.destroy({
         where: {
           id: req.body.id
         }

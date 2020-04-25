@@ -1,2 +1,2 @@
-const { Products } = require('../models');
+const { products } = require('../models');
 const { to, ReE, ReS } = require('../services/util.service');

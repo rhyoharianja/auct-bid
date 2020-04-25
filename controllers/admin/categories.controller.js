@@ -33,7 +33,7 @@ const get = async function(req, res){
 
     let err, categories;
 
-    [err, categories] = await to(Categories.findOne());
+    [err, categories] = await to(Categories.findOne({where: {id: req.params.id} }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Detail Category', data:categories}, 201);

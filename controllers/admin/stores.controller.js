@@ -33,7 +33,7 @@ const get = async function(req, res){
 
     let err, store;
 
-    [err, store] = await to(Stores.findOne());
+    [err, store] = await to(Stores.findOne({where: {id: req.params.id} }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Detail Stores', data:store}, 201);
@@ -50,7 +50,11 @@ const update = async function(req, res){
     ));
     if(err) return ReE(res, err, 422);
 
-    [err, stores] = await to(Stores.findOne());
+    [err, stores] = await to(Stores.findOne({
+        where: {
+          id: req.body.id
+        }
+      }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Update Detail stores', data:store}, 201);

@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const KeyTransactionsLog = sequelize.define('KeyTransactionsLog', {
+    keyTransId: DataTypes.INTEGER,
     keyId: DataTypes.INTEGER,
     buyerId: DataTypes.INTEGER,
     paymentMethod: DataTypes.INTEGER,
@@ -9,7 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     paymentDate: DataTypes.DATE
   }, {});
   KeyTransactionsLog.associate = function(models) {
-    // associations can be defined here
+    KeyTransactionsLog.belongsTo(models.KeyTransactions);
+  };
+  KeyTransactionsLog.prototype.toWeb = function () {
+    let json = this.toJSON();
+    return json;
   };
   return KeyTransactionsLog;
 };
