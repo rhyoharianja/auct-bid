@@ -23,7 +23,10 @@ module.exports = function(passport){
         let err, user;
         [err, user] = await to(User.findByPk(jwt_payload.user_id));
         if(err) return done(err, false);
-        if(user) {
+        console.log("awal user admin");
+        console.log(user.dataValues.roleId);
+        console.log("akhir user admin");
+        if(user && user.dataValues.roleId == 1) {
             return done(null, user);
         }else{
             return done(null, false);

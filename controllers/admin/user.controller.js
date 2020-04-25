@@ -24,10 +24,25 @@ module.exports.create = create;
 const get = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     // let user = req.user;
+    let err, users;
 
-    return ReE(res, 'Please enter an email or phone number to register.');
+    [err, users] = await to(User.findOne());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Detail Users', data:users}, 201);
 }
 module.exports.get = get;
+
+const getAll = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, users;
+
+    [err, users] = await to(User.findAll());
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Users List', data:users}, 201);
+}
+module.exports.getAll = getAll;
 
 const update = async function(req, res){
 
