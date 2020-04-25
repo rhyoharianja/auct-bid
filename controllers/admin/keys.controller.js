@@ -1,4 +1,4 @@
-const { keys } = require('../../models');
+const { Keys } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 
 const create = async function(req, res) {
@@ -7,7 +7,7 @@ const create = async function(req, res) {
 
     let keys_data = req.body;
     
-    [err, keys] = await to(keys.create(keys_data));
+    [err, keys] = await to(Keys.create(keys_data));
     if(err) return ReE(res, err, 422);
 
     let keys_json = keys.toWeb();
@@ -21,7 +21,7 @@ const getAll = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, keys;
 
-    [err, keys] = await to(keys.findAll());
+    [err, keys] = await to(Keys.findAll());
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Keys List', data: keys}, 201);
@@ -34,7 +34,7 @@ const get = async function(req, res){
     
     let err, keys;
 
-    [err, keys] = await to(keys.findOne({where: {id: req.params.id} }));
+    [err, keys] = await to(Keys.findOne({where: {id: req.params.id} }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Detail Key', data:keys}, 201);
