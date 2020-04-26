@@ -67,32 +67,10 @@ const orderKey = async function(req, res) {
                 });
         }
      });
-    // const okey = {
-    //     keyId: req.body.keyId,
-    //     buyerId: user.id,
-    //     paymentMethod: 0,
-    //     paymentType: 0,
-    //     paymentStatus: 0,
-    //     paymentDate: null,
-    //     paymentExpired: expiredDate,
-    // };
 
     [err, kt] = await to(KeyTransactions.bulkCreate(okey, {include : KeyTransactionsLogs}, {returning: true}));  
 
     if(err) return ReE(res, err, 422);
-
-    // const okeyLog = {
-    //     keyTransId: kt.id,
-    //     keyId: req.body.keyId,
-    //     buyerId: user.id,
-    //     paymentMethod: 0,
-    //     paymentType: 0,
-    //     paymentStatus: 0,
-    //     paymentDate: null,
-    //     paymentExpired: expiredDate,
-    // };
-
-    // [err, ktl] = await to(KeyTransactionsLogs.create(okeyLog));
     
     return ReS(res,{message: 'Success Order Keys', data:kt}, 201);
 }
