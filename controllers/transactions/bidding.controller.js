@@ -1,5 +1,5 @@
 const { Stores } = require('../../models');
-const { Stores } = require('../../models');
+const { BiddingTransactions } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 
 const storeList = async function(req, res){
