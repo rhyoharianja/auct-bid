@@ -20,7 +20,8 @@ router.get('/user/bid',passport.authenticate('users',{session:false}), UserBid.u
 router.put('/users',passport.authenticate('users', {session:false}), UserController.update); //update
    
 router.delete('/users',passport.authenticate('users',{session:false}), UserController.remove); //delete
-router.get('/users/Key',passport.authenticate('users',{session:false}), userKetTrans.userKeyList);
+router.delete('/users',passport.authenticate('users',{session:false}), UserController.remove); //delete
+router.get('/key/list',passport.authenticate('users',{session:false}), userKetTrans.keyList);
 router.post('/order/Key',passport.authenticate('users',{session:false}), userKetTrans.orderKey);
 router.post('/order/bidding',passport.authenticate('users',{session:false}), UserBid.orderBid);
 

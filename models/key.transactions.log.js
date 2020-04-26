@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     paymentDate: DataTypes.DATE
   }, {});
   KeyTransactionsLogs.associate = function(models) {
-    KeyTransactionsLogs.hasOne(models.KeyTransactions, { foreignKey: 'keyTransId' });
+    // KeyTransactionsLogs.hasOne(models.KeyTransactions, { foreignKey: 'keyTransId' });
   };
   KeyTransactionsLogs.prototype.toWeb = function () {
     let json = this.toJSON();

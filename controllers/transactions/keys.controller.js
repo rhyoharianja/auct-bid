@@ -7,12 +7,7 @@ const keyList = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     let err, key;
 
-    [err, key] = await to(keys.findAll(
-            {
-                where: { status : 1 }
-            }
-        )
-    );
+    [err, key] = await to(keys.findAll());
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Keys List', data: keys}, 201);
@@ -55,20 +50,21 @@ const orderKey = async function(req, res) {
                         paymentStatus: 0,
                         paymentDate: null,
                         paymentExpired: expiredDate,
-                        KeyTransactionsLogs: {
-                            keyId: keys.keyId,
-                            buyerId: user.id,
-                            paymentMethod: 0,
-                            paymentType: 0,
-                            paymentStatus: 0,
-                            paymentDate: null,
-                            paymentExpired: expiredDate,
-                        }
+                        // KeyTransactionsLogs: {
+                        //     keyId: keys.keyId,
+                        //     buyerId: user.id,
+                        //     paymentMethod: 0,
+                        //     paymentType: 0,
+                        //     paymentStatus: 0,
+                        //     paymentDate: null,
+                        //     paymentExpired: expiredDate,
+                        // }
                 });
         }
      });
 
-    [err, kt] = await to(KeyTransactions.bulkCreate(okey, {include : KeyTransactionsLogs}, {returning: true}));  
+    // [err, kt] = await to(KeyTransactions.bulkCreate(okey, {include : KeyTransactionsLogs}, {returning: true}));
+    [err, kt] = await to(KeyTransactions.bulkCreate(okey));  
 
     if(err) return ReE(res, err, 422);
     
