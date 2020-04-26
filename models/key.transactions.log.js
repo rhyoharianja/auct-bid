@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const KeyTransactionsLog = sequelize.define('KeyTransactionsLog', {
+  const KeyTransactionsLogs = sequelize.define('KeyTransactionsLogs', {
     keyTransId: DataTypes.INTEGER,
     keyId: DataTypes.INTEGER,
     buyerId: DataTypes.INTEGER,
@@ -9,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     paymentStatus: DataTypes.INTEGER,
     paymentDate: DataTypes.DATE
   }, {});
-  KeyTransactionsLog.associate = function(models) {
-    KeyTransactionsLog.belongsTo(models.KeyTransactions);
+  KeyTransactionsLogs.associate = function(models) {
+    KeyTransactionsLogs.hasOne(models.KeyTransactions, { foreignKey: 'keyTransId' });
   };
-  KeyTransactionsLog.prototype.toWeb = function () {
+  KeyTransactionsLogs.prototype.toWeb = function () {
     let json = this.toJSON();
     return json;
   };
-  return KeyTransactionsLog;
+  return KeyTransactionsLogs;
 };

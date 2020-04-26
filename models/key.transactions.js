@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   
   KeyTransactions.associate = function(models) {
-    KeyTransactions.hasMany(models.KeyTransactionsLog);
+    KeyTransactions.hasMany(models.KeyTransactionsLogs, { foreignKey: 'keyTransId' });
   };
 
   KeyTransactions.prototype.toWeb = function () {
