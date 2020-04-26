@@ -5,9 +5,9 @@ const { to, ReE, ReS } = require('../../services/util.service');
 
 const keyList = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let err, key;
+    let err, keys;
 
-    [err, key] = await to(Keys.findAll());
+    [err, keys] = await to(Keys.findAll());
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Keys List', data: keys}, 201);
