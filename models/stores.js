@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.SMALLINT
   }, {});
   Stores.associate = function(models) {
-    // associations can be defined here
+    Stores.belongsTo(models.products, { foreignKey: 'productId' });
   };
 
   Stores.prototype.toWeb = function () {

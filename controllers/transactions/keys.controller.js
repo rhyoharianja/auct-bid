@@ -2,6 +2,7 @@ const { Keys } = require('../../models');
 const { KeyTransactions } = require('../../models');
 const { KeyTransactionsLogs } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
+const Sequelize = require('sequelize');
 
 const keyList = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -21,7 +22,10 @@ const userKeyList = async function(req, res) {
     user = req.user.dataValues;
 
     [err, keys] = await to(KeyTransactions.findAll(
-            {
+        {
+            group: ['keyId'],
+            attributes: ['keyId', [Sequelize.fn('COUNT', 'keyId'), 'count']],
+        }, {
                 where: { buyerId : user.id }
             }
         )

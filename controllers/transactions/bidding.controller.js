@@ -1,27 +1,90 @@
 const { Stores } = require('../../models');
+const { products } = require('../../models');
 const { BiddingTransactions } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
-
+const { Op } = require('sequelize');
 const storeList = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
 
-    [err, stores] = await to(Stores.findAll());
+    [err, stores] = await to(Stores.findAll({ include : products }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
 }
 module.exports.storeList = storeList;
 
+const storeListLive = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores;
+    console.log(new Date());
+    [err, stores] = await to(Stores.findAll(
+            { 
+                where: {
+                    startBid: {
+                        [Op.lte]: new Date()
+                    },
+                    endBid: {
+                        [Op.gte]: new Date()
+                    }
+
+                },
+                include: products
+            }
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
+}
+module.exports.storeListLive = storeListLive;
+
+const storeListWaiting = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores;
+
+    [err, stores] = await to(Stores.findAll(
+            { 
+                where: {
+                    startBid: {
+                        [Op.lte]: new Date()
+                    },
+                    endBid: {
+                        [Op.gte]: new Date()
+                    }
+
+                },
+                include : products
+            }, 
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
+}
+module.exports.storeListWaiting = storeListWaiting;
+
 const userBidlist = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores, user;
     user = req.user.dataValues;
 
-    [err, stores] = await to(BiddingTransactions.findAll({where: {buyerId: user.id} }));
+    [err, stores] = await to(BiddingTransactions.findAll(
+            {
+                where: {
+                    buyerId: user.id
+                },
+                include: [
+                    { 
+                        model: Stores,
+                        include: products
+                    }]
+            }
+        )
+    );
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {message:'Successfully Load Current User Bids List', data:store}, 201);
+    return ReS(res, {message:'Successfully Load Current User Bids List', data:stores}, 201);
 }
 module.exports.userBidlist = userBidlist;
 

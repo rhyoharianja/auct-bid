@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.SMALLINT
   });
   products.associate = function(models) {
-    // associations can be defined here
+    products.belongsTo(models.Categories, { foreignKey: 'categoryId' });
   };
 
   products.prototype.toWeb = function () {
