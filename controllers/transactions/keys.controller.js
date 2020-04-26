@@ -1,4 +1,4 @@
-const { keys } = require('../../models');
+const { Keys } = require('../../models');
 const { KeyTransactions } = require('../../models');
 const { KeyTransactionsLogs } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
@@ -7,7 +7,7 @@ const keyList = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     let err, key;
 
-    [err, key] = await to(keys.findAll());
+    [err, key] = await to(Keys.findAll());
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Keys List', data: keys}, 201);
