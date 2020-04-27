@@ -94,7 +94,8 @@ const orderBid = async function(req, res) {
     let user = req.user.dataValues;
 
     bidData = {
-        productId:req.body.productId,
+        productId: req.body.productId,
+        storeId: req.body.storeId,
         buyerId: user.id,
         paymentMethod: 0,
         paymentType: 0,
@@ -107,8 +108,7 @@ const orderBid = async function(req, res) {
     [err, bids] = await to(BiddingTransactions.create(bidData));
     if(err) return ReE(res, err, 422);
 
-    let resp = bids.toWeb();
-    return ReS(res,{message: 'Success Add New Category', data:resp}, 201);
+    return ReS(res,{message: 'Success Add New Category', data:bids}, 201);
 
 }
 
