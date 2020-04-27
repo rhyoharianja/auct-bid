@@ -90,12 +90,10 @@ module.exports.userBidlist = userBidlist;
 
 const orderBid = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let err, bids;
+    let err, bids, bidData;
     let user = req.user.dataValues;
-    let expiredDate = new Date();
-    expiredDate = expiredDate.setHours(expiredDate.getHours() + 2);
 
-    let data = {
+    bidData = {
         productId:req.body.productId,
         buyerId: user.id,
         paymentMethod: 0,
@@ -106,7 +104,7 @@ const orderBid = async function(req, res) {
         shippingStatus: 0
     }
     
-    [err, bids] = await to(BiddingTransactions.create(data));
+    [err, bids] = await to(BiddingTransactions.create(bidData));
     if(err) return ReE(res, err, 422);
 
     let resp = bids.toWeb();
