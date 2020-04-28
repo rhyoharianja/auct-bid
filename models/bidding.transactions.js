@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     productId: DataTypes.INTEGER,
     storeId: DataTypes.INTEGER,
     buyerId: DataTypes.INTEGER,
+    nominal: DataTypes.FLOAT,
     paymentMethod: DataTypes.INTEGER,
     paymentType: DataTypes.INTEGER,
     paymentStatus: DataTypes.INTEGER,
@@ -14,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   BiddingTransactions.associate = function(models) {
     BiddingTransactions.belongsTo(models.Stores, { foreignKey: 'storeId' });
+    BiddingTransactions.belongsTo(models.User, { foreignKey: 'buyerId' });
   };
   BiddingTransactions.prototype.toWeb = function () {
     let json = this.toJSON();

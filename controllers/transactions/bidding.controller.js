@@ -1,5 +1,6 @@
 const { Stores } = require('../../models');
 const { products } = require('../../models');
+const { User } = require('../../models');
 const { BiddingTransactions } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 
@@ -9,7 +10,17 @@ const storeList = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
 
-    [err, stores] = await to(Stores.findAll({ include: [products, BiddingTransactions] }));
+    [err, stores] = await to(Stores.findAll({ 
+        include: [ 
+            { model: products}, 
+            {
+                model: BiddingTransactions,
+                include: [
+                    { model: User }
+                ]
+            }
+        ]
+     }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
@@ -31,7 +42,15 @@ const storeListLive = async function(req, res){
                     }
 
                 },
-                include: [products, BiddingTransactions]
+                include: [ 
+                    { model: products}, 
+                    {
+                        model: BiddingTransactions,
+                        include: [
+                            { model: User }
+                        ]
+                    }
+                ]
             }
         )
     );
@@ -73,12 +92,15 @@ const storeListUser = async function(req, res){
 
     [err, stores] = await to(Stores.findAll(
             { include: [ 
-                    { model: products}, 
-                    {
-                        model: BiddingTransactions,
-                        where: { buyerId: user.id }
-                    }
-                ]
+                { model: products}, 
+                {
+                    model: BiddingTransactions,
+                    where: { buyerId: user.id },
+                    include: [
+                        { model: User }
+                    ]
+                }
+            ]
             }
         )
     );
@@ -109,7 +131,10 @@ const storeListLiveUser = async function(req, res){
                     { model: products}, 
                     {
                         model: BiddingTransactions,
-                        where: { buyerId: user.id }
+                        where: { buyerId: user.id },
+                        include: [
+                            { model: User }
+                        ]
                     }
                 ]
             }
@@ -141,7 +166,10 @@ const storeListWaitingUser = async function(req, res){
                     { model: products}, 
                     {
                         model: BiddingTransactions,
-                        where: { buyerId: user.id }
+                        where: { buyerId: user.id },
+                        include: [
+                            { model: User }
+                        ]
                     }
                 ]
             }, 
@@ -185,6 +213,7 @@ const orderBid = async function(req, res) {
     bidData = {
         productId: req.body.productId,
         storeId: req.body.storeId,
+        nominal: req.body.nominal,
         buyerId: user.id,
         paymentMethod: 0,
         paymentType: 0,
@@ -193,9 +222,7 @@ const orderBid = async function(req, res) {
         shippingType: 0,
         shippingStatus: 0,
         paymentExpired: null
-    }
-
-    console.log(bidData);
+    };
     
     [err, bids] = await to(BiddingTransactions.create(bidData));
     console.log(err);
@@ -206,4 +233,37 @@ const orderBid = async function(req, res) {
 }
 
 module.exports.orderBid = orderBid;
+
+const updateOrderBid = async function(req, res){
+    let err, bids, bidData;
+    let user = req.user.dataValues;
+
+    bidData = {
+        productId: req.body.productId,
+        storeId: req.body.storeId,
+        nominal: req.body.nominal,
+        buyerId: user.id,
+        paymentMethod: 0,
+        paymentType: 0,
+        paymentStatus: 0,
+        paymentDate: null,
+        shippingType: 0,
+        shippingStatus: 0,
+        paymentExpired: null
+    };
+    
+    [err, bids] = await to(BiddingTransactions.update(
+        bidData,
+        {where: {id: req.body.id} }
+    ));
+
+    if(err) return ReE(res, err, 422);
+
+    [err, bids] = await to(BiddingTransactions.findOne({where: {id: req.body.id} }));
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res,{message: 'Successfully Update Bid Price', data:bids}, 201);
+}
+
+module.exports.updateOrderBid = updateOrderBid;
 
