@@ -2,12 +2,14 @@ const { Stores } = require('../../models');
 const { products } = require('../../models');
 const { BiddingTransactions } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
+
 const { Op } = require('sequelize');
+
 const storeList = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
 
-    [err, stores] = await to(Stores.findAll({ include : products }));
+    [err, stores] = await to(Stores.findAll({ include: [products, BiddingTransactions] }));
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
@@ -29,7 +31,7 @@ const storeListLive = async function(req, res){
                     }
 
                 },
-                include: products
+                include: [products, BiddingTransactions]
             }
         )
     );
@@ -54,7 +56,7 @@ const storeListWaiting = async function(req, res){
                     }
 
                 },
-                include : products
+                include: [products, BiddingTransactions]
             }, 
         )
     );
@@ -63,6 +65,93 @@ const storeListWaiting = async function(req, res){
     return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
 }
 module.exports.storeListWaiting = storeListWaiting;
+
+const storeListUser = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores, user;
+    user = req.user.dataValues;
+
+    [err, stores] = await to(Stores.findAll(
+            { include: [ 
+                    { model: products}, 
+                    {
+                        model: BiddingTransactions,
+                        where: { buyerId: user.id }
+                    }
+                ]
+            }
+        )
+    );
+    console.log(err);
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
+}
+module.exports.storeListUser = storeListUser;
+
+const storeListLiveUser = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores, user;
+    user = req.user.dataValues;
+    console.log(new Date());
+    [err, stores] = await to(Stores.findAll(
+            { 
+                where: {
+                    startBid: {
+                        [Op.lte]: new Date()
+                    },
+                    endBid: {
+                        [Op.gte]: new Date()
+                    }
+
+                },
+                include: [ 
+                    { model: products}, 
+                    {
+                        model: BiddingTransactions,
+                        where: { buyerId: user.id }
+                    }
+                ]
+            }
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
+}
+module.exports.storeListLiveUser = storeListLiveUser;
+
+const storeListWaitingUser = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores, user;
+    user = req.user.dataValues;
+
+    [err, stores] = await to(Stores.findAll(
+            { 
+                where: {
+                    startBid: {
+                        [Op.lte]: new Date()
+                    },
+                    endBid: {
+                        [Op.gte]: new Date()
+                    }
+
+                },
+                include: [ 
+                    { model: products}, 
+                    {
+                        model: BiddingTransactions,
+                        where: { buyerId: user.id }
+                    }
+                ]
+            }, 
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
+}
+module.exports.storeListWaitingUser = storeListWaitingUser;
 
 const userBidlist = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
@@ -100,15 +189,19 @@ const orderBid = async function(req, res) {
         paymentMethod: 0,
         paymentType: 0,
         paymentStatus: 0,
-        paymentDate: '',
+        paymentDate: null,
         shippingType: 0,
-        shippingStatus: 0
+        shippingStatus: 0,
+        paymentExpired: null
     }
+
+    console.log(bidData);
     
     [err, bids] = await to(BiddingTransactions.create(bidData));
+    console.log(err);
     if(err) return ReE(res, err, 422);
 
-    return ReS(res,{message: 'Success Add New Category', data:bids}, 201);
+    return ReS(res,{message: 'Success Create Bidding', data:bids}, 201);
 
 }
 

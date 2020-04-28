@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Stores.associate = function(models) {
     Stores.belongsTo(models.products, { foreignKey: 'productId' });
+    Stores.hasMany(models.BiddingTransactions);
   };
 
   Stores.prototype.toWeb = function () {

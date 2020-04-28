@@ -24,6 +24,10 @@ router.get('/user/bid',passport.authenticate('users',{session:false}), UserBid.u
 router.post('/order/Key',passport.authenticate('users',{session:false}), userKetTrans.orderKey);
 router.post('/order/bidding',passport.authenticate('users',{session:false}), UserBid.orderBid);
 
+router.get('/users/room/list',passport.authenticate('users',{session:false}), UserBid.storeListUser);
+router.get('/users/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLiveUser);
+router.get('/users/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaitingUser);
+
 router.get('/room/list',passport.authenticate('users',{session:false}), UserBid.storeList);
 router.get('/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLive);
 router.get('/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaiting);

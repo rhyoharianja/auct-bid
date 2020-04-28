@@ -42,6 +42,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       paymentDate: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       shippingType: {
@@ -51,7 +52,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       paymentExpired: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       createdAt: {
