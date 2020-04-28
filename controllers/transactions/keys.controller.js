@@ -26,7 +26,7 @@ const userKeyList = async function(req, res) {
             group: ['KeyTransactions.keyId'],
             attributes: ['keyId', [Sequelize.fn('COUNT', 'KeyTransactions.keyId'), 'count']],
         }, {
-                where: { buyerId : user.id },
+                where: { buyerId : user.id, useStatus: 0 },
             }
         )
     );
