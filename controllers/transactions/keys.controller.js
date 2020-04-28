@@ -22,11 +22,10 @@ const userKeyList = async function(req, res) {
     user = req.user.dataValues;
 
     [err, keys] = await to(KeyTransactions.findAll({
-            include: Keys,
-            group: ['KeyTransactions.keyId'],
-            attributes: ['keyId', [Sequelize.fn('COUNT', 'KeyTransactions.keyId'), 'count']],
-        }, {
-                where: { buyerId : user.id, useStatus: 0 },
+                include: Keys,
+                group: ['KeyTransactions.keyId'],
+                attributes: ['keyId', [Sequelize.fn('COUNT', 'KeyTransactions.keyId'), 'count']],
+                where: { buyerId : user.id, useStatus : 0 }
             }
         )
     );

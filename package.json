@@ -5,6 +5,7 @@
   "scripts": {
     "add:modules": "npm install",
     "db:install": "sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
+    "db:migrate": "sequelize db:migrate",
     "db:reinstall": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
     "start": "node ./bin/www"
   },
