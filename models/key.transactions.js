@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     paymentStatus: DataTypes.INTEGER,
     paymentDate: DataTypes.DATE,
     paymentExpired: DataTypes.DATE,
+    useStatus: DataTypes.INTEGER,
   }, {});
   
   KeyTransactions.associate = function(models) {

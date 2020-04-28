@@ -2,6 +2,7 @@ const { Stores } = require('../../models');
 const { products } = require('../../models');
 const { User } = require('../../models');
 const { BiddingTransactions } = require('../../models');
+const { KeyTransactions } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 
 const { Op } = require('sequelize');
@@ -207,7 +208,7 @@ module.exports.userBidlist = userBidlist;
 
 const orderBid = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let err, bids, bidData;
+    let err, bids, bidData, store, key, keyUpdate;
     let user = req.user.dataValues;
 
     bidData = {
@@ -224,9 +225,20 @@ const orderBid = async function(req, res) {
         paymentExpired: null
     };
     
+    [err1, store] = await to(Stores.findOne({where: {id: req.body.storeId} }));
+    if(err1) return ReE(res, err1, 422);
+    [err2, key] = await to(KeyTransactions.findOne({where: {keyId: store.allowKey, useStatus: 0} }));
+    if(err2) return ReE(res, err2, 422);
+    if(key == null ) return ReE(res, { message: "You Need requirement Key. Please Buy Requirement Key First !" }, 406);
+    
     [err, bids] = await to(BiddingTransactions.create(bidData));
-    console.log(err);
     if(err) return ReE(res, err, 422);
+    
+    [err3, keyUpdate] = await to(KeyTransactions.update(
+        {useStatus : 1},
+        {where: {id: key.id} }
+    ));
+    if(err3) return ReE(res, err3, 422);
 
     return ReS(res,{message: 'Success Create Bidding', data:bids}, 201);
 

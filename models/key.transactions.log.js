@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     paymentMethod: DataTypes.INTEGER,
     paymentType: DataTypes.INTEGER,
     paymentStatus: DataTypes.INTEGER,
-    paymentDate: DataTypes.DATE
+    paymentDate: DataTypes.DATE,
+    useStatus: DataTypes.INTEGER,
   }, {});
   KeyTransactionsLogs.associate = function(models) {
     // KeyTransactionsLogs.hasOne(models.KeyTransactions, { foreignKey: 'keyTransId' });
