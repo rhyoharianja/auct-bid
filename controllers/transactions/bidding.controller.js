@@ -119,6 +119,39 @@ const storeListWaiting = async function(req, res){
 }
 module.exports.storeListWaiting = storeListWaiting;
 
+const storeListEnd = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores;
+    console.log(new Date());
+    [err, stores] = await to(Stores.findAll(
+            { 
+                where: {
+                    startBid: {
+                        [Op.lt]: new Date()
+                    },
+                    endBid: {
+                        [Op.lt]: new Date()
+                    }
+
+                },
+                include: [ 
+                    { model: products}, 
+                    {
+                        model: BiddingTransactions,
+                        include: [
+                            { model: User }
+                        ]
+                    }
+                ]
+            }
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores List End', data:stores}, 201);
+}
+module.exports.storeListEnd = storeListEnd;
+
 const storeListUser = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores, user;
@@ -214,6 +247,41 @@ const storeListWaitingUser = async function(req, res){
     return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
 }
 module.exports.storeListWaitingUser = storeListWaitingUser;
+
+const storeListEndUser = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores, user;
+    user = req.user.dataValues;
+
+    [err, stores] = await to(Stores.findAll(
+            { 
+                where: {
+                    startBid: {
+                        [Op.lt]: new Date()
+                    },
+                    endBid: {
+                        [Op.lt]: new Date()
+                    }
+
+                },
+                include: [ 
+                    { model: products}, 
+                    {
+                        model: BiddingTransactions,
+                        where: { buyerId: user.id },
+                        include: [
+                            { model: User }
+                        ]
+                    }
+                ]
+            }, 
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores List End', data:stores}, 201);
+}
+module.exports.storeListEndUser = storeListEndUser;
 
 const userBidlist = async function(req, res){
     res.setHeader('Content-Type', 'application/json');

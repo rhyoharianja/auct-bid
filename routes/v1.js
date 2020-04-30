@@ -28,11 +28,14 @@ router.put('/order/bidding/update',passport.authenticate('users',{session:false}
 router.get('/users/room/list',passport.authenticate('users',{session:false}), UserBid.storeListUser);
 router.get('/users/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLiveUser);
 router.get('/users/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaitingUser);
+router.get('/users/room/end',passport.authenticate('users',{session:false}), UserBid.storeListEndUser);
 
 router.get('/room/list',passport.authenticate('users',{session:false}), UserBid.storeList);
 router.get('/room/detail/:id',passport.authenticate('users',{session:false}), UserBid.storeListDetail);
 router.get('/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLive);
 router.get('/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaiting);
+router.get('/room/end',passport.authenticate('users',{session:false}), UserBid.storeListEnd);
+
 router.get('/key/list',passport.authenticate('users',{session:false}), userKetTrans.keyList);
 
 module.exports = router;

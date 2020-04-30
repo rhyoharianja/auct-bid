@@ -5,6 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     shippingName: DataTypes.STRING,
     shippingDescription: DataTypes.STRING,
     price: DataTypes.FLOAT,
+    country: DataTypes.STRING,
+    estimate: DataTypes.STRING,
     status: DataTypes.SMALLINT
   }, {});
   ShippingTypes.associate = function(models) {
