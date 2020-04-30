@@ -8,7 +8,7 @@ const productController = require('../controllers/admin/products.controller');
 const UserController    = require('../controllers/admin/user.controller');
 const CompanyController = require('../controllers/admin/company.controller');
 const StoresController = require('../controllers/admin/stores.controller');
-const ShippingtypesController = require('../controllers/admin/stores.controller');
+const ShippingtypesController = require('../controllers/admin/shippingtype.controller');
 
 const custom            = require('./../middleware/custom');
 
