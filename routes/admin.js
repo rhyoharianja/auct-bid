@@ -8,6 +8,7 @@ const productController = require('../controllers/admin/products.controller');
 const UserController    = require('../controllers/admin/user.controller');
 const CompanyController = require('../controllers/admin/company.controller');
 const StoresController = require('../controllers/admin/stores.controller');
+const ShippingtypesController = require('../controllers/admin/stores.controller');
 
 const custom            = require('./../middleware/custom');
 
@@ -83,5 +84,14 @@ router.post('/stores', passport.authenticate('admin', {session:false}), StoresCo
 router.get('/stores/:id', passport.authenticate('admin', {session:false}), StoresController.get);
 router.put('/stores', passport.authenticate('admin', {session:false}), StoresController.update);
 router.delete('/stores/:id', passport.authenticate('admin', {session:false}), StoresController.remove);
+
+// stores CRUD
+
+router.get('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.getAll);
+router.post('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.create);
+
+router.get('/shipping/type/:id', passport.authenticate('admin', {session:false}), ShippingtypesController.get);
+router.put('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.update);
+router.delete('/shipping/type/:id', passport.authenticate('admin', {session:false}), ShippingtypesController.remove);
 
 module.exports = router;

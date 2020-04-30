@@ -10,7 +10,7 @@ const create = async function(req, res) {
     [err, stype] = await to(ShippingTypes.create(stype_data));
     if(err) return ReE(res, err, 422);
 
-    let stype_json = categories.toWeb();
+    let stype_json = stype.toWeb();
 
     return ReS(res,{message: 'Success Add New Shipping Type', data:stype_json}, 201);
 }
@@ -68,9 +68,9 @@ const get = async function(req, res){
 
     let err, stype;
 
-    [err, stype] = await to(Categories.findOne({where: {id: req.params.id} }));
+    [err, stype] = await to(ShippingTypes.findOne({where: {id: req.params.id} }));
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {message:'Successfully Load Detail Category', data:stype}, 201);
+    return ReS(res, {message:'Successfully Load Detail Shipping Type', data:stype}, 201);
 }
 module.exports.get = get;
