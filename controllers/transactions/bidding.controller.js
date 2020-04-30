@@ -28,6 +28,31 @@ const storeList = async function(req, res){
 }
 module.exports.storeList = storeList;
 
+const storeListDetail = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+    let err, store;
+
+    [err, store] = await to(Stores.findOne({ 
+        where: {
+            id: req.params.id
+
+        },
+        include: [ 
+            { model: products}, 
+            {
+                model: BiddingTransactions,
+                include: [
+                    { model: User }
+                ]
+            }
+        ]
+     }));
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Stores Detail', data:store}, 201);
+}
+module.exports.storeListDetail = storeListDetail;
+
 const storeListLive = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
@@ -69,14 +94,22 @@ const storeListWaiting = async function(req, res){
             { 
                 where: {
                     startBid: {
-                        [Op.lte]: new Date()
+                        [Op.gte]: new Date()
                     },
                     endBid: {
                         [Op.gte]: new Date()
                     }
 
                 },
-                include: [products, BiddingTransactions]
+                include: [ 
+                    { model: products}, 
+                    {
+                        model: BiddingTransactions,
+                        include: [
+                            { model: User }
+                        ]
+                    }
+                ]
             }, 
         )
     );
@@ -156,7 +189,7 @@ const storeListWaitingUser = async function(req, res){
             { 
                 where: {
                     startBid: {
-                        [Op.lte]: new Date()
+                        [Op.gte]: new Date()
                     },
                     endBid: {
                         [Op.gte]: new Date()

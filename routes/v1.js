@@ -30,6 +30,7 @@ router.get('/users/room/live',passport.authenticate('users',{session:false}), Us
 router.get('/users/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaitingUser);
 
 router.get('/room/list',passport.authenticate('users',{session:false}), UserBid.storeList);
+router.get('/room/detail/:id',passport.authenticate('users',{session:false}), UserBid.storeListDetail);
 router.get('/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLive);
 router.get('/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaiting);
 router.get('/key/list',passport.authenticate('users',{session:false}), userKetTrans.keyList);
