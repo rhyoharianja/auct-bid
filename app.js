@@ -13,6 +13,9 @@ const CONFIG = require('./config/config');
 
 const swaggerUi = require('swagger-ui-express');
 const swagadmin = require('./config/swagger');
+const path              = require('path');
+
+app.use(express.static(__dirname + '/resources/static/assets'));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -35,23 +38,24 @@ if(CONFIG.app==='dev'){
 
 app.use(cors());
 
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagadmin));
 
 app.use('/v1', v1);
 
 app.use('/admin', admin);
 
-app.use('/', function(req, res){
-   res.statusCode = 200;//send the appropriate status code
-   res.json({status:"success", message:"Auction Pending API", data:{}})
-});
+// app.use('/', function(req, res){
+//    res.statusCode = 200;//send the appropriate status code
+//    res.json({status:"success", message:"Auction Pending API", data:{}})
+// });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// app.use(function(req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
 
 // error handler
 // app.use(function(err, req, res, next) {

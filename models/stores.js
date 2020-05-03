@@ -8,10 +8,13 @@ module.exports = (sequelize, DataTypes) => {
     userWinner: DataTypes.INTEGER,
     setWinnerDate: DataTypes.DATE,
     setWinnerBy: DataTypes.INTEGER,
+    maxbidder: DataTypes.INTEGER,
     status: DataTypes.SMALLINT
   }, {});
   Stores.associate = function(models) {
     Stores.belongsTo(models.products, { foreignKey: 'productId' });
+    Stores.hasMany(models.BiddingTransactions,{as: 'bidder'});
+    Stores.hasMany(models.BiddingTransactions,{as: 'current'});
     Stores.hasMany(models.BiddingTransactions);
   };
 

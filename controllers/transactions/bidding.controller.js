@@ -3,8 +3,9 @@ const { products } = require('../../models');
 const { User } = require('../../models');
 const { BiddingTransactions } = require('../../models');
 const { KeyTransactions } = require('../../models');
+const { ShippingDetails } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
-
+const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const storeList = async function(req, res){
@@ -39,9 +40,13 @@ const storeListDetail = async function(req, res){
         },
         include: [ 
             { model: products}, 
+            { model: BiddingTransactions, required: false, separate : true, attributes: [[Sequelize.fn('COUNT', 'id'), 'count']], as: "bidder"}, 
+            { model: BiddingTransactions, required: false, separate : true, attributes: [[Sequelize.fn('max', Sequelize.col('nominal')), 'bidder']], as: "current"}, 
             {
                 model: BiddingTransactions,
-                include: [
+                required : false , 
+                separate : true,
+                include: [  
                     { model: User }
                 ]
             }
@@ -348,21 +353,57 @@ const orderBid = async function(req, res) {
 module.exports.orderBid = orderBid;
 
 const updateOrderBid = async function(req, res){
-    let err, bids, bidData;
+    let err, err2, bids, bidData, shipdata, shipdatas, shippingData;
     let user = req.user.dataValues;
-
+    let ShipDetailId = 0;
+    if(req.body.shippingType !== 'undefined' || req.body.shippingType !== ""){
+        shippingData = {
+            userId : user.id,
+            shippingType : req.body.shippingType,
+            firstName : req.body.firstName,
+            lastname : req.body.lastname,
+            email : req.body.email,
+            phoneNumber : req.body.phoneNumber,
+            address : req.body.address,
+            city : req.body.city,
+            zipPostCode : req.body.zipPostCode,
+            country : req.body.country
+        };
+        [err2, shipdata] = await to(ShippingDetails.findOne({ 
+            where: {
+                id: user.id
+            }
+        }));
+        
+        if(err2) return ReE(res, err, 422);
+        if(shipdata != null) {
+            [err2, shipdatas] = await to(ShippingDetails.update(
+                shippingData,
+                {where: {id: shipdata.id} }
+            ));
+            if(err2) return ReE(res, err, 422);
+            ShipDetailId = shipdatas.id;
+        } else {
+            [err2, shipdatas] = await to(ShippingDetails.create(
+                shippingData
+            ));
+            if(err2) return ReE(res, err, 422);
+            ShipDetailId = shipdatas.id;
+        }
+    }
     bidData = {
         productId: req.body.productId,
         storeId: req.body.storeId,
         nominal: req.body.nominal,
         buyerId: user.id,
-        paymentMethod: 0,
-        paymentType: 0,
-        paymentStatus: 0,
-        paymentDate: null,
-        shippingType: 0,
-        shippingStatus: 0,
-        paymentExpired: null
+        paymentMethod: (req.body.paymentMethod !== 'undefined') ? req.body.paymentMethod : 0,
+        paymentType: (req.body.paymentType !== 'undefined') ? req.body.paymentType : 0,
+        paymentStatus: (req.body.paymentStatus !== 'undefined') ? req.body.paymentStatus : 0,
+        paymentDate: (req.body.paymentStatus !== 'undefined') ? req.body.paymentStatus : null,
+        shippingType: (req.body.shippingType !== 'undefined') ? req.body.shippingType : 0,
+        shippingStatus: (req.body.shippingStatus !== 'undefined') ? req.body.shippingStatus : 0,
+        paymentExpired: (req.body.paymentExpired !== 'undefined') ? req.body.paymentExpired : null,
+        shippingDetail: ShipDetailId
     };
     
     [err, bids] = await to(BiddingTransactions.update(

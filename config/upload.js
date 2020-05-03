@@ -1,6 +1,7 @@
-const multer = require('muller');
-
-var storage = multer.distStorage({
+const multer = require('multer');
+const path              = require('path');
+const __basedir = path.resolve();
+var storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, __basedir + '/resources/static/assets/uploads/')
     },
