@@ -11,15 +11,15 @@ CONFIG.db_host      = process.env.DB_HOST       || '127.0.0.1';
 CONFIG.db_port      = process.env.DB_PORT       || '3306';
 CONFIG.db_name      = process.env.DB_NAME       || 'auct_bid';
 CONFIG.db_user      = process.env.DB_USER       || 'root';
-CONFIG.db_password  = process.env.DB_PASSWORD   || 'xxxxxxxxx';
+CONFIG.db_password  = process.env.DB_PASSWORD   || '123456qwerty';
 
 // Configuration For DB Access Administration Truncate, Create DB, Drop, ect
 CONFIG.dialect      = process.env.DB_DIALECT    || 'mysql';
 CONFIG.host         = process.env.DB_HOST       || '127.0.0.1';
-CONFIG.database      = process.env.DB_NAME       || 'auct_bid';
+CONFIG.database      = process.env.DB_NAME      || 'auct_bid';
 CONFIG.port         = process.env.DB_PORT       || '3306';
-CONFIG.username     = process.env.DB_USER   || 'root';
-CONFIG.password     = process.env.DB_PASSWORD   || 'xxxxxxxxx';
+CONFIG.username     = process.env.DB_USER       || 'root';
+CONFIG.password     = process.env.DB_PASSWORD   || '123456qwerty';
 
 CONFIG.jwt_encryption  = process.env.JWT_ENCRYPTION || '931fcdf9b28c8d9b272d806bc436507c';
 CONFIG.jwt_expiration  = process.env.JWT_EXPIRATION || '10000';
