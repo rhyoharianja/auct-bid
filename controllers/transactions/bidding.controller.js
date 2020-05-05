@@ -314,9 +314,19 @@ module.exports.userBidlist = userBidlist;
 
 const orderBid = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let err, bids, bidData, store, key, keyUpdate;
+    let ferr, currData, err, bids, bidData, store, key, keyUpdate;
     let user = req.user.dataValues;
+    [ferr, currData] = await to(BiddingTransactions.findOne({
+        where: {
+            productId: req.body.productId,
+            storeId: req.body.storeId,
+            buyerId: user.id
+        }
+    }))
+    if(ferr) return ReE(res, ferr, 422);
 
+    if(currData != null) return ReE(res, 'Sorry, You Had Followed Current Room');
+    
     bidData = {
         productId: req.body.productId,
         storeId: req.body.storeId,
@@ -333,7 +343,7 @@ const orderBid = async function(req, res) {
     
     [err1, store] = await to(Stores.findOne({where: {id: req.body.storeId} }));
     if(err1) return ReE(res, err1, 422);
-    [err2, key] = await to(KeyTransactions.findOne({where: {keyId: store.allowKey, useStatus: 0} }));
+    [err2, key] = await to(KeyTransactions.findOne({where: {keyId: store.allowKey, useStatus: 0, buyerId: user.id} }));
     if(err2) return ReE(res, err2, 422);
     if(key == null ) return ReE(res, { message: "You Need requirement Key. Please Buy Requirement Key First !" }, 406);
     
@@ -342,21 +352,22 @@ const orderBid = async function(req, res) {
     
     [err3, keyUpdate] = await to(KeyTransactions.update(
         {useStatus : 1},
-        {where: {id: key.id} }
+        {where: {id: key.id, buyerId: user.id} }
     ));
     if(err3) return ReE(res, err3, 422);
 
     return ReS(res,{message: 'Success Create Bidding', data:bids}, 201);
 
 }
-
 module.exports.orderBid = orderBid;
 
 const updateOrderBid = async function(req, res){
     let err, err2, bids, bidData, shipdata, shipdatas, shippingData;
     let user = req.user.dataValues;
     let ShipDetailId = 0;
-    if(req.body.shippingType !== 'undefined' || req.body.shippingType !== ""){
+    console.log(req.body.shippingType);
+    if(req.body.shippingType){
+        console.log('Ok ini tidak undefined')
         shippingData = {
             userId : user.id,
             shippingType : req.body.shippingType,
@@ -396,13 +407,13 @@ const updateOrderBid = async function(req, res){
         storeId: req.body.storeId,
         nominal: req.body.nominal,
         buyerId: user.id,
-        paymentMethod: (req.body.paymentMethod !== 'undefined') ? req.body.paymentMethod : 0,
-        paymentType: (req.body.paymentType !== 'undefined') ? req.body.paymentType : 0,
-        paymentStatus: (req.body.paymentStatus !== 'undefined') ? req.body.paymentStatus : 0,
-        paymentDate: (req.body.paymentStatus !== 'undefined') ? req.body.paymentStatus : null,
-        shippingType: (req.body.shippingType !== 'undefined') ? req.body.shippingType : 0,
-        shippingStatus: (req.body.shippingStatus !== 'undefined') ? req.body.shippingStatus : 0,
-        paymentExpired: (req.body.paymentExpired !== 'undefined') ? req.body.paymentExpired : null,
+        paymentMethod: (req.body.paymentMethod) ? req.body.paymentMethod : 0,
+        paymentType: (req.body.paymentType) ? req.body.paymentType : 0,
+        paymentStatus: (req.body.paymentStatus) ? req.body.paymentStatus : 0,
+        paymentDate: (req.body.paymentStatus) ? req.body.paymentStatus : null,
+        shippingType: (req.body.shippingType) ? req.body.shippingType : 0,
+        shippingStatus: (req.body.shippingStatus) ? req.body.shippingStatus : 0,
+        paymentExpired: (req.body.paymentExpired) ? req.body.paymentExpired : null,
         shippingDetail: ShipDetailId
     };
     
@@ -418,6 +429,5 @@ const updateOrderBid = async function(req, res){
 
     return ReS(res,{message: 'Successfully Update Bid Price', data:bids}, 201);
 }
-
 module.exports.updateOrderBid = updateOrderBid;
 

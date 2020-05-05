@@ -5,6 +5,7 @@ const UserController    = require('../controllers/admin/user.controller');
 const UserData    = require('../controllers/users/profile.controller');
 const userKetTrans    = require('../controllers/transactions/keys.controller');
 const UserBid    = require('../controllers/transactions/bidding.controller');
+const Dashboard    = require('../controllers/transactions/dashboard.controller');
 
 const uploads    = require('../config/upload');
 const fileUpload    = require('../controllers/test.uplaod');
@@ -44,5 +45,7 @@ router.get('/room/end',passport.authenticate('users',{session:false}), UserBid.s
 router.get('/key/list',passport.authenticate('users',{session:false}), userKetTrans.keyList);
 
 router.post('/upload/test', uploads.any(), fileUpload.get);
+
+router.get('/dashboard/counter',Dashboard.countData);
 
 module.exports = router;
