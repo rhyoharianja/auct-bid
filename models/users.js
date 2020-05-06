@@ -28,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Model.beforeSave(async (user, options) => {
         let err;
+        // console.log('ceritanya nembak kesini');
+        // console.log(user.body);
         if (user.changed('password')){
             let salt, hash
             [err, salt] = await to(bcrypt.genSalt(10));

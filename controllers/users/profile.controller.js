@@ -49,22 +49,17 @@ module.exports.get = get;
 
 const update = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  let err, currUser, data;
-  console.log(req);
-  currUser = req.user.dataValues;
-  data = req.body;
-  data.avatar = '/uploads/' + req.files[0].filename;
-  [err, user] = await to(User.update(
-    data,
-    {where: {id: currUser.id} }
-  ));
-  if(err) return ReE(res, err, 422);
-
-  [err, user] = await to(User.findOne({where: {id: currUser.id} }));
-
-  if(err) return ReE(res, err, 422);
-
-
-  return ReS(res, {message:'Successfully Update Detail Users', data:user}, 201);
+    let err, user, data
+    user = req.user;
+    data = req.body;
+    user.set(data);
+    
+    [err, user] = await to(user.save());
+    if(err){
+        if(err.message=='Validation error') err = 'The email address or phone number is already in use';
+        return ReE(res, err);
+    }
+    // console.log(user);
+    return ReS(res, {message :'Updated User: '+user.email, data: user});
 }
 module.exports.update = update;

@@ -22,7 +22,7 @@ const create = async function(req, res){
 module.exports.create = create;
 
 const get = async function(req, res){
-    console.log("disini param" +req.params.user_id);
+    // console.log("disini param" +req.params.user_id);
     res.setHeader('Content-Type', 'application/json');
     // let user = req.user;
     let err, users;
