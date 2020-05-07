@@ -40,8 +40,7 @@ const storeListDetail = async function(req, res){
         },
         include: [ 
             { model: products}, 
-            { model: BiddingTransactions, required: false, separate : true, attributes: [[Sequelize.fn('COUNT', 'id'), 'count']], as: "bidder"}, 
-            { model: BiddingTransactions, required: false, separate : true, attributes: [[Sequelize.fn('max', Sequelize.col('nominal')), 'bidder']], as: "current"}, 
+            { model: BiddingTransactions, attributes: [[Sequelize.fn('max', Sequelize.col('nominal')), 'bidder'], [Sequelize.fn('COUNT', 'id'), 'count']], as: 'bidder'}, 
             {
                 model: BiddingTransactions,
                 required : false , 
@@ -52,6 +51,7 @@ const storeListDetail = async function(req, res){
             }
         ]
      }));
+     console.log(err);
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Stores Detail', data:store}, 201);
@@ -365,7 +365,6 @@ const updateOrderBid = async function(req, res){
     let err, err2, bids, bidData, shipdata, shipdatas, shippingData;
     let user = req.user.dataValues;
     let ShipDetailId = 0;
-    console.log(req.body.shippingType);
     if(req.body.shippingType){
         console.log('Ok ini tidak undefined')
         shippingData = {
@@ -427,7 +426,21 @@ const updateOrderBid = async function(req, res){
     [err, bids] = await to(BiddingTransactions.findOne({where: {id: req.body.id} }));
     if(err) return ReE(res, err, 422);
 
-    return ReS(res,{message: 'Successfully Update Bid Price', data:bids}, 201);
+    return ReS(res,{message: 'Successfully Update Bid Transaction', data:bids}, 201);
 }
 module.exports.updateOrderBid = updateOrderBid;
 
+const LeaveRoom = async function (req, res) {
+    let err, bids;
+    let user = req.user.dataValues;
+    console.log(req.body.id);
+    [err, bids] = await to(BiddingTransactions.update(
+        {biddngStatus : 2 },
+        {
+            where: {id: req.body.id}
+        }
+    ));
+    if(err) return ReE(res, err, 422);
+    return ReS(res,{message: 'Successfully Left Bid Room', data:bids}, 201);
+}
+module.exports.LeaveRoom = LeaveRoom;

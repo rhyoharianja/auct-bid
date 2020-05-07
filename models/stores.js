@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
   Stores.associate = function(models) {
     Stores.belongsTo(models.products, { foreignKey: 'productId' });
     Stores.hasMany(models.BiddingTransactions,{as: 'bidder'});
-    Stores.hasMany(models.BiddingTransactions,{as: 'current'});
     Stores.hasMany(models.BiddingTransactions);
   };
 

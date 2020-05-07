@@ -35,6 +35,7 @@ router.get('/users/room/list',passport.authenticate('users',{session:false}), Us
 router.get('/users/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLiveUser);
 router.get('/users/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaitingUser);
 router.get('/users/room/end',passport.authenticate('users',{session:false}), UserBid.storeListEndUser);
+router.post('/users/room/leave',passport.authenticate('users',{session:false}), UserBid.LeaveRoom);
 
 router.get('/room/list',passport.authenticate('users',{session:false}), UserBid.storeList);
 router.get('/room/detail/:id',passport.authenticate('users',{session:false}), UserBid.storeListDetail);
@@ -47,5 +48,6 @@ router.get('/key/list',passport.authenticate('users',{session:false}), userKetTr
 router.post('/upload/test', uploads.any(), fileUpload.get);
 
 router.get('/dashboard/counter',Dashboard.countData);
+router.get('/dashboard/bidder',Dashboard.countDataBidder);
 
 module.exports = router;

@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     paymentDate: DataTypes.DATE,
     shippingType: DataTypes.INTEGER,
     shippingStatus: DataTypes.INTEGER,
-    paymentExpired: DataTypes.DATE
+    shippingDetail: DataTypes.DATE,
+    biddngStatus: DataTypes.INTEGER,
   }, {});
   BiddingTransactions.associate = function(models) {
     BiddingTransactions.belongsTo(models.Stores, { foreignKey: 'storeId' });

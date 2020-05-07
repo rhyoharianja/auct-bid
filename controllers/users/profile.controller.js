@@ -49,17 +49,18 @@ module.exports.get = get;
 
 const update = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-    let err, user, data
+    let err, user, data;
     user = req.user;
     data = req.body;
     user.set(data);
-    
+    if (Array.isArray(req.files) || !req.files.length > 0 ) {
+        user.set({avatar : '/uploads/' + req.files[0].filename});
+    }
     [err, user] = await to(user.save());
     if(err){
         if(err.message=='Validation error') err = 'The email address or phone number is already in use';
         return ReE(res, err);
     }
-    // console.log(user);
     return ReS(res, {message :'Updated User: '+user.email, data: user});
 }
 module.exports.update = update;
