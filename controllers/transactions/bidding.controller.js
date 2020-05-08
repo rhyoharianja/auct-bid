@@ -40,7 +40,17 @@ const storeListDetail = async function(req, res){
         },
         include: [ 
             { model: products}, 
-            { model: BiddingTransactions, attributes: [[Sequelize.fn('max', Sequelize.col('nominal')), 'bidder'], [Sequelize.fn('COUNT', 'id'), 'count']], as: 'bidder'}, 
+            { 
+                model: BiddingTransactions, 
+                group: ['id'],
+                attributes: [
+                    [Sequelize.fn('max', Sequelize.col('nominal')), 'bidder'], 
+                    [Sequelize.fn('COUNT', 'id'), 'count']
+                ], 
+                order: [[Sequelize.literal('count'), 'DESC']],
+                raw: true,
+                as: 'bidder'
+            }, 
             {
                 model: BiddingTransactions,
                 required : false , 
