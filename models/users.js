@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
                         allowNull: true,
                         defaultValue: '/uploads/avatar.png',
                         get() {
-                            return this.getDataValue('avatar').toString('utf8');
+                            return this.getDataValue('avatar') ? this.getDataValue('avatar').toString('utf8') : null;
                         },
                     },
         address     : {type: DataTypes.STRING, allowNull: true},
