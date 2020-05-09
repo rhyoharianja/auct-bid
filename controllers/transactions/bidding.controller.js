@@ -495,6 +495,7 @@ const updateOrderBid = async function(req, res){
 
     if(cekbid.biddngStatus >= 2) return ReE(res, 'Sorry, You Have Been Left. Please Contact Administrator', 406);
 
+    let ShipDetailId = 0;
     if(req.body.shippingType){
         shippingData = {
             userId : user.id,
@@ -514,9 +515,6 @@ const updateOrderBid = async function(req, res){
             }
         }));
         if(err2) return ReE(res, err2, 422);
-
-        let ShipDetailId = 0;
-        
         if(shipdata != null) {
             [err2, shipdatas] = await to(ShippingDetails.update(
                 shippingData,
