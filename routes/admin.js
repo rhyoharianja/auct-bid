@@ -11,6 +11,7 @@ const StoresController = require('../controllers/admin/stores.controller');
 const ShippingtypesController = require('../controllers/admin/shippingtype.controller');
 
 const custom            = require('./../middleware/custom');
+const uploads    = require('../config/upload');
 
 const passport          = require('passport');
 const path              = require('path');
@@ -69,10 +70,10 @@ router.delete('/keys/:id', passport.authenticate('admin', {session:false}), keys
 // products CRUD
 
 router.get('/product', passport.authenticate('admin', {session:false}), productController.getAll);
-router.post('/product', passport.authenticate('admin', {session:false}), productController.create);
+router.post('/product', passport.authenticate('admin', {session:false}), uploads.any(), productController.create);
 
 router.get('/product/:id', passport.authenticate('admin', {session:false}), productController.get);
-router.put('/product', passport.authenticate('admin', {session:false}), productController.update);
+router.put('/product', passport.authenticate('admin', {session:false}), uploads.any(), productController.update);
 router.delete('/product/:id', passport.authenticate('admin', {session:false}), productController.remove);
 
 

@@ -3,9 +3,8 @@ const { to, TE }    = require('../services/util.service');
 const path              = require('path');
 
 const uploadFiles = async function(files, body) {
-    console.log(reqFiles);
     let imgDatas = [];
-    reqFiles.forEach(function(img, index, arr) {
+    files.forEach(function(img, index, arr) {
         imgDatas.push({
             content : body.name,
             contentId : body.id,

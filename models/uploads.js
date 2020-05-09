@@ -5,7 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     contentId: DataTypes.STRING,
     type: DataTypes.STRING,
     name: DataTypes.STRING,
-    data: DataTypes.BLOB
+    data: {
+      type: DataTypes.BLOB, 
+      allowNull: true,
+      get() {
+          return this.getDataValue('avatar') ? this.getDataValue('avatar').toString('utf8') : null;
+      },
+    },
   }, {});
   Uploads.associate = function(models) {
     // associations can be defined here

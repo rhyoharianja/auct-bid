@@ -6,6 +6,8 @@ var storage = multer.diskStorage({
         cb(null, __basedir + '/resources/static/assets/uploads/')
     },
     filename: (req, file, cb) => {
+        console.log('dari config file');
+        console.log(file);
         cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname.replace(/\s/g, '-'))
     }
 });

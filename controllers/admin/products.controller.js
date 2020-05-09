@@ -1,4 +1,6 @@
 const { products } = require('../../models');
+const { Uploads } = require('../../models');
+const { uploadFiles } = require('../../services/uploads.service');
 const { to, ReE, ReS } = require('../../services/util.service');
 
 const create = async function(req, res) {
@@ -9,6 +11,12 @@ const create = async function(req, res) {
     
     [err, product] = await to(products.create(product_data));
     if(err) return ReE(res, err, 422);
+    if (Array.isArray(req.files) && req.files.length > 0 ) {
+        
+        [errimg, img] = await to(uploadFiles(req.files, product));
+
+        if(errimg) return ReE(res, errimg, 422);
+    }
 
     let product_json = product.toWeb();
 
@@ -41,9 +49,20 @@ const get = async function(req, res){
 module.exports.get = get;
 
 const update = async function(req, res){
-    let err, product, data;
+    res.setHeader('Content-Type', 'application/json');
+    let err, product, data, errdel, deldata, errimg, img;
     data = req.body;
+    if (Array.isArray(req.files) && req.files.length > 0 ) {
+        [errdel, deldata] = await to(Uploads.destroy({
+            where: {
+                contentId: data.id
+            }
+        }));
+        
+        [errimg, img] = await to(uploadFiles(req.files, data));
 
+        if(errimg) return ReE(res, errimg, 422);
+    }
     [err, product] = await to(products.update(
         data,
         {where: {id: data.id} }
@@ -64,7 +83,7 @@ const remove = async function(req, res){
         where: {
           id: req.body.id
         }
-      }));
+    }));
       if(err) return ReE(res, err, 422);
 
     if(err) return ReE(res, 'error occured trying to delete the Products');
