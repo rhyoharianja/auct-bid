@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   Uploads.associate = function(models) {
-    // associations can be defined here
+    Uploads.belongsTo(models.products, { foreignKey: 'contentId' });
   };
   return Uploads;
 };

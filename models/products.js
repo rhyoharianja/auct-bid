@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   products.associate = function(models) {
     products.belongsTo(models.Categories, { foreignKey: 'categoryId' });
+    products.hasMany(models.Uploads,{as: 'productImages'});
   };
 
   products.prototype.toWeb = function () {

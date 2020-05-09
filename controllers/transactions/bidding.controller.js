@@ -4,6 +4,7 @@ const { User } = require('../../models');
 const { BiddingTransactions } = require('../../models');
 const { KeyTransactions } = require('../../models');
 const { ShippingDetails } = require('../../models');
+const { Uploads } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
@@ -14,7 +15,20 @@ const storeList = async function(req, res){
 
     [err, stores] = await to(Stores.findAll({ 
         include: [ 
-            { model: products}, 
+            { 
+                model: products,
+                include: [
+                    {
+                        model: Uploads,
+                        as: 'productImages',
+                        attributes: [['content', 'productName'], ['contentId', 'productId']],
+                        on: {
+                            '$product.name$': { [Op.col]: 'content' },
+                            '$product.id$': { [Op.col]: 'contentId' },
+                        }
+                    }
+                ]
+            }, 
             {
                 model: BiddingTransactions,
                 include: [
@@ -39,7 +53,20 @@ const storeListDetail = async function(req, res){
 
         },
         include: [ 
-            { model: products}, 
+            { 
+                model: products,
+                include: [
+                    {
+                        model: Uploads,
+                        as: 'productImages',
+                        attributes: [['content', 'productName'], ['contentId', 'productId']],
+                        on: {
+                            '$product.name$': { [Op.col]: 'content' },
+                            '$product.id$': { [Op.col]: 'contentId' },
+                        }
+                    }
+                ]
+            }, 
             { 
                 model: BiddingTransactions, 
                 group: ['id'],
@@ -82,7 +109,20 @@ const storeListLive = async function(req, res){
 
                 },
                 include: [ 
-                    { model: products}, 
+                    { 
+                        model: products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                on: {
+                                    '$product.name$': { [Op.col]: 'content' },
+                                    '$product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    }, 
                     {
                         model: BiddingTransactions,
                         include: [
@@ -115,7 +155,20 @@ const storeListWaiting = async function(req, res){
 
                 },
                 include: [ 
-                    { model: products}, 
+                    { 
+                        model: products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                on: {
+                                    '$product.name$': { [Op.col]: 'content' },
+                                    '$product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    }, 
                     {
                         model: BiddingTransactions,
                         include: [
@@ -147,7 +200,20 @@ const storeListEnd = async function(req, res){
 
                 },
                 include: [ 
-                    { model: products}, 
+                    { 
+                        model: products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                on: {
+                                    '$product.name$': { [Op.col]: 'content' },
+                                    '$product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    }, 
                     {
                         model: BiddingTransactions,
                         include: [
@@ -171,7 +237,20 @@ const storeListUser = async function(req, res){
 
     [err, stores] = await to(Stores.findAll(
             { include: [ 
-                { model: products}, 
+                { 
+                    model: products,
+                    include: [
+                        {
+                            model: Uploads,
+                            as: 'productImages',
+                            attributes: [['content', 'productName'], ['contentId', 'productId']],
+                            on: {
+                                '$product.name$': { [Op.col]: 'content' },
+                                '$product.id$': { [Op.col]: 'contentId' },
+                            }
+                        }
+                    ]
+                }, 
                 {
                     model: BiddingTransactions,
                     where: { buyerId: user.id },
@@ -205,7 +284,20 @@ const storeListLiveUser = async function(req, res){
 
                 },
                 include: [ 
-                    { model: products}, 
+                    { 
+                        model: products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                on: {
+                                    '$product.name$': { [Op.col]: 'content' },
+                                    '$product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    }, 
                     {
                         model: BiddingTransactions,
                         where: { buyerId: user.id },
@@ -240,7 +332,20 @@ const storeListWaitingUser = async function(req, res){
 
                 },
                 include: [ 
-                    { model: products}, 
+                    { 
+                        model: products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                on: {
+                                    '$product.name$': { [Op.col]: 'content' },
+                                    '$product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    }, 
                     {
                         model: BiddingTransactions,
                         where: { buyerId: user.id },
@@ -275,7 +380,20 @@ const storeListEndUser = async function(req, res){
 
                 },
                 include: [ 
-                    { model: products}, 
+                    { 
+                        model: products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                on: {
+                                    '$product.name$': { [Op.col]: 'content' },
+                                    '$product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    }, 
                     {
                         model: BiddingTransactions,
                         where: { buyerId: user.id },
