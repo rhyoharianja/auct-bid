@@ -514,6 +514,7 @@ const updateOrderBid = async function(req, res){
             }
         }));
         if(err2) return ReE(res, err2, 422);
+        let ShipDetailId = 0;
         if(shipdata != null) {
             [err2, shipdatas] = await to(ShippingDetails.update(
                 shippingData,
