@@ -67,6 +67,24 @@ const update = async function(req, res){
 }
 module.exports.update = update;
 
+const blockUser = async function(req, res){
+
+    let err, user, data;
+    data = req.body;
+
+    [err, user] = await to(User.update(
+        {status: 2},
+        {where: {id: data.id} }
+    ));
+    if(err) return ReE(res, err, 422);
+
+    [err, user] = await to(User.findOne({where: {id: data.id} }));
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'The Select User Have Been Blocked', data:user}, 201);
+}
+module.exports.blockUser = blockUser;
+
 const remove = async function(req, res){
     let user, err;
 

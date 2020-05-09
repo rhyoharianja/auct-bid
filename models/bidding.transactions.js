@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     paymentDate: DataTypes.DATE,
     shippingType: DataTypes.INTEGER,
     shippingStatus: DataTypes.INTEGER,
-    shippingDetail: DataTypes.DATE,
+    shippingDetailId: DataTypes.INTEGER,
     biddngStatus: DataTypes.INTEGER,
   }, {});
   BiddingTransactions.associate = function(models) {

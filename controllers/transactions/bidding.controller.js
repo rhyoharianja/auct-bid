@@ -61,7 +61,6 @@ const storeListDetail = async function(req, res){
             }
         ]
      }));
-     console.log(err);
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Stores Detail', data:store}, 201);
@@ -71,7 +70,6 @@ module.exports.storeListDetail = storeListDetail;
 const storeListLive = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
-    console.log(new Date());
     [err, stores] = await to(Stores.findAll(
             { 
                 where: {
@@ -137,7 +135,6 @@ module.exports.storeListWaiting = storeListWaiting;
 const storeListEnd = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
-    console.log(new Date());
     [err, stores] = await to(Stores.findAll(
             { 
                 where: {
@@ -186,7 +183,6 @@ const storeListUser = async function(req, res){
             }
         )
     );
-    console.log(err);
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Stores List', data:stores}, 201);
@@ -197,7 +193,6 @@ const storeListLiveUser = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, stores, user;
     user = req.user.dataValues;
-    console.log(new Date());
     [err, stores] = await to(Stores.findAll(
             { 
                 where: {
@@ -336,6 +331,7 @@ const orderBid = async function(req, res) {
     if(ferr) return ReE(res, ferr, 422);
 
     if(currData != null) return ReE(res, 'Sorry, You Had Followed Current Room');
+    if(user.status != 1) return ReE(res, 'Sorry, You Were Blocked Or Not Verified By Admin. Please Contact Administrator', 403);
     
     bidData = {
         productId: req.body.productId,
@@ -372,11 +368,16 @@ const orderBid = async function(req, res) {
 module.exports.orderBid = orderBid;
 
 const updateOrderBid = async function(req, res){
-    let err, err2, bids, bidData, shipdata, shipdatas, shippingData;
+    let err, err2, bids, bidData, shipdata, shipdatas, shippingData, cekerr, cekbid;
     let user = req.user.dataValues;
-    let ShipDetailId = 0;
+
+    [cekerr, cekbid] = await to(BiddingTransactions.findOne({where: {id: req.body.id} }));
+
+    if(user.status != 1) return ReE(res, 'Sorry, You Were Blocked Or Not Verified By Admin. Please Contact Administrator', 406);
+
+    if(cekbid.biddngStatus >= 2) return ReE(res, 'Sorry, You Have Been Left. Please Contact Administrator', 406);
+
     if(req.body.shippingType){
-        console.log('Ok ini tidak undefined')
         shippingData = {
             userId : user.id,
             shippingType : req.body.shippingType,
@@ -394,8 +395,7 @@ const updateOrderBid = async function(req, res){
                 id: user.id
             }
         }));
-        
-        if(err2) return ReE(res, err, 422);
+        if(err2) return ReE(res, err2, 422);
         if(shipdata != null) {
             [err2, shipdatas] = await to(ShippingDetails.update(
                 shippingData,
@@ -423,14 +423,13 @@ const updateOrderBid = async function(req, res){
         shippingType: (req.body.shippingType) ? req.body.shippingType : 0,
         shippingStatus: (req.body.shippingStatus) ? req.body.shippingStatus : 0,
         paymentExpired: (req.body.paymentExpired) ? req.body.paymentExpired : null,
-        shippingDetail: ShipDetailId
+        shippingDetailId: ShipDetailId
     };
     
     [err, bids] = await to(BiddingTransactions.update(
         bidData,
         {where: {id: req.body.id} }
     ));
-
     if(err) return ReE(res, err, 422);
 
     [err, bids] = await to(BiddingTransactions.findOne({where: {id: req.body.id} }));
@@ -443,7 +442,6 @@ module.exports.updateOrderBid = updateOrderBid;
 const LeaveRoom = async function (req, res) {
     let err, bids;
     let user = req.user.dataValues;
-    console.log(req.body.id);
     [err, bids] = await to(BiddingTransactions.update(
         {biddngStatus : 2 },
         {

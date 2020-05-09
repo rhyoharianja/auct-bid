@@ -25,13 +25,14 @@ require('../middleware/passport')(passport);
 
 // Roles CRUD
 
-router.post('/users', passport.authenticate('admin', {session:false}), UserController.create); //create   
+router.post('/users', passport.authenticate('admin', {session:false}), UserController.create); //create  
                                                
 router.get('/users', passport.authenticate('admin', {session:false}), UserController.getAll);  //read
 
 router.get('/users/:id', passport.authenticate('admin', {session:false}), UserController.get);  //read
      
 router.put('/users', passport.authenticate('admin', {session:false}), UserController.update); //update
+router.post('/users/block', passport.authenticate('admin', {session:false}), UserController.blockUser); //create  
    
 router.delete('/users/:id', passport.authenticate('admin',{session:false}), UserController.remove); //delete
 

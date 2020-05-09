@@ -26,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
         zipcode     : {type: DataTypes.INTEGER, allowNull: true},
         state     : {type: DataTypes.STRING, allowNull: true},
         country     : {type: DataTypes.STRING, allowNull: true},
+        status     : {
+                        type: DataTypes.BLOB, 
+                        allowNull: false,
+                        defaultValue: 1,
+                    },
     });
     
     Model.associate = function(models){
