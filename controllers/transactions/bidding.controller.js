@@ -31,11 +31,8 @@ const storeList = async function(req, res){
             }, 
             {
                 model: BiddingTransactions,
-                where: {
-                    biddngStatus: {
-                        [Op.not]: 2
-                    }
-        
+                on: {
+                    '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                 },
                 include: [
                     { model: User }
@@ -75,11 +72,8 @@ const storeListDetail = async function(req, res){
             }, 
             { 
                 model: BiddingTransactions, 
-                where: {
-                    biddngStatus: {
-                        [Op.not]: 2
-                    }
-        
+                on: {
+                    '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                 },
                 group: ['id'],
                 attributes: [
@@ -137,11 +131,8 @@ const storeListLive = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
-                        where: {
-                            biddngStatus: {
-                                [Op.not]: 2
-                            }
-                
+                        on: {
+                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -189,11 +180,8 @@ const storeListWaiting = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
-                        where: {
-                            biddngStatus: {
-                                [Op.not]: 2
-                            }
-                
+                        on: {
+                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -283,13 +271,10 @@ const storeListUser = async function(req, res){
                 }, 
                 {
                     model: BiddingTransactions,
-                    where: {
-                        biddngStatus: {
-                            [Op.not]: 2
-                        }
-            
+                    on: {
+                        '$BiddingTransactions.buyerId$': user.id,
+                        '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                     },
-                    where: { buyerId: user.id },
                     include: [
                         { model: User }
                     ]
@@ -336,13 +321,10 @@ const storeListLiveUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
-                        where: {
-                            biddngStatus: {
-                                [Op.not]: 2
-                            }
-                
+                        on: {
+                            '$BiddingTransactions.buyerId$': user.id,
+                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                         },
-                        where: { buyerId: user.id },
                         include: [
                             { model: User }
                         ]
@@ -390,12 +372,9 @@ const storeListWaitingUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
-                        where: {
-                            buyerId: user.id,
-                            biddngStatus: {
-                                [Op.not]: 2
-                            }
-                
+                        on: {
+                            '$BiddingTransactions.buyerId$': user.id,
+                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -444,12 +423,9 @@ const storeListEndUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
-                        where: {
-                            buyerId: user.id,
-                            biddngStatus: {
-                                [Op.not]: 2
-                            }
-                
+                        on: {
+                            '$BiddingTransactions.buyerId$': user.id,
+                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
