@@ -41,7 +41,7 @@ const get = async function(req, res){
         )
     );
 
-    if(err2) return ReE(res, err, 422);
+    if(err2) return ReE(res, err2, 422);
 
     return ReS(res, {message:'Successfully Load Detail Users', data:{users,stores}}, 201);
 }
