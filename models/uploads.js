@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BLOB, 
       allowNull: true,
       get() {
-          return this.getDataValue('avatar') ? this.getDataValue('avatar').toString('utf8') : null;
+          return this.getDataValue('data') ? this.getDataValue('data').toString('utf8') : null;
       },
     },
   }, {});

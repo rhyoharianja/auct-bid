@@ -6,9 +6,9 @@ const categoriesController = require('../controllers/admin/categories.controller
 const keysController = require('../controllers/admin/keys.controller');
 const productController = require('../controllers/admin/products.controller');
 const UserController    = require('../controllers/admin/user.controller');
-const CompanyController = require('../controllers/admin/company.controller');
 const StoresController = require('../controllers/admin/stores.controller');
 const ShippingtypesController = require('../controllers/admin/shippingtype.controller');
+const AppSetting = require('../controllers/admin/appsetting.controller');
 
 const custom            = require('./../middleware/custom');
 const uploads    = require('../config/upload');
@@ -25,6 +25,9 @@ require('../middleware/passport')(passport);
 
 // Roles CRUD
 
+router.post('/apps', passport.authenticate('admin', {session:false}), uploads.any(), AppSetting.create); //create  
+router.put('/apps', passport.authenticate('admin', {session:false}), uploads.any(), AppSetting.update); //update 
+
 router.post('/users', passport.authenticate('admin', {session:false}), UserController.create); //create  
                                                
 router.get('/users', passport.authenticate('admin', {session:false}), UserController.getAll);  //read
@@ -35,13 +38,6 @@ router.put('/users', passport.authenticate('admin', {session:false}), UserContro
 router.post('/users/block', passport.authenticate('admin', {session:false}), UserController.blockUser); //create  
    
 router.delete('/users/:id', passport.authenticate('admin',{session:false}), UserController.remove); //delete
-
-router.post( '/companies', passport.authenticate('admin', {session:false}), CompanyController.create);
-router.get('/companies', passport.authenticate('admin', {session:false}), CompanyController.getAll);
-
-router.get('/companies/:id', passport.authenticate('admin', {session:false}), custom.company, CompanyController.get);
-router.put('/companies', passport.authenticate('admin', {session:false}), custom.company, CompanyController.update);
-router.delete('/companies/:id', passport.authenticate('admin', {session:false}), custom.company, CompanyController.remove);
 
 router.get('/roles', passport.authenticate('admin', {session:false}), rolesController.getAll);
 router.post('/roles', passport.authenticate('admin', {session:false}), rolesController.create);

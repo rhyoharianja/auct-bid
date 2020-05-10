@@ -34,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     Model.associate = function(models){
-        this.Companies = this.belongsToMany(models.Company, {through: 'UserCompany'});
         Model.hasMany(models.BiddingTransactions, { foreignKey: 'buyerId' });
     };
 
