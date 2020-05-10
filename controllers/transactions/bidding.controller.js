@@ -23,8 +23,8 @@ const storeList = async function(req, res){
                         as: 'productImages',
                         attributes: [['content', 'productName'], ['contentId', 'productId']],
                         on: {
-                            '$product.name$': { [Op.col]: 'content' },
-                            '$product.id$': { [Op.col]: 'contentId' },
+                            '$Product.name$': { [Op.col]: 'content' },
+                            '$Product.id$': { [Op.col]: 'contentId' },
                         }
                     }
                 ]
@@ -64,8 +64,8 @@ const storeListDetail = async function(req, res){
                         as: 'productImages',
                         attributes: [['content', 'productName'], ['contentId', 'productId']],
                         on: {
-                            '$product.name$': { [Op.col]: 'content' },
-                            '$product.id$': { [Op.col]: 'contentId' },
+                            '$Product.name$': { [Op.col]: 'content' },
+                            '$Product.id$': { [Op.col]: 'contentId' },
                         }
                     }
                 ]
@@ -123,8 +123,8 @@ const storeListLive = async function(req, res){
                                 as: 'productImages',
                                 attributes: [['content', 'productName'], ['contentId', 'productId']],
                                 on: {
-                                    '$product.name$': { [Op.col]: 'content' },
-                                    '$product.id$': { [Op.col]: 'contentId' },
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
                                 }
                             }
                         ]
@@ -172,8 +172,8 @@ const storeListWaiting = async function(req, res){
                                 as: 'productImages',
                                 attributes: [['content', 'productName'], ['contentId', 'productId']],
                                 on: {
-                                    '$product.name$': { [Op.col]: 'content' },
-                                    '$product.id$': { [Op.col]: 'contentId' },
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
                                 }
                             }
                         ]
@@ -220,8 +220,8 @@ const storeListEnd = async function(req, res){
                                 as: 'productImages',
                                 attributes: [['content', 'productName'], ['contentId', 'productId']],
                                 on: {
-                                    '$product.name$': { [Op.col]: 'content' },
-                                    '$product.id$': { [Op.col]: 'contentId' },
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
                                 }
                             }
                         ]
@@ -263,8 +263,8 @@ const storeListUser = async function(req, res){
                             as: 'productImages',
                             attributes: [['content', 'productName'], ['contentId', 'productId']],
                             on: {
-                                '$product.name$': { [Op.col]: 'content' },
-                                '$product.id$': { [Op.col]: 'contentId' },
+                                '$Product.name$': { [Op.col]: 'content' },
+                                '$Product.id$': { [Op.col]: 'contentId' },
                             }
                         }
                     ]
@@ -313,8 +313,8 @@ const storeListLiveUser = async function(req, res){
                                 as: 'productImages',
                                 attributes: [['content', 'productName'], ['contentId', 'productId']],
                                 on: {
-                                    '$product.name$': { [Op.col]: 'content' },
-                                    '$product.id$': { [Op.col]: 'contentId' },
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
                                 }
                             }
                         ]
@@ -364,8 +364,8 @@ const storeListWaitingUser = async function(req, res){
                                 as: 'productImages',
                                 attributes: [['content', 'productName'], ['contentId', 'productId']],
                                 on: {
-                                    '$product.name$': { [Op.col]: 'content' },
-                                    '$product.id$': { [Op.col]: 'contentId' },
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
                                 }
                             }
                         ]
@@ -415,8 +415,8 @@ const storeListEndUser = async function(req, res){
                                 as: 'productImages',
                                 attributes: [['content', 'productName'], ['contentId', 'productId']],
                                 on: {
-                                    '$product.name$': { [Op.col]: 'content' },
-                                    '$product.id$': { [Op.col]: 'contentId' },
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
                                 }
                             }
                         ]
