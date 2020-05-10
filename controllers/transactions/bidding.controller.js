@@ -1,5 +1,5 @@
 const { Stores } = require('../../models');
-const { products } = require('../../models');
+const { Products } = require('../../models');
 const { User } = require('../../models');
 const { BiddingTransactions } = require('../../models');
 const { KeyTransactions } = require('../../models');
@@ -16,7 +16,7 @@ const storeList = async function(req, res){
     [err, stores] = await to(Stores.findAll({ 
         include: [ 
             { 
-                model: products,
+                model: Products,
                 include: [
                     {
                         model: Uploads,
@@ -57,7 +57,7 @@ const storeListDetail = async function(req, res){
         },
         include: [ 
             { 
-                model: products,
+                model: Products,
                 include: [
                     {
                         model: Uploads,
@@ -116,7 +116,7 @@ const storeListLive = async function(req, res){
                 },
                 include: [ 
                     { 
-                        model: products,
+                        model: Products,
                         include: [
                             {
                                 model: Uploads,
@@ -165,7 +165,7 @@ const storeListWaiting = async function(req, res){
                 },
                 include: [ 
                     { 
-                        model: products,
+                        model: Products,
                         include: [
                             {
                                 model: Uploads,
@@ -213,7 +213,7 @@ const storeListEnd = async function(req, res){
                 },
                 include: [ 
                     { 
-                        model: products,
+                        model: Products,
                         include: [
                             {
                                 model: Uploads,
@@ -256,7 +256,7 @@ const storeListUser = async function(req, res){
     [err, stores] = await to(Stores.findAll(
             { include: [ 
                 { 
-                    model: products,
+                    model: Products,
                     include: [
                         {
                             model: Uploads,
@@ -306,7 +306,7 @@ const storeListLiveUser = async function(req, res){
                 },
                 include: [ 
                     { 
-                        model: products,
+                        model: Products,
                         include: [
                             {
                                 model: Uploads,
@@ -357,7 +357,7 @@ const storeListWaitingUser = async function(req, res){
                 },
                 include: [ 
                     { 
-                        model: products,
+                        model: Products,
                         include: [
                             {
                                 model: Uploads,
@@ -408,7 +408,7 @@ const storeListEndUser = async function(req, res){
                 },
                 include: [ 
                     { 
-                        model: products,
+                        model: Products,
                         include: [
                             {
                                 model: Uploads,
@@ -455,7 +455,7 @@ const userBidlist = async function(req, res){
                 include: [
                     { 
                         model: Stores,
-                        include: products
+                        include: Products
                     }]
             }
         )

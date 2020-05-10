@@ -1,7 +1,7 @@
 const { User }          = require('../../models');
 const { Stores }        = require('../../models');
 const { BiddingTransactions } = require('../../models');
-const { products } = require('../../models');
+const { Products } = require('../../models');
 const { to, ReE, ReS }  = require('../../services/util.service');
 
 const { Op } = require('sequelize');
@@ -31,7 +31,7 @@ const get = async function(req, res){
 
                 },
                 include: [ 
-                    { model: products}, 
+                    { model: Products}, 
                     {
                         model: BiddingTransactions,
                         where: { buyerId: currUser.id }

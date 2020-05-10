@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const products = sequelize.define('Products', {
+  const Products = sequelize.define('Products', {
     name: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
     description: DataTypes.STRING,
@@ -8,15 +8,15 @@ module.exports = (sequelize, DataTypes) => {
     images: DataTypes.STRING,
     status: DataTypes.SMALLINT
   });
-  products.associate = function(models) {
-    products.belongsTo(models.Categories, { foreignKey: 'categoryId' });
-    products.hasMany(models.Uploads,{as: 'productImages'});
+  Products.associate = function(models) {
+    Products.belongsTo(models.Categories, { foreignKey: 'categoryId' });
+    Products.hasMany(models.Uploads,{as: 'productImages'});
   };
 
-  products.prototype.toWeb = function () {
+  Products.prototype.toWeb = function () {
     let json = this.toJSON();
     return json;
   };
 
-  return products;
+  return Products;
 };

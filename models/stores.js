@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.SMALLINT
   }, {});
   Stores.associate = function(models) {
-    Stores.belongsTo(models.products, { foreignKey: 'productId' });
+    Stores.belongsTo(models.Products, { foreignKey: 'productId' });
     Stores.hasMany(models.BiddingTransactions,{as: 'bidder'});
     Stores.hasMany(models.BiddingTransactions);
   };

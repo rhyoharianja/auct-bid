@@ -1,5 +1,5 @@
 const { Stores } = require('../../models');
-const { products } = require('../../models');
+const { Products } = require('../../models');
 const { User } = require('../../models');
 const { BiddingTransactions } = require('../../models');
 const { KeyTransactions } = require('../../models');
