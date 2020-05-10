@@ -475,6 +475,7 @@ const userBidlist = async function(req, res){
                 where: {
                     buyerId: user.id
                 },
+                order: [['updatedAt', 'DESC']],
                 include: [
                     { 
                         model: Stores,
