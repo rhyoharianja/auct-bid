@@ -31,6 +31,12 @@ const storeList = async function(req, res){
             }, 
             {
                 model: BiddingTransactions,
+                where: {
+                    biddngStatus: {
+                        [Op.not]: 2
+                    }
+        
+                },
                 include: [
                     { model: User }
                 ]
@@ -69,6 +75,12 @@ const storeListDetail = async function(req, res){
             }, 
             { 
                 model: BiddingTransactions, 
+                where: {
+                    biddngStatus: {
+                        [Op.not]: 2
+                    }
+        
+                },
                 group: ['id'],
                 attributes: [
                     [Sequelize.fn('max', Sequelize.col('nominal')), 'bidder'], 
@@ -125,6 +137,12 @@ const storeListLive = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
+                        where: {
+                            biddngStatus: {
+                                [Op.not]: 2
+                            }
+                
+                        },
                         include: [
                             { model: User }
                         ]
@@ -171,6 +189,12 @@ const storeListWaiting = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
+                        where: {
+                            biddngStatus: {
+                                [Op.not]: 2
+                            }
+                
+                        },
                         include: [
                             { model: User }
                         ]
@@ -216,6 +240,12 @@ const storeListEnd = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
+                        where: {
+                            biddngStatus: {
+                                [Op.not]: 2
+                            }
+                
+                        },
                         include: [
                             { model: User }
                         ]
@@ -253,6 +283,12 @@ const storeListUser = async function(req, res){
                 }, 
                 {
                     model: BiddingTransactions,
+                    where: {
+                        biddngStatus: {
+                            [Op.not]: 2
+                        }
+            
+                    },
                     where: { buyerId: user.id },
                     include: [
                         { model: User }
@@ -300,6 +336,12 @@ const storeListLiveUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
+                        where: {
+                            biddngStatus: {
+                                [Op.not]: 2
+                            }
+                
+                        },
                         where: { buyerId: user.id },
                         include: [
                             { model: User }
@@ -348,7 +390,13 @@ const storeListWaitingUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
-                        where: { buyerId: user.id },
+                        where: {
+                            buyerId: user.id,
+                            biddngStatus: {
+                                [Op.not]: 2
+                            }
+                
+                        },
                         include: [
                             { model: User }
                         ]
@@ -396,7 +444,13 @@ const storeListEndUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
-                        where: { buyerId: user.id },
+                        where: {
+                            buyerId: user.id,
+                            biddngStatus: {
+                                [Op.not]: 2
+                            }
+                
+                        },
                         include: [
                             { model: User }
                         ]
