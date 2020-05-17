@@ -6,7 +6,7 @@ const { Stores,
         ShippingDetails, 
         Uploads } = require('../../../models');
 
-const { to, ReE, ReS } = require('../../services/util.service');
+const { to, ReE, ReS } = require('../../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
