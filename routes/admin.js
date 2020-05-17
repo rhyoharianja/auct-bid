@@ -91,7 +91,7 @@ router.post('/stores/winner/change', passport.authenticate('admin', {session:fal
 
 // shipping CRUD
 
-router.get('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.getAll);
+router.get('/shipping/type/:page', passport.authenticate('admin', {session:false}), ShippingtypesController.getAll);
 router.post('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.create);
 
 router.get('/shipping/type/:id', passport.authenticate('admin', {session:false}), ShippingtypesController.get);

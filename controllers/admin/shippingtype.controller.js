@@ -54,12 +54,28 @@ module.exports.remove = remove;
 
 const getAll = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
-    let err, stypes;
+    let limit = 10;
+    let offset = 0;
+    ShippingTypes.findAndCountAll().then((data) => {
+        let page = req.params.page;
+        let pages = Math.ceil(data.count / limit);
+        offset = limit * ( page - 1 );
+        ShippingTypes.findAll({
+            limit: limit,
+            offset: offset,
+            order: [
+                ['id', 'ASC']
+            ]
+        })
+        .then((result) => {
+            data = {'list': result, 'count': data.count, 'pages': pages};
+            return ReS(res, {message:'Successfully Load Shipping Types List', data}, 201);
+        });
+    })
+    .catch(function (err) {
+        return ReE(res, err, 500);
+	});
 
-    [err, stypes] = await to(ShippingTypes.findAll());
-    if(err) return ReE(res, err, 422);
-
-    return ReS(res, {message:'Successfully Load Shipping Types List', data:stypes}, 201);
 }
 module.exports.getAll = getAll;
 
