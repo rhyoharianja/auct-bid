@@ -9,6 +9,9 @@ const UserController    = require('../controllers/admin/user.controller');
 const StoresController = require('../controllers/admin/stores.controller');
 const ShippingtypesController = require('../controllers/admin/shippingtype.controller');
 const AppSetting = require('../controllers/admin/appsetting.controller');
+const TransBidUpdate = require('../controllers/admin/transactions/bidding.transaction.controller');
+const UsertransactionDataUpdate = require('../controllers/admin/transactions/user.transaction.controller');
+const CoreDataAdmin = require('../controllers/admin/transactions/core.transaction.controller');
 
 const custom            = require('./../middleware/custom');
 const uploads    = require('../config/upload');
@@ -83,7 +86,10 @@ router.get('/stores/:id', passport.authenticate('admin', {session:false}), Store
 router.put('/stores', passport.authenticate('admin', {session:false}), StoresController.update);
 router.delete('/stores/:id', passport.authenticate('admin', {session:false}), StoresController.remove);
 
-// stores CRUD
+router.post('/stores/winner/set', passport.authenticate('admin', {session:false}), UsertransactionDataUpdate.setAWinner);
+router.post('/stores/winner/change', passport.authenticate('admin', {session:false}), UsertransactionDataUpdate.changeAWinner);
+
+// shipping CRUD
 
 router.get('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.getAll);
 router.post('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.create);
@@ -91,5 +97,14 @@ router.post('/shipping/type', passport.authenticate('admin', {session:false}), S
 router.get('/shipping/type/:id', passport.authenticate('admin', {session:false}), ShippingtypesController.get);
 router.put('/shipping/type', passport.authenticate('admin', {session:false}), ShippingtypesController.update);
 router.delete('/shipping/type/:id', passport.authenticate('admin', {session:false}), ShippingtypesController.remove);
+
+// transaction admin update
+
+router.get('/bidding/confirm/pay-list', passport.authenticate('admin', {session:false}), TransBidUpdate.listNeedPaymentConfirmed);
+router.post('/bidding/confirm/status-list', passport.authenticate('admin', {session:false}), TransBidUpdate.confirmAdminBidding);
+router.post('/bidding/confirm/update', passport.authenticate('admin', {session:false}), TransBidUpdate.updateStatusBiddingAdmin);
+
+// Status admin Data
+router.get('/status/data/list', passport.authenticate('admin', {session:false}), CoreDataAdmin.statusList);
 
 module.exports = router;

@@ -32,7 +32,7 @@ const storeList = async function(req, res){
             {
                 model: BiddingTransactions,
                 on: {
-                    '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                    '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                 },
                 include: [
                     { model: User }
@@ -72,8 +72,8 @@ const storeListDetail = async function(req, res){
             }, 
             { 
                 model: BiddingTransactions, 
-                on: {
-                    '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                where: {
+                    biddingStatus: { [Op.lte]: 1 }
                 },
                 group: ['id'],
                 attributes: [
@@ -86,6 +86,9 @@ const storeListDetail = async function(req, res){
             }, 
             {
                 model: BiddingTransactions,
+                where: {
+                    biddingStatus: { [Op.lte]: 1 }
+                },
                 required : false , 
                 separate : true,
                 include: [  
@@ -132,7 +135,7 @@ const storeListLive = async function(req, res){
                     {
                         model: BiddingTransactions,
                         on: {
-                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                            '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -181,7 +184,7 @@ const storeListWaiting = async function(req, res){
                     {
                         model: BiddingTransactions,
                         on: {
-                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                            '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -229,7 +232,7 @@ const storeListEnd = async function(req, res){
                     {
                         model: BiddingTransactions,
                         where: {
-                            biddngStatus: {
+                            biddingStatus: {
                                 [Op.not]: 2
                             }
                 
@@ -273,7 +276,7 @@ const storeListUser = async function(req, res){
                     model: BiddingTransactions,
                     on: {
                         '$BiddingTransactions.buyerId$': user.id,
-                        '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                        '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                     },
                     include: [
                         { model: User }
@@ -323,7 +326,7 @@ const storeListLiveUser = async function(req, res){
                         model: BiddingTransactions,
                         on: {
                             '$BiddingTransactions.buyerId$': user.id,
-                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                            '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -374,7 +377,7 @@ const storeListWaitingUser = async function(req, res){
                         model: BiddingTransactions,
                         on: {
                             '$BiddingTransactions.buyerId$': user.id,
-                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                            '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -425,7 +428,7 @@ const storeListEndUser = async function(req, res){
                         model: BiddingTransactions,
                         on: {
                             '$BiddingTransactions.buyerId$': user.id,
-                            '$BiddingTransactions.biddngStatus$': { [Op.lte]: 1 }
+                            '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                         },
                         include: [
                             { model: User }
@@ -521,10 +524,12 @@ const updateOrderBid = async function(req, res){
     let user = req.user.dataValues;
 
     [cekerr, cekbid] = await to(BiddingTransactions.findOne({where: {id: req.body.id} }));
+    console.log(cekbid);
+    if(cekerr) return ReE(res, cekerr, 422);
 
     if(user.status != 1) return ReE(res, 'Sorry, You Were Blocked Or Not Verified By Admin. Please Contact Administrator', 406);
-
-    if(cekbid.biddngStatus >= 2) return ReE(res, 'Sorry, You Have Been Left. Please Contact Administrator', 406);
+    if(cekbid == null) return ReE(res, 'No Data Order Bid Found', 422);
+    if(cekbid.biddingStatus >= 2) return ReE(res, 'Sorry, You Have Been Left. Please Contact Administrator', 406);
 
     let ShipDetailId = 0;
     if(req.body.shippingType){
@@ -589,11 +594,31 @@ const updateOrderBid = async function(req, res){
 }
 module.exports.updateOrderBid = updateOrderBid;
 
+const payOrderBid = async function(req, res) {
+    let err, payOrder, data, user;
+    data = req.body;
+    user = req.user.dataValues;
+    [err, payOrder] = await to(BiddingTransactions.update(
+        {
+            paymentMethod: 1,
+            paymentType: 1,
+            paymentStatus: 12,
+            paymentDate: new Date()
+        },
+        {where: {id: req.body.id} }
+    ));
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res,{message: 'Successfully Update Bid Payment', data:payOrder}, 201);
+
+}
+module.exports.payOrderBid = payOrderBid;
+
 const LeaveRoom = async function (req, res) {
     let err, bids;
     let user = req.user.dataValues;
     [err, bids] = await to(BiddingTransactions.update(
-        {biddngStatus : 2 },
+        {biddingStatus : 2 },
         {
             where: {id: req.body.id}
         }

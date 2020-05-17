@@ -13,16 +13,24 @@ module.exports = {
       {
         statusType: 'payment',
         statusCode: 11,
-        statusName: 'Payment Confirmation',
-        statusDesc: 'Payment Confirmation',
+        statusName: 'Payment Expired',
+        statusDesc: 'Payment Expired',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         statusType: 'payment',
         statusCode: 12,
-        statusName: 'Payment Expired',
-        statusDesc: 'Payment Expired',
+        statusName: 'Payment Paid',
+        statusDesc: 'Payment Paid',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        statusType: 'payment',
+        statusCode: 13,
+        statusName: 'Payment Confirmed',
+        statusDesc: 'Payment Confirmed',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -30,7 +38,7 @@ module.exports = {
         statusType: 'order',
         statusCode: 20,
         statusName: 'On Order',
-        statusDesc: 'Payment Confirmation',
+        statusDesc: 'On Order',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -43,18 +51,34 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        statusType: 'order',
-        statusCode: 22,
-        statusName: 'Order On Delivery',
-        statusDesc: 'Order On Delivery',
+        statusType: 'delivery',
+        statusCode: 30,
+        statusName: 'Packing On Warehouse',
+        statusDesc: 'Packing On Warehouse',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        statusType: 'order',
-        statusCode: 23,
-        statusName: 'Order Finished',
-        statusDesc: 'Order Finished',
+        statusType: 'delivery',
+        statusCode: 31,
+        statusName: 'Item On Delivery',
+        statusDesc: 'Item On Delivery',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        statusType: 'delivery',
+        statusCode: 32,
+        statusName: 'Item Arrived',
+        statusDesc: 'Item Arrived',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        statusType: 'delivery',
+        statusCode: 33,
+        statusName: 'Finished',
+        statusDesc: 'Finished',
         createdAt: new Date(),
         updatedAt: new Date()
       },

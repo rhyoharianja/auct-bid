@@ -28,8 +28,13 @@ router.get('/user/bid',passport.authenticate('users',{session:false}), UserBid.u
 
 
 router.post('/order/Key',passport.authenticate('users',{session:false}), userKetTrans.orderKey);
+router.post('/order/Key/pay',passport.authenticate('users',{session:false}), userKetTrans.payKey);
+router.post('/order/Key/cancel',passport.authenticate('users',{session:false}), userKetTrans.cancelOrder);
+
 router.post('/order/bidding',passport.authenticate('users',{session:false}), UserBid.orderBid);
 router.put('/order/bidding/update',passport.authenticate('users',{session:false}), UserBid.updateOrderBid);
+
+router.put('/order/bidding/payment',passport.authenticate('users',{session:false}), UserBid.payOrderBid);
 
 router.get('/users/room/list',passport.authenticate('users',{session:false}), UserBid.storeListUser);
 router.get('/users/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLiveUser);

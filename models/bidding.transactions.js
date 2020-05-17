@@ -12,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     shippingType: DataTypes.INTEGER,
     shippingStatus: DataTypes.INTEGER,
     shippingDetailId: DataTypes.INTEGER,
-    biddngStatus: DataTypes.INTEGER,
+    biddingStatus: {
+                  type: DataTypes.SMALLINT, 
+                  allowNull: false,
+                  defaultValue: 1,
+                },
   }, {});
   BiddingTransactions.associate = function(models) {
     BiddingTransactions.belongsTo(models.Stores, { foreignKey: 'storeId' });

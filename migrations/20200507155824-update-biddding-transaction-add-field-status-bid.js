@@ -5,11 +5,10 @@ module.exports = {
     return Promise.all([
       queryInterface.addColumn(
         'BiddingTransactions', // table name
-        'biddngStatus', // new field name
+        'biddingStatus', // new field name
         {
           type: Sequelize.INTEGER,
-          allowNull: true,
-          defaultValue: 0
+          defaultValue: 1
         }
       )
     ]);
@@ -17,7 +16,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return Promise.all([
-      queryInterface.removeColumn('BiddingTransactions', 'biddngStatus')
+      queryInterface.removeColumn('BiddingTransactions', 'biddingStatus')
     ]);
   }
 };

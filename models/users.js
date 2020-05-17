@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         state     : {type: DataTypes.STRING, allowNull: true},
         country     : {type: DataTypes.STRING, allowNull: true},
         status     : {
-                        type: DataTypes.BLOB, 
+                        type: DataTypes.SMALLINT, 
                         allowNull: false,
                         defaultValue: 1,
                     },
