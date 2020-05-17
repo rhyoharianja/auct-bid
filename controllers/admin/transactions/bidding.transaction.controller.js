@@ -4,7 +4,7 @@ const { Stores,
     BiddingTransactions, 
     KeyTransactions, 
     ShippingDetails, 
-    Uploads } = require('../../../models');
+    Uploads, StatusDesc } = require('../../../models');
 
 const { to, ReE, ReS } = require('../../../services/util.service');
 const Sequelize = require('sequelize');

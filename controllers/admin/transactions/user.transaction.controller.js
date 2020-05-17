@@ -11,7 +11,7 @@ const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const setAWinner = async function (req, res) {
-        let err, store ;
+        let err, store, data;
         data =  req.body;
         [err, store] = await to(Stores.update(
                 {
@@ -23,9 +23,7 @@ const setAWinner = async function (req, res) {
                         where: {
                                 id: data.id,
                                 userWinner: null
-                        },
-                        returning: true,
-                        plain: true
+                        }
                 },
         ));
         if(err) return ReE(res, err, 422);
@@ -50,12 +48,12 @@ const changeAWinner = async function (req, res) {
                                 userWinner: {
                                         [Op.ne]: null
                                 }
-                        },
-                        returning: true,
-                        plain: true
+                        }
                 },
         ));
         if(err) return ReE(res, err, 422);
+
+        if(store[0] == 0) return ReE(res, 'No Room Winner Changed', 422);
 
         return ReS(res, {message:'Successfully Set Winner', data:store}, 201);
 }

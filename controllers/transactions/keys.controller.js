@@ -67,31 +67,39 @@ module.exports.orderKey = orderKey;
 
 const payKey = async function(req, res) {
     let err, ktf, ktu, data;
-    data = req.body;
+    let key = [];
+    data = req.user.dataValues;
     [err, ktf] = await to(KeyTransactions.findAll({
         where: {
-          id: data,
+          buyerId: data.id,
           paymentStatus: 10
         }
     }));
     
-    [err, ktu] = await to(KeyTransactions.update(
-        data,
-        {where: {id: data.id} }
-    ));
-    [err, ktu] = await to(sequelize.Promise.each(ktf, function(val, index) {
+    // [err, ktu] = await to(KeyTransactions.update(
+    //     data,
+    //     {where: {id: data.id} }
+    // ));
+    [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
+        key.push(val.id);
         return KeyTransactions.update({
+            paymentMethod: 2,
+            paymentType: 1,
             paymentStatus: 12,
             paymentDate: new Date()
         },{
             where:{
                 id: val.id
             },
-            returning: true,
-            plain: true
+            return: true
         })
     }));
     if(err) return ReE(res, err, 422);
+    [err, ktu] = await to(KeyTransactions.findAll({
+        where: {
+          id: key
+        }
+    }));
 
     return ReS(res, {message:'Successfully Pay Current Key (s)', data:ktu}, 201);
 }
