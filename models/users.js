@@ -6,7 +6,7 @@ const {TE, to}       = require('../services/util.service');
 const CONFIG         = require('../config/config');
 
 module.exports = (sequelize, DataTypes) => {
-    var Model = sequelize.define('User', {
+    var Model = sequelize.define('Users', {
         first       : DataTypes.STRING,
         last        : DataTypes.STRING,
         email       : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Phone number invalid."} }},
@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     
     Model.associate = function(models){
         Model.hasMany(models.BiddingTransactions, { foreignKey: 'buyerId' });
+        Model.hasMany(models.Stores, { foreignKey: 'userWinner' });
     };
 
     Model.beforeSave(async (user, options) => {

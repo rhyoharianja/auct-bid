@@ -324,6 +324,7 @@ const storeListLiveUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
+                        required: true,
                         on: {
                             '$BiddingTransactions.buyerId$': user.id,
                             '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }

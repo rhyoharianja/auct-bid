@@ -7,14 +7,35 @@ const CONFIG         = require('../config/config');
 
 module.exports = (sequelize, DataTypes) => {
     var Model = sequelize.define('User', {
-        first     : DataTypes.STRING,
-        last      : DataTypes.STRING,
-        email     : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Email invalid."} }},
-        phone     : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, isNumeric: { msg: "not a valid phone number."} }},
-        password  : DataTypes.STRING,
+        first       : DataTypes.STRING,
+        last        : DataTypes.STRING,
+        email       : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Phone number invalid."} }},
+        phone       : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, isNumeric: { msg: "not a valid phone number."} }},
+        password    : DataTypes.STRING,
+        roleId      : DataTypes.INTEGER,
+        avatar      : {
+                        type: DataTypes.BLOB, 
+                        allowNull: true,
+                        defaultValue: '/uploads/avatar.png',
+                        get() {
+                            return this.getDataValue('avatar') ? this.getDataValue('avatar').toString('utf8') : null;
+                        },
+                    },
+        address     : {type: DataTypes.STRING, allowNull: true},
+        city        : {type: DataTypes.STRING, allowNull: true},
+        zipcode     : {type: DataTypes.INTEGER, allowNull: true},
+        state     : {type: DataTypes.STRING, allowNull: true},
+        country     : {type: DataTypes.STRING, allowNull: true},
+        status     : {
+                        type: DataTypes.SMALLINT, 
+                        allowNull: false,
+                        defaultValue: 1,
+                    },
     });
     
     Model.associate = function(models){
+        Model.hasMany(models.BiddingTransactions, { foreignKey: 'buyerId' });
+        Model.hasMany(models.Stores, { foreignKey: 'userWinner' });
     };
 
     Model.beforeSave(async (user, options) => {

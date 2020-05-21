@@ -6,6 +6,7 @@ const UserData    = require('../controllers/users/profile.controller');
 const userKetTrans    = require('../controllers/transactions/keys.controller');
 const UserBid    = require('../controllers/transactions/bidding.controller');
 const Dashboard    = require('../controllers/transactions/dashboard.controller');
+const RoomDataController    = require('../controllers/transactions/stores.controller');
 
 const uploads    = require('../config/upload');
 const fileUpload    = require('../controllers/test.uplaod');
@@ -47,6 +48,8 @@ router.get('/room/detail/:id',passport.authenticate('users',{session:false}), Us
 router.get('/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLive);
 router.get('/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaiting);
 router.get('/room/end',passport.authenticate('users',{session:false}), UserBid.storeListEnd);
+
+router.get('/room/have/winner', RoomDataController.ListRoomBidHasWinner);
 
 router.get('/key/list',passport.authenticate('users',{session:false}), userKetTrans.keyList);
 
