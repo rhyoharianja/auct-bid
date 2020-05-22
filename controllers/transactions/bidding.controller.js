@@ -274,6 +274,7 @@ const storeListUser = async function(req, res){
                 }, 
                 {
                     model: BiddingTransactions,
+                    required: true,
                     on: {
                         '$BiddingTransactions.buyerId$': user.id,
                         '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
@@ -376,6 +377,7 @@ const storeListWaitingUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
+                        required: true,
                         on: {
                             '$BiddingTransactions.buyerId$': user.id,
                             '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
@@ -427,6 +429,7 @@ const storeListEndUser = async function(req, res){
                     }, 
                     {
                         model: BiddingTransactions,
+                        required: true,
                         on: {
                             '$BiddingTransactions.buyerId$': user.id,
                             '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
