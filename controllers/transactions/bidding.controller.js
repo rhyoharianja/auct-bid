@@ -277,8 +277,8 @@ const storeListUser = async function(req, res){
                     required: true,
                     on: {
                         '$Stores.id$': { [Op.col]: 'storeId' },
-                        '$BiddingTransactions.buyerId$': user.id,
-                        '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
+                        // '$BiddingTransactions.buyerId$': user.id,
+                        // '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                     },
                     include: [
                         { model: User }
