@@ -1,5 +1,7 @@
 const { ShippingTypes } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
+const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 const create = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -90,3 +92,34 @@ const get = async function(req, res){
     return ReS(res, {message:'Successfully Load Detail Shipping Type', data:stype}, 201);
 }
 module.exports.get = get;
+
+const searchST = async function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
+    let err, stype;
+
+    [err, stype] = await to(ShippingTypes.findOne(
+            {
+                where: {
+                    [Op.or]: [
+                        {
+                            shippingCode: {
+                                [Op.substring]: req.params.search
+                            }
+                        },
+                        {
+                            shippingName: {
+                                [Op.substring]: req.params.search
+                            }
+                        },
+                    ]
+                }
+                
+            }
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Search Result Shipping Type', data:stype}, 201);
+}
+module.exports.searchST = searchST;
