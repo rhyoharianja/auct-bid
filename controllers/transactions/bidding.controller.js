@@ -382,7 +382,7 @@ const storeListWaitingUser = async function(req, res){
                         required: true,
                         on: {
                             '$Stores.id$': { [Op.col]: 'storeId' },
-                            '$BiddingTransactions.buyerId$': user.id,
+                            // '$BiddingTransactions.buyerId$': user.id,
                             '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                         },
                         include: [
