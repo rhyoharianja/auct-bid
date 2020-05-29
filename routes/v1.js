@@ -10,7 +10,6 @@ const RoomDataController    = require('../controllers/transactions/stores.contro
 const ShippingtypesController = require('../controllers/admin/shippingtype.controller');
 
 const uploads    = require('../config/upload');
-const fileUpload    = require('../controllers/test.uplaod');
 
 const passport          = require('passport');
 const path              = require('path');
@@ -52,8 +51,6 @@ router.get('/room/end',passport.authenticate('users',{session:false}), UserBid.s
 router.get('/room/have/winner', RoomDataController.ListRoomBidHasWinner);
 
 router.get('/key/list',passport.authenticate('users',{session:false}), userKetTrans.keyList);
-
-router.post('/upload/test', uploads.any(), fileUpload.get);
 
 router.get('/dashboard/counter',Dashboard.countData);
 router.get('/dashboard/bidder',Dashboard.countDataBidder);

@@ -125,7 +125,7 @@ const storeListLive = async function(req, res){
                             {
                                 model: Uploads,
                                 as: 'productImages',
-                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                // attributes: [['content', 'productName'], ['contentId', 'productId']],
                                 on: {
                                     '$Product.name$': { [Op.col]: 'content' },
                                     '$Product.id$': { [Op.col]: 'contentId' },
