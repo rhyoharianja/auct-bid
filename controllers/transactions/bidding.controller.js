@@ -271,7 +271,7 @@ const storeListUser = async function(req, res){
                         {
                             model: Uploads,
                             as: 'productImages',
-                            attributes: [['content', 'productName'], ['contentId', 'productId']],
+                            attributes: [['id', 'prductImgId'],['type', 'prductImgType'],['content', 'productName'], ['contentId', 'productId'],['name', 'prductImgName'],'data'],
                             on: {
                                 '$Product.name$': { [Op.col]: 'content' },
                                 '$Product.id$': { [Op.col]: 'contentId' },
@@ -323,7 +323,7 @@ const storeListLiveUser = async function(req, res){
                             {
                                 model: Uploads,
                                 as: 'productImages',
-                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                attributes: [['id', 'prductImgId'],['type', 'prductImgType'],['content', 'productName'], ['contentId', 'productId'],['name', 'prductImgName'],'data'],
                                 on: {
                                     '$Product.name$': { [Op.col]: 'content' },
                                     '$Product.id$': { [Op.col]: 'contentId' },
@@ -376,7 +376,7 @@ const storeListWaitingUser = async function(req, res){
                             {
                                 model: Uploads,
                                 as: 'productImages',
-                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                attributes: [['id', 'prductImgId'],['type', 'prductImgType'],['content', 'productName'], ['contentId', 'productId'],['name', 'prductImgName'],'data'],
                                 on: {
                                     '$Product.name$': { [Op.col]: 'content' },
                                     '$Product.id$': { [Op.col]: 'contentId' },
@@ -429,7 +429,7 @@ const storeListEndUser = async function(req, res){
                             {
                                 model: Uploads,
                                 as: 'productImages',
-                                attributes: [['content', 'productName'], ['contentId', 'productId']],
+                                attributes: [['id', 'prductImgId'],['type', 'prductImgType'],['content', 'productName'], ['contentId', 'productId'],['name', 'prductImgName'],'data'],
                                 on: {
                                     '$Product.name$': { [Op.col]: 'content' },
                                     '$Product.id$': { [Op.col]: 'contentId' },
