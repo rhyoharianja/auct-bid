@@ -73,9 +73,12 @@ const storeListDetail = async function(req, res){
             }, 
             { 
                 model: BiddingTransactions, 
-                where: {
-                    biddingStatus: { [Op.lte]: 1 }
+                on: {
+                    '$Stores.id$': { [Op.col]: 'storeId' },
+                    '$bidder.biddingStatus$': { [Op.lte]: 1 }
                 },
+                required : false , 
+                separate : true,
                 group: ['id'],
                 attributes: [
                     [Sequelize.fn('max', Sequelize.col('nominal')), 'bidder'], 
@@ -87,8 +90,9 @@ const storeListDetail = async function(req, res){
             }, 
             {
                 model: BiddingTransactions,
-                where: {
-                    biddingStatus: { [Op.lte]: 1 }
+                on: {
+                    '$Stores.id$': { [Op.col]: 'storeId' },
+                    '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                 },
                 required : false , 
                 separate : true,
