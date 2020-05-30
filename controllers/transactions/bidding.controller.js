@@ -85,7 +85,7 @@ const storeListDetail = async function(req, res){
                     [Sequelize.fn('COUNT', 'id'), 'count']
                 ], 
                 order: [[Sequelize.literal('count'), 'DESC']],
-                raw: true,
+                // raw: true,
                 as: 'bidder'
             }, 
             {
@@ -94,14 +94,15 @@ const storeListDetail = async function(req, res){
                     '$Stores.id$': { [Op.col]: 'storeId' },
                     '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
                 },
-                required : false , 
-                separate : true,
+                // required : false , 
+                // separate : true,
                 include: [  
                     { model: User }
                 ]
             }
         ]
      }));
+     console.log(err);
     if(err) return ReE(res, err, 422);
 
     return ReS(res, {message:'Successfully Load Stores Detail', data:store}, 201);
