@@ -21,6 +21,7 @@ const ListRoomBidHasWinner = async function (req, res) {
                         [Sequelize.col('Product.name'), 'product_name'],
                         [Sequelize.col('Product.price'), 'product_price'],
                         [Sequelize.col('winner.updatedAt'), 'last_update'],
+                        [Sequelize.col('winner.nominal'), 'winner_price'],
                         [Sequelize.col('winner.payStatus.statusName'), 'payment_status'],
                         [Sequelize.col('winner.shipStatus.statusName'), 'last_status'],
                         [ Sequelize.literal('( SELECT IF (winner.shippingStatus != 0, winner.shippingStatus, winner.paymentStatus ) )'),'latest_status_code'],
@@ -41,6 +42,20 @@ const ListRoomBidHasWinner = async function (req, res) {
                     }
                 },
                 include: [
+                    { 
+                        model: Products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['id', 'prductImgId'],['type', 'prductImgType'],['content', 'productName'], ['contentId', 'productId'],['name', 'prductImgName'],'data'],
+                                on: {
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    }, 
                     {
                         model: BiddingTransactions,
                         as: 'winner',
@@ -107,6 +122,7 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                         [Sequelize.col('Product.name'), 'product_name'],
                         [Sequelize.col('Product.price'), 'product_price'],
                         [Sequelize.col('winner.updatedAt'), 'last_update'],
+                        [Sequelize.col('winner.nominal'), 'winner_price'],
                         [Sequelize.col('winner.payStatus.statusName'), 'payment_status'],
                         [Sequelize.col('winner.shipStatus.statusName'), 'last_status'],
                         [ Sequelize.literal('( SELECT IF (winner.shippingStatus != 0, winner.shippingStatus, winner.paymentStatus ) )'),'latest_status_code'],
@@ -117,6 +133,20 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                     userWinner: user.id
                 },
                 include: [
+                    { 
+                        model: Products,
+                        include: [
+                            {
+                                model: Uploads,
+                                as: 'productImages',
+                                attributes: [['id', 'prductImgId'],['type', 'prductImgType'],['content', 'productName'], ['contentId', 'productId'],['name', 'prductImgName'],'data'],
+                                on: {
+                                    '$Product.name$': { [Op.col]: 'content' },
+                                    '$Product.id$': { [Op.col]: 'contentId' },
+                                }
+                            }
+                        ]
+                    },
                     {
                         model: BiddingTransactions,
                         as: 'winner',
