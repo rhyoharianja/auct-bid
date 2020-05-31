@@ -28,18 +28,17 @@ const ListRoomBidHasWinner = async function (req, res) {
                     ]
                 },
                 where: {
-                    [Op.or]: [
-                        {
-                            userWinner: {
+                    userWinner: {
+                        [Op.or]: [
+                            {
                                 [Op.ne]: null
-                            }
-                        },
-                        {
-                            userWinner: {
+                            },
+                            {
                                 [Op.ne]: 0
+                                
                             }
-                        }
-                    ]
+                        ]
+                    }
                 },
                 include: [
                     {
@@ -94,3 +93,79 @@ const ListRoomBidHasWinner = async function (req, res) {
 }
 
 module.exports.ListRoomBidHasWinner = ListRoomBidHasWinner;
+
+const ListRoomBidHasWinnerUser = async function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    let err, rooms, user; 
+
+    user = req.user.dataValues;
+
+    [err, rooms] = await to(Stores.findAll(
+            {
+                attributes: {
+                    include: [
+                        [Sequelize.col('Product.name'), 'product_name'],
+                        [Sequelize.col('Product.price'), 'product_price'],
+                        [Sequelize.col('winner.updatedAt'), 'last_update'],
+                        [Sequelize.col('winner.payStatus.statusName'), 'payment_status'],
+                        [Sequelize.col('winner.shipStatus.statusName'), 'last_status'],
+                        [ Sequelize.literal('( SELECT IF (winner.shippingStatus != 0, winner.shippingStatus, winner.paymentStatus ) )'),'latest_status_code'],
+                        [ Sequelize.literal('( SELECT IF (winner.shippingStatus != 0, last_status, payment_status ) )'),'latest_status_name']
+                    ]
+                },
+                where: {
+                    userWinner: user.id
+                },
+                include: [
+                    {
+                        model: BiddingTransactions,
+                        as: 'winner',
+                        on: {
+                            '$Stores.userWinner$': { [Op.col]: 'winner.buyerId' },
+                        },
+                        include: [
+                            {
+                                model: User,
+                                on: {
+                                    '$Stores.userWinner$': { [Op.col]: 'winner.User.id' },
+                                },
+                            },
+                            {
+                                model: StatusDesc,
+                                as: 'payStatus',
+                                attributes: [],
+                                on: {
+                                    '$winner.paymentStatus$': { [Op.col]: 'winner.payStatus.statusCode' },
+                                },
+                            },
+                            {
+                                model: StatusDesc,
+                                as: 'shipStatus',
+                                attributes: [],
+                                on: {
+                                    '$winner.shippingStatus$': { [Op.col]: 'winner.shipStatus.statusCode' },
+                                },
+                            }
+                        ]
+                    },
+                    {
+                        model: Products,
+                        attributes: []
+                    },
+                    {
+                        model: BiddingTransactions,
+                        as: 'listBidders',
+                        include: [
+                            {model: User}
+                        ]
+                    },
+                ]
+            }
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Current User Bids List', data:rooms}, 201);
+}
+
+module.exports.ListRoomBidHasWinnerUser = ListRoomBidHasWinnerUser;
