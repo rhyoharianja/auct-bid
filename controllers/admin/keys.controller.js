@@ -45,7 +45,7 @@ const update = async function(req, res){
     let err, keys, data;
     data = req.body;
 
-    [err, keys] = await to(keys.update(
+    [err, keys] = await to(Keys.update(
         data,
         {where: {id: data.id} }
     ));
@@ -61,7 +61,7 @@ module.exports.update = update;
 const remove = async function(req, res){
     let keys_json, err;
 
-    [err, keys] = await to(keys.destroy({
+    [err, keys] = await to(Keys.destroy({
         where: {
           id: req.body.id
         }
