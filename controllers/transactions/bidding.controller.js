@@ -214,13 +214,18 @@ const storeListEnd = async function(req, res){
     [err, stores] = await to(Stores.findAll(
             { 
                 where: {
-                    startBid: {
-                        [Op.lt]: new Date()
-                    },
-                    endBid: {
-                        [Op.lt]: new Date()
-                    }
-
+                    [Op.or]: [
+                        {
+                            startBid: {
+                                [Op.lt]: new Date()
+                            }
+                        },
+                        {
+                            endBid: {
+                                [Op.lt]: new Date()
+                            }
+                        }
+                    ]
                 },
                 include: [ 
                     { 
@@ -419,13 +424,18 @@ const storeListEndUser = async function(req, res){
     [err, stores] = await to(Stores.findAll(
             { 
                 where: {
-                    startBid: {
-                        [Op.lt]: new Date()
-                    },
-                    endBid: {
-                        [Op.lt]: new Date()
-                    }
-
+                    [Op.or]: [
+                        {
+                            startBid: {
+                                [Op.lt]: new Date()
+                            }
+                        },
+                        {
+                            endBid: {
+                                [Op.lt]: new Date()
+                            }
+                        }
+                    ]
                 },
                 include: [ 
                     { 
