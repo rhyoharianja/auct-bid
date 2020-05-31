@@ -120,6 +120,9 @@ const storeListLive = async function(req, res){
                     },
                     endBid: {
                         [Op.gte]: new Date()
+                    },
+                    userWinner: {
+                        [Op.or]: [null, 0]
                     }
 
                 },
@@ -170,8 +173,10 @@ const storeListWaiting = async function(req, res){
                     },
                     endBid: {
                         [Op.gte]: new Date()
+                    },
+                    userWinner: {
+                        [Op.or]: [null, 0]
                     }
-
                 },
                 include: [ 
                     { 
@@ -225,7 +230,15 @@ const storeListEnd = async function(req, res){
                         }, 
                         {
                             userWinner: {
-                                [Op.ne]: null
+                                [Op.or]: [
+                                    {
+                                        [Op.ne]: null
+                                    },
+                                    {
+                                        [Op.ne]: 0
+                                        
+                                    }
+                                ]
                             }
                         }
                         
@@ -327,8 +340,10 @@ const storeListLiveUser = async function(req, res){
                     },
                     endBid: {
                         [Op.gte]: new Date()
+                    },
+                    userWinner: {
+                        [Op.or]: [null, 0]
                     }
-
                 },
                 include: [ 
                     { 
@@ -380,8 +395,10 @@ const storeListWaitingUser = async function(req, res){
                     },
                     endBid: {
                         [Op.gte]: new Date()
+                    },
+                    userWinner: {
+                        [Op.or]: [null, 0]
                     }
-
                 },
                 include: [ 
                     { 
@@ -439,7 +456,15 @@ const storeListEndUser = async function(req, res){
                         }, 
                         {
                             userWinner: {
-                                [Op.ne]: null
+                                [Op.or]: [
+                                    {
+                                        [Op.ne]: null
+                                    },
+                                    {
+                                        [Op.ne]: 0
+                                        
+                                    }
+                                ]
                             }
                         }
                         
