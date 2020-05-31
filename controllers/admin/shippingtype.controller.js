@@ -98,7 +98,7 @@ const searchST = async function (req, res) {
 
     let err, stype;
 
-    [err, stype] = await to(ShippingTypes.findOne(
+    [err, stype] = await to(ShippingTypes.findAll(
             {
                 where: {
                     [Op.or]: [
@@ -112,6 +112,14 @@ const searchST = async function (req, res) {
                                 [Op.substring]: req.params.search
                             }
                         },
+                        {
+                            country: {
+                                [Op.substring]: req.params.search
+                            }
+                        },
+                        Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('shippingCode')), {[Op.substring]: req.params.search}),
+                        Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('shippingName')), {[Op.substring]: req.params.search}),
+                        Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('country')), {[Op.substring]: req.params.search})
                     ]
                 }
                 
