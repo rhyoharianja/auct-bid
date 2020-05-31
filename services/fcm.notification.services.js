@@ -14,10 +14,10 @@ const sendNotification = async function (reqData) {
             title: reqData.title, 
             body: reqData.body
         },
-        // data: {  
-        //     my_key: reqData.key,
-        //     my_another_key: 'my another value'
-        // }
+        data: {  
+            my_key: reqData.key,
+            my_another_key: reqData.key2
+        }
     };
     fcm.send(message, function(err, response){
         if (err) {

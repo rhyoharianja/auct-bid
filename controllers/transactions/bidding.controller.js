@@ -218,13 +218,17 @@ const storeListEnd = async function(req, res){
                         {
                             startBid: {
                                 [Op.lt]: new Date()
-                            }
-                        },
-                        {
+                            },
                             endBid: {
                                 [Op.lt]: new Date()
                             }
+                        }, 
+                        {
+                            userWinner: {
+                                [Op.ne]: null
+                            }
                         }
+                        
                     ]
                 },
                 include: [ 
@@ -428,13 +432,17 @@ const storeListEndUser = async function(req, res){
                         {
                             startBid: {
                                 [Op.lt]: new Date()
-                            }
-                        },
-                        {
+                            },
                             endBid: {
                                 [Op.lt]: new Date()
                             }
+                        }, 
+                        {
+                            userWinner: {
+                                [Op.ne]: null
+                            }
                         }
+                        
                     ]
                 },
                 include: [ 
