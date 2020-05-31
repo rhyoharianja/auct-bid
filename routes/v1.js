@@ -33,7 +33,7 @@ router.get('/users/room/waiting',passport.authenticate('users',{session:false}),
 router.get('/users/room/end',passport.authenticate('users',{session:false}), UserBid.storeListEndUser);
 router.post('/users/room/leave',passport.authenticate('users',{session:false}), UserBid.LeaveRoom);
 
-router.get('users/room/have/winner', passport.authenticate('users',{session:false}), RoomDataController.ListRoomBidHasWinnerUser);
+router.get('/users/room/have/winner', passport.authenticate('users',{session:false}), RoomDataController.ListRoomBidHasWinnerUser);
 
 router.post('/order/Key',passport.authenticate('users',{session:false}), userKetTrans.orderKey);
 router.post('/order/Key/pay',passport.authenticate('users',{session:false}), userKetTrans.payKey);
