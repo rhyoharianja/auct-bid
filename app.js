@@ -9,17 +9,25 @@ const v1    = require('./routes/v1');
 const admin = require('./routes/admin');
 const app   = express();
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 const CONFIG = require('./config/config');
 
 const swaggerUi = require('swagger-ui-express');
 const swagadmin = require('./config/swagger');
 const path              = require('path');
 
-app.use(express.static(__dirname + '/resources/static/assets'));
+app.use(function(req, res, next){
+  res.io = io;
+  next();
+});
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static(__dirname + '/resources/static/assets'));
 
 //Passport
 app.use(passport.initialize());
@@ -47,6 +55,9 @@ app.use('/admin', admin);
 
 app.use('/', function(req, res){
    res.statusCode = 200;//send the appropriate status code
+   res.io.on('login', function (data) {
+    console.log(data);
+  });
    res.json({status:"success", message:"Auction Pending API", data:{}})
 });
 
@@ -68,7 +79,9 @@ app.use(function(err, req, res, next) {
   res.send(res);
 });
 
-module.exports = app;
+// module.exports = app;
+
+module.exports = {app: app, server: server};
 
 process.on('unhandledRejection', error => {
   console.error('Uncaught Error', pe(error));

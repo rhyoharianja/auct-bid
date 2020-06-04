@@ -34,6 +34,7 @@ router.get('/users/room/end',passport.authenticate('users',{session:false}), Use
 router.post('/users/room/leave',passport.authenticate('users',{session:false}), UserBid.LeaveRoom);
 
 router.get('/users/room/have/winner', passport.authenticate('users',{session:false}), RoomDataController.ListRoomBidHasWinnerUser);
+router.get('/users/shipping/type', passport.authenticate('users', {session:false}), ShippingtypesController.userListShippingType);
 
 router.post('/order/Key',passport.authenticate('users',{session:false}), userKetTrans.orderKey);
 router.post('/order/Key/pay',passport.authenticate('users',{session:false}), userKetTrans.payKey);
@@ -50,7 +51,7 @@ router.get('/room/live',passport.authenticate('users',{session:false}), UserBid.
 router.get('/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaiting);
 router.get('/room/end',passport.authenticate('users',{session:false}), UserBid.storeListEnd);
 
-router.get('/room/have/winner', RoomDataController.ListRoomBidHasWinner);
+router.get('/room/have/winner', passport.authenticate('users',{session:false}), RoomDataController.ListRoomBidHasWinner);
 
 router.get('/key/list',passport.authenticate('users',{session:false}), userKetTrans.keyList);
 

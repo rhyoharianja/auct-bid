@@ -96,6 +96,8 @@ const updateStatusBiddingAdmin = async function (req, res) {
         {where: {id: req.body.id} }
     ));
     if(err) return ReE(res, err, 422);
+
+    res.io.emit("updateStatusBiddingAdmin", bids);
     return ReS(res,{message: 'Successfully Update Bid Status Transaction', data:bids}, 201);
 }
 module.exports.updateStatusBiddingAdmin = updateStatusBiddingAdmin;

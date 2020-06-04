@@ -79,7 +79,7 @@ const storeListDetail = async function(req, res){
                 },
                 required : false , 
                 separate : true,
-                group: ['id'],
+                group: ['StoreId'],
                 attributes: [
                     [Sequelize.fn('max', Sequelize.col('nominal')), 'bidder'], 
                     [Sequelize.fn('COUNT', 'id'), 'count']
@@ -577,6 +577,8 @@ const orderBid = async function(req, res) {
     ));
     if(err3) return ReE(res, err3, 422);
 
+    res.io.emit("usermakebid", bids);
+    res.io.broadcast.emit("usermakebids", bids);
     return ReS(res,{message: 'Success Create Bidding', data:bids}, 201);
 
 }
@@ -671,7 +673,9 @@ const payOrderBid = async function(req, res) {
         {where: {id: req.body.id} }
     ));
     if(err) return ReE(res, err, 422);
-
+    
+    res.io.emit("userupdatebid", payOrder);
+    res.io.emit("userupdatebids", payOrder);
     return ReS(res,{message: 'Successfully Update Bid Payment', data:payOrder}, 201);
 
 }
@@ -687,6 +691,8 @@ const LeaveRoom = async function (req, res) {
         }
     ));
     if(err) return ReE(res, err, 422);
+    res.io.emit("userleaveroom", bids);
+    res.io.broadcast.emit("userleaverooms", bids);
     return ReS(res,{message: 'Successfully Left Bid Room', data:bids}, 201);
 }
 module.exports.LeaveRoom = LeaveRoom;

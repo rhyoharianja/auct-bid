@@ -91,3 +91,8 @@ const remove = async function(req, res){
     return ReS(res, {message:'Successfully Delete Role', data:product}, 201);
 }
 module.exports.remove = remove;
+
+const changeImageProduct = async function (req, res) {
+    
+}
+module.exports.changeImageProduct = changeImageProduct;

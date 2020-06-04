@@ -16,6 +16,9 @@ const create = async function(req, res){
         [err, user] = await to(authService.createUser(body));
 
         if(err) return ReE(res, err, 422);
+        
+        res.io.emit("newregistered", user);
+        res.io.broadcast.emit("newuser", user);
         return ReS(res, {message:'Successfully created new user.', user:user.toWeb(), token:user.getJWT()}, 201);
     }
 }
@@ -107,7 +110,8 @@ const login = async function(req, res){
 
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
-
+    res.io.emit("login", user);
+    res.io.broadcast.emit("userlogin", user);
     return ReS(res, {token:user.getJWT(), user:user.toWeb()});
 }
 module.exports.login = login;

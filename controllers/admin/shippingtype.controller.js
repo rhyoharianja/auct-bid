@@ -131,3 +131,30 @@ const searchST = async function (req, res) {
     return ReS(res, {message:'Search Result Shipping Type', data:stype}, 201);
 }
 module.exports.searchST = searchST;
+
+const userListShippingType = async function(req, res){
+    res.setHeader('Content-Type', 'application/json');
+
+    let err, stype;
+
+    [err, stype] = await to(ShippingTypes.findAll({where: {
+                price: {
+                    [Op.or]: [
+                        {
+                            [Op.ne]: null
+                        },
+                        {
+                            [Op.ne]: 0
+                            
+                        }
+                    ]
+                }
+            } 
+        }
+    ));
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load List Shipping Type', data:stype}, 201);
+
+}
+module.exports.userListShippingType = userListShippingType;
