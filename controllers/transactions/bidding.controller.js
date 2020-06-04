@@ -578,7 +578,6 @@ const orderBid = async function(req, res) {
     if(err3) return ReE(res, err3, 422);
 
     res.io.emit("usermakebid", bids);
-    res.io.broadcast.emit("usermakebids", bids);
     return ReS(res,{message: 'Success Create Bidding', data:bids}, 201);
 
 }
@@ -692,7 +691,6 @@ const LeaveRoom = async function (req, res) {
     ));
     if(err) return ReE(res, err, 422);
     res.io.emit("userleaveroom", bids);
-    res.io.broadcast.emit("userleaverooms", bids);
     return ReS(res,{message: 'Successfully Left Bid Room', data:bids}, 201);
 }
 module.exports.LeaveRoom = LeaveRoom;

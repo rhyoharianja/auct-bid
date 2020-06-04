@@ -107,7 +107,6 @@ const changeAWinner = async function (req, res) {
         if(store[0] == 0) return ReE(res, 'No Room Winner Changed', 422);
 
         res.io.emit("changewinner", store);
-        res.io.broadcast.emit("changewinners", store);
         return ReS(res, {message:'Successfully Set Winner', data:store}, 201);
 }
 module.exports.changeAWinner = changeAWinner;
