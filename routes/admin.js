@@ -108,6 +108,6 @@ router.post('/bidding/confirm/update', passport.authenticate('admin', {session:f
 
 // Status admin Data
 router.get('/status/data/list', passport.authenticate('admin', {session:false}), CoreDataAdmin.statusList);
-router.get('/room/detail/:id', passport.authenticate('users',{session:false}), RoomDataController.getDetailRoomAdmin);
+router.get('/room/detail/:id', passport.authenticate('admin',{session:false}), RoomDataController.getDetailRoomAdmin);
 
 module.exports = router;
