@@ -46,7 +46,7 @@ router.put('/order/bidding/update',passport.authenticate('users',{session:false}
 router.put('/order/bidding/payment',passport.authenticate('users',{session:false}), UserBid.payOrderBid);
 
 router.get('/room/list',passport.authenticate('users',{session:false}), UserBid.storeList);
-router.get('/room/detail/:id',passport.authenticate('users',{session:false}), UserBid.storeListDetail);
+router.get('/room/detail/:id',passport.authenticate('users',{session:false}), RoomDataController.getDetailRoomAdmin);
 router.get('/room/live',passport.authenticate('users',{session:false}), UserBid.storeListLive);
 router.get('/room/waiting',passport.authenticate('users',{session:false}), UserBid.storeListWaiting);
 router.get('/room/end',passport.authenticate('users',{session:false}), UserBid.storeListEnd);
