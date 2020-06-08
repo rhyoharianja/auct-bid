@@ -654,6 +654,8 @@ const updateOrderBid = async function(req, res){
     [err, bids] = await to(BiddingTransactions.findOne({where: {id: req.body.id} }));
     if(err) return ReE(res, err, 422);
 
+    res.io.emit("userupdatebid", bids);
+
     return ReS(res,{message: 'Successfully Update Bid Transaction', data:bids}, 201);
 }
 module.exports.updateOrderBid = updateOrderBid;
@@ -674,7 +676,6 @@ const payOrderBid = async function(req, res) {
     if(err) return ReE(res, err, 422);
     
     res.io.emit("userupdatebid", payOrder);
-    res.io.emit("userupdatebids", payOrder);
     return ReS(res,{message: 'Successfully Update Bid Payment', data:payOrder}, 201);
 
 }
