@@ -58,14 +58,14 @@ const update = async function(req, res){
       }));
     if(err) return ReE(res, err, 422);
 
-    return ReS(res, {message:'Successfully Update Detail stores', data:store}, 201);
+    return ReS(res, {message:'Successfully Update Detail stores', data:stores}, 201);
 }
 module.exports.update = update;
 
 const remove = async function(req, res){
     let store, err;
 
-    [err, store] = await to(stores.destroy({
+    [err, store] = await to(Stores.destroy({
         where: {
           id: req.body.id
         }
