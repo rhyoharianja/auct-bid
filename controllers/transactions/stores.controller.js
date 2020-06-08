@@ -184,6 +184,23 @@ const getDetailRoomAdmin = async function (req, res) {
                             }
                         ]
                     },
+                    { 
+                        model: BiddingTransactions, 
+                        on: {
+                            '$Stores.id$': { [Op.col]: 'storeId' },
+                            '$bidder.biddingStatus$': { [Op.lte]: 1 }
+                        },
+                        required : false , 
+                        separate : true,
+                        group: ['StoreId'],
+                        attributes: [
+                            [Sequelize.fn('max', Sequelize.col('nominal')), 'bidder'], 
+                            [Sequelize.fn('COUNT', 'id'), 'count']
+                        ], 
+                        order: [[Sequelize.literal('count'), 'DESC']],
+                        // raw: true,
+                        as: 'bidder'
+                    }, 
                     {
                         model: BiddingTransactions,
                         as: 'listBidders',
