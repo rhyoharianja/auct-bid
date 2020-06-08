@@ -54,3 +54,77 @@ const countDataBidder = async function (req, res) {
     return ReS(res, {message:'Successfully Load Room bidder Counter', data:stores}, 201);
 }
 module.exports.countDataBidder = countDataBidder;
+
+const userDataBidderWinner = async function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores;
+    [err, stores] = await to(
+        Stores.findAll(
+            {
+                attributes: [
+                    [Sequelize.col('User.id'), 'user_id'],
+                    [Sequelize.col('User.first'), 'user_first'],
+                    [Sequelize.col('User.last'), 'user_last'],
+                    [Sequelize.col('User.email'), 'user_email'],
+                    [Sequelize.col('User.phone'), 'user_phone'],
+                ],
+                group: ['userWinner'],
+                where: {
+                    userWinner: {
+                        [Op.or]: [
+                            {
+                                [Op.ne]: null
+                            },
+                            {
+                                [Op.ne]: 0
+                                
+                            }
+                        ]
+                    }
+                },
+                order: [
+                    ['id', 'DESC']
+                ],
+                limit: 5,
+                include: [
+                    {
+                        model: User,
+                        attributes: []
+                    },
+                ]
+            }
+        )
+    );
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load Room bidder Winners', data:stores}, 201);
+}
+
+module.exports.userDataBidderWinner = userDataBidderWinner;
+
+const userDataBidderList = async function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    let err, stores;
+
+    [err, stores] = await to(BiddingTransactions.findAll({
+        attributes: [
+            [Sequelize.col('User.id'), 'user_id'],
+            [Sequelize.col('User.first'), 'user_first'],
+            [Sequelize.col('User.last'), 'user_last'],
+            [Sequelize.col('User.email'), 'user_email'],
+            [Sequelize.col('User.phone'), 'user_phone'],
+        ],
+        group: ['buyerId'],
+        include: [
+            {
+                model: User,
+                attributes: []
+            },
+        ]
+     }));
+    if(err) return ReE(res, err, 422);
+
+    return ReS(res, {message:'Successfully Load All bidders', data:stores}, 201);
+}
+
+module.exports.userDataBidderList = userDataBidderList;

@@ -57,6 +57,8 @@ router.get('/key/list',passport.authenticate('users',{session:false}), userKetTr
 
 router.get('/dashboard/counter',Dashboard.countData);
 router.get('/dashboard/bidder',Dashboard.countDataBidder);
+router.get('/dashboard/bidder/lastwinner',Dashboard.userDataBidderWinner);
+router.get('/dashboard/bidder/bidderlist',Dashboard.userDataBidderList);
 
 router.get('/shipping/type/:page', passport.authenticate('users', {session:false}), ShippingtypesController.getAll);
 router.get('/shipping/type/search/:search', passport.authenticate('users', {session:false}), ShippingtypesController.searchST);
