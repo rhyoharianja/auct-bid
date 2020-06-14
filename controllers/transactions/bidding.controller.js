@@ -375,7 +375,8 @@ const storeListLiveUser = async function(req, res){
                     },
                     {
                         model: BiddingTransactions,
-                        required: true,
+                        required : false, 
+                        separate : true,
                         on: {
                             '$Stores.id$': { [Op.col]: 'storeId' },
                             '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 }
@@ -546,8 +547,15 @@ module.exports.userBidlist = userBidlist;
 
 const orderBid = async function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let ferr, currData, err, bids, bidData, store, key, keyUpdate;
+    let ferr, currData, err, bids, bidData, store, key, keyUpdate, countbid, allbid;
     let user = req.user.dataValues;
+    [countbid, allbid] = await to(BiddingTransactions.findAndCountAll({
+        where: {
+            productId: req.body.productId,
+            storeId: req.body.storeId,
+            biddingStatus: 1
+        }
+    }));
     [ferr, currData] = await to(BiddingTransactions.findOne({
         where: {
             productId: req.body.productId,
@@ -576,6 +584,7 @@ const orderBid = async function(req, res) {
     
     [err1, store] = await to(Stores.findOne({where: {id: req.body.storeId} }));
     if(err1) return ReE(res, err1, 422);
+    if(store.maxbidder <= countbid) return ReE(res, { message: "Sorry The Room That You Want Bid was Full !" }, 406);
     [err2, key] = await to(KeyTransactions.findOne({where: {keyId: store.allowKey, useStatus: 0, buyerId: user.id} }));
     if(err2) return ReE(res, err2, 422);
     if(key == null ) return ReE(res, { message: "You Need requirement Key. Please Buy Requirement Key First !" }, 406);

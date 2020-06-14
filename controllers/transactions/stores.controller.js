@@ -158,6 +158,7 @@ const getDetailRoomAdmin = async function (req, res) {
                         as: 'winner',
                         on: {
                             '$Stores.userWinner$': { [Op.col]: 'winner.buyerId' },
+                            '$Stores.id$': { [Op.col]: 'winner.storeId' },
                         },
                         include: [
                             {
@@ -262,6 +263,7 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                         as: 'winner',
                         on: {
                             '$Stores.userWinner$': { [Op.col]: 'winner.buyerId' },
+                            '$Stores.id$': { [Op.col]: 'winner.storeId' },
                         },
                         include: [
                             {
