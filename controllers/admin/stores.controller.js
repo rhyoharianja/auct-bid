@@ -67,7 +67,7 @@ const remove = async function(req, res){
 
     [err, store] = await to(Stores.destroy({
         where: {
-          id: req.body.id
+          id: req.params.id
         }
       }));
       if(err) return ReE(res, err, 422);

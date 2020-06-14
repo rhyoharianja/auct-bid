@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         first       : DataTypes.STRING,
         last        : DataTypes.STRING,
         email       : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { isEmail: {msg: "Phone number invalid."} }},
-        phone       : {type: DataTypes.STRING, allowNull: true, unique: true, validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, isNumeric: { msg: "not a valid phone number."} }},
+        phone       : {type: DataTypes.STRING, allowNull: true, validate: { len: {args: [7, 20], msg: "Phone number invalid, too short."}, isNumeric: { msg: "not a valid phone number."} }},
         password    : DataTypes.STRING,
         roleId      : DataTypes.INTEGER,
         avatar      : {

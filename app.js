@@ -55,9 +55,6 @@ app.use('/admin', admin);
 
 app.use('/', function(req, res){
    res.statusCode = 200;//send the appropriate status code
-   res.io.on('login', function (data) {
-    console.log(data);
-  });
    res.json({status:"success", message:"Auction Pending API", data:{}})
 });
 
