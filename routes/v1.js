@@ -9,6 +9,8 @@ const Dashboard    = require('../controllers/transactions/dashboard.controller')
 const RoomDataController    = require('../controllers/transactions/stores.controller');
 const ShippingtypesController = require('../controllers/admin/shippingtype.controller');
 
+const ResetPasword = require('../controllers/access/token.controller');
+
 const uploads    = require('../config/upload');
 
 const passport          = require('passport');
@@ -21,6 +23,9 @@ router.post( '/users/login', UserController.login);
 router.get('/users/profile',passport.authenticate('users', {session:false}), UserData.get);
 router.put('/users',passport.authenticate('users', {session:false}), UserController.update);
 router.delete('/users',passport.authenticate('users',{session:false}), UserController.remove);
+
+router.post('/users/reset/request',passport.authenticate('users',{session:false}), ResetPasword.requestReset);
+router.post('/users/reset/setpassword',passport.authenticate('users',{session:false}), ResetPasword.changePassword);
 
 router.post('/users/update',passport.authenticate('users', {session:false}), uploads.any(), UserData.update);
 

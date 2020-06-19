@@ -1,11 +1,11 @@
-const { Stores } = require('../../models');
-const { Products } = require('../../models');
-const { User } = require('../../models');
-const { BiddingTransactions } = require('../../models');
-const { KeyTransactions } = require('../../models');
-const { ShippingDetails } = require('../../models');
-const { Uploads } = require('../../models');
-const { StatusDesc } = require('../../models');
+const { Stores, 
+        Products, 
+        User, 
+        BiddingTransactions, 
+        KeyTransactions, 
+        ShippingDetails, 
+        Uploads, 
+        StatusDesc } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
@@ -83,6 +83,13 @@ const ListRoomBidHasWinner = async function (req, res) {
                                 attributes: [],
                                 on: {
                                     '$winner.shippingStatus$': { [Op.col]: 'winner.shipStatus.statusCode' },
+                                },
+                            }, 
+                            {
+                                model: ShippingDetails,
+                                attributes: [],
+                                on: {
+                                    '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetails.id' },
                                 },
                             }
                         ]
@@ -181,6 +188,13 @@ const getDetailRoomAdmin = async function (req, res) {
                                 attributes: [],
                                 on: {
                                     '$winner.shippingStatus$': { [Op.col]: 'winner.shipStatus.statusCode' },
+                                },
+                            }, 
+                            {
+                                model: ShippingDetails,
+                                attributes: [],
+                                on: {
+                                    '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetails.id' },
                                 },
                             }
                         ]
@@ -286,6 +300,13 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                                 attributes: [],
                                 on: {
                                     '$winner.shippingStatus$': { [Op.col]: 'winner.shipStatus.statusCode' },
+                                },
+                            },
+                            {
+                                model: ShippingDetails,
+                                attributes: [],
+                                on: {
+                                    '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetails.id' },
                                 },
                             }
                         ]
