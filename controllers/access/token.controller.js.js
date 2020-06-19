@@ -3,9 +3,10 @@ const bcrypt_p       = require('bcrypt-promise');
 const { AccessToken } = require('../../models/accesstoken');
 const { User } = require('../../models/users');
 const { to, ReE, ReS } = require('../../services/util.service');
+const mail = require('../../services/email.service');
 
 const requestReset = async function (req, res) {
-    let err, data, errcheck, users;
+    let err, data, errcheck, users, errmail, sendmail;
     var today = new Date();
 
     [errcheck, users] = await to(User.findOne({
@@ -29,7 +30,16 @@ const requestReset = async function (req, res) {
 
     let dataToken = data.toWeb();
 
-    return ReS(res,{message: 'Success Add New Token', data:dataToken, user: users}, 201);
+    [errmail, sendmail] = await to(mail.sendEmail('reset-password', {
+      useremail: users.email,
+      userfullname: users.first + " " + users.last,
+      token: data.token,
+      expired: data.expired
+    }));
+
+    if(err) TE(err.message, true);
+
+    return ReS(errmail,{message: 'Success Add New Token', data:dataToken, user: users}, 201);
 }
 module.exports.requestReset = requestReset;
 

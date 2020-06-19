@@ -42,8 +42,8 @@ let verificationTemplate = transporter.templateSender(
 exports.sendEmail = function(type, data) {
     if(type == 'reset-password') {
         ResetPasswordTemplate({
-            to: data.email,
-            subject: 'Reset Password Email' + data.user.fullname
+            to: data.useremail,
+            subject: 'Reset Password Auct-Bid ' + data.userfullname
         }, {
             data
         }, function (err, info) {
