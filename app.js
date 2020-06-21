@@ -51,7 +51,7 @@ if(CONFIG.app==='dev'){
 
 app.use(cors());
 
-cron.schedule("0 1 * * *", autoSetWinner.autoSetWinner);
+cron.schedule("*/5 * * * *", autoSetWinner.autoSetWinner);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagadmin));
 
