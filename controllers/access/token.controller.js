@@ -4,6 +4,8 @@ const { AccessToken } = require('../../models/accesstoken');
 const { User } = require('../../models/users');
 const { to, ReE, ReS } = require('../../services/util.service');
 const mail = require('../../services/email.service');
+const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 const requestReset = async function (req, res) {
     let err, data, errcheck, users, errmail, sendmail;
@@ -37,17 +39,29 @@ const requestReset = async function (req, res) {
       expired: data.expired
     }));
 
-    if(err) TE(err.message, true);
+    if(errmail) TE(errmail.message, true);
 
-    return ReS(errmail,{message: 'Success Add New Token', data:dataToken, user: users}, 201);
+    return ReS(sendmail,{message: 'Success Add New Token', data:dataToken, user: users}, 201);
 }
 module.exports.requestReset = requestReset;
 
-const getToken = async function (req, res) {
+const checkToken = async function (req, res) {
     let err, data;
-    [err, data] = await to(AccessToken.findOne());
+    [err, data] = await to(AccessToken.findOne({
+      where: {
+        token: req.body.token,
+        expired: {
+          [Op.gte]: new Date()
+        },
+        status: 0
+      }
+    }));
+    if(err) return ReE(res, err, 422);
+
+    if(data == null) return ReE(res, {message: 'No Token Found'}, 422); 
+    return ReS(data,{message: 'Token Found And Can Be Use', data:data}, 201);
 }
-module.exports.getToken = getToken;
+module.exports.checkToken = checkToken;
 
 const changePassword = async function (req, res) {
     let err, data, errcheck, checktoken;
