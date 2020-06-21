@@ -4,13 +4,13 @@ const { Stores,
     BiddingTransactions, 
     KeyTransactions, 
     ShippingDetails, 
-    Uploads } = require('../../../models');
+    Uploads } = require('../../models');
 
-const { to, ReE, ReS } = require('../../../services/util.service');
+const { to, ReE, ReS } = require('../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
-const autoSetWinner = async function (params) {
+const autoSetWinner = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
 
@@ -47,7 +47,7 @@ const autoSetWinner = async function (params) {
     if(err) return ReE(res, err, 422);
     if(stores == null) return ReE(res, {message: 'No User Found With The Email Given'}, 422); 
     
-    stores.forEach(function(store, index, arr){
+    stores.forEach( async function(store, index, arr){
         let errbidwinner, getbidwinner;
         [errbidwinner, getbidwinner] = await to(BiddingTransactions.findOne({
             where: {

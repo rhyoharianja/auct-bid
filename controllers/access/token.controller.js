@@ -3,7 +3,7 @@ const bcrypt_p       = require('bcrypt-promise');
 const { AccessToken } = require('../../models/accesstoken');
 const { User } = require('../../models/users');
 const { to, ReE, ReS } = require('../../services/util.service');
-const mail = require('../../services/email.service');
+const mailer = require('../../services/email.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
@@ -32,7 +32,7 @@ const requestReset = async function (req, res) {
 
     let dataToken = data.toWeb();
 
-    [errmail, sendmail] = await to(mail.sendEmail('reset-password', {
+    [errmail, sendmail] = await to(mailer.sendEmail('reset-password', {
       useremail: users.email,
       userfullname: users.first + " " + users.last,
       token: data.token,

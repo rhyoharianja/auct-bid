@@ -1,113 +1,57 @@
 require('dotenv').config();
 
-let sender = process.env.EMAIL || "email";
-let password = process.env.EMAIL_PASS || "password";
-let smtp = process.env.SMTP_MAIL || "smtp";
+let sender = process.env.EMAIL || "bid.auct.apps@gmail.com";
+let password = process.env.EMAIL_PASS || "P4ssw0rd!";
+let smtp = process.env.SMTP_MAIL || "gmail";
 
-let nodeMailer = require('nodemailer');
-let EmailTemplate = require('email-templates').EmailTemplate;
+var nodeMailer = require('nodemailer');
+var EmailTemplate = require('email-templates');
 
-let transporter = nodeMailer.createTransport(sender + ':' + password + smtp);
+let transporter = nodeMailer.createTransport({
+    host:process.env.HOSTNM,
+    port:process.env.PORT,
+});
 
-let ResetPasswordTemplate = transporter.templateSender(
-    new EmailTemplate('../resource/template/email/reset-password', {
-        from: 'no-reply@auct-bid.com',
-    })
-);
-
-let BiddingStatusTemplate = transporter.templateSender(
-    new EmailTemplate('../resource/template/email/biddingStatus', {
-        from: 'no-reply@auct-bid.com',
-    })
-);
-
-let OrderTemplate = transporter.templateSender(
-    new EmailTemplate('../resource/template/email/order', {
-        from: 'no-reply@auct-bid.com',
-    })
-);
-
-let PaymentTemplate = transporter.templateSender(
-    new EmailTemplate('../resource/template/email/payment', {
-        from: 'no-reply@auct-bid.com',
-    })
-);
-
-let verificationTemplate = transporter.templateSender(
-    new EmailTemplate('../resource/template/email/verification', {
-        from: 'no-reply@auct-bid.com',
-    })
-);
+const email = new EmailTemplate({
+    views: { root: '../resources/static/template/email', options: { extension: 'ejs' } },
+    message: {
+      from: process.env.EMAIL
+    },
+    preview:true,
+    send: true,
+    transport: transporter
+    //transport: {
+      //jsonTransport: true
+    //}
+    
+  });
 
 exports.sendEmail = function(type, data) {
+    let temp;
     if(type == 'reset-password') {
-        ResetPasswordTemplate({
-            to: data.useremail,
-            subject: 'Reset Password Auct-Bid ' + data.userfullname
-        }, {
-            data
-        }, function (err, info) {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log('Link sent\n' + JSON.stringify(info));
-            }
-        });
+        temp = 'reset-password';
     }
     if(type == 'bidding-status') {
-        BiddingStatusTemplate({
-            to: data.email,
-            subject: 'Reset Password Email' + data.user.fullname
-        }, {
-            data
-        }, function (err, info) {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log('Link sent\n' + JSON.stringify(info));
-            }
-        });
+        temp = 'biddingStatus';
     }
     if(type == 'order') {
-        OrderTemplate({
-            to: data.email,
-            subject: 'Reset Password Email' + data.user.fullname
-        }, {
-            data
-        }, function (err, info) {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log('Link sent\n' + JSON.stringify(info));
-            }
-        });
+        temp = 'order';
     }
     if(type == 'payment') {
-        PaymentTemplate({
-            to: data.email,
-            subject: 'Reset Password Email' + data.user.fullname
-        }, {
-            data
-        }, function (err, info) {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log('Link sent\n' + JSON.stringify(info));
-            }
-        });
+        temp = 'payment';
     }
     if(type == 'verification') {
-        verificationTemplate({
-            to: data.email,
-            subject: 'Reset Password Email' + data.user.fullname
-        }, {
-            data
-        }, function (err, info) {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log('Link sent\n' + JSON.stringify(info));
-            }
-        });
+        temp = 'verification';
     }
+    email.send({
+        template: 'test',
+        message: {
+          to: data.email
+        },
+        locals: {
+          data: data
+        }
+    }).then(console.log).catch(console.error);
+        
+    return res.send('Email Send');
 }
