@@ -18,6 +18,11 @@ const swaggerUi = require('swagger-ui-express');
 const swagadmin = require('./config/swagger');
 const path              = require('path');
 
+const cron = require('node-cron');
+const fs = require('fs');
+
+const autoSetWinner = require('./controllers/cron/setwinner.controller');
+
 app.use(function(req, res, next){
   res.io = io;
   next();
@@ -46,6 +51,7 @@ if(CONFIG.app==='dev'){
 
 app.use(cors());
 
+cron.schedule("0 1 * * *", autoSetWinner.autoSetWinner);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagadmin));
 
