@@ -73,7 +73,7 @@ const autoSetWinner = async function (req, res) {
             ))
         }
     });
-    return ReS(res, {message:'Successfully Load Stores List End', data:stores}, 201);
+    console.log(stores);
 }
 
 module.exports.autoSetWinner = autoSetWinner;

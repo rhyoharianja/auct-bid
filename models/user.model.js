@@ -24,13 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         address     : {type: DataTypes.STRING, allowNull: true},
         city        : {type: DataTypes.STRING, allowNull: true},
         zipcode     : {type: DataTypes.INTEGER, allowNull: true},
-        state     : {type: DataTypes.STRING, allowNull: true},
+        state       : {type: DataTypes.STRING, allowNull: true},
         country     : {type: DataTypes.STRING, allowNull: true},
-        status     : {
+        status      : {
                         type: DataTypes.SMALLINT, 
                         allowNull: false,
                         defaultValue: 1,
                     },
+        fcm_reg_code: DataTypes.STRING
     });
     
     Model.associate = function(models){

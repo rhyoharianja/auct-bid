@@ -67,7 +67,6 @@ const authUser = async function(userInfo){//returns token
         auth_info.method='email';
 
         [err, user] = await to(User.findOne({where:{email:unique_key}}));
-        console.log(err, user, unique_key);
         if(err) TE(err.message);
 
     }else if(validator.isMobilePhone(unique_key, 'any')){//checks if only phone number was sent

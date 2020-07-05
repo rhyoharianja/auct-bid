@@ -104,12 +104,21 @@ const remove = async function(req, res){
 module.exports.remove = remove;
 
 const login = async function(req, res){
-    const body = req.body;
     let err, user;
 
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
     res.io.emit("login", user);
+    if(user.fcm_reg_code == "" || user.fcm_reg_code == null ) {
+        user.set(
+            {
+                fcm_reg_code: req.body.fcm_reg_code
+            }
+        )
+        [err, user] = await to(user.save());
+        console.log(user);
+        if(err) return ReE(res, err, 422);
+    }
     return ReS(res, {token:user.getJWT(), user:user.toWeb()});
 }
 module.exports.login = login;
