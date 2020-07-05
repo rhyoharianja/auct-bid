@@ -11,7 +11,6 @@ const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const autoSetWinner = async function (req, res) {
-    res.setHeader('Content-Type', 'application/json');
     let err, stores;
 
     [err, stores] = await to(Stores.findAll(
