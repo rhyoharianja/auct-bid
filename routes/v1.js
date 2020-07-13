@@ -24,9 +24,9 @@ router.get('/users/profile',passport.authenticate('users', {session:false}), Use
 router.put('/users',passport.authenticate('users', {session:false}), UserController.update);
 router.delete('/users',passport.authenticate('users',{session:false}), UserController.remove);
 
-router.post('/users/reset/request',passport.authenticate('users',{session:false}), ResetPasword.requestReset);
-router.post('/users/reset/check',passport.authenticate('users',{session:false}), ResetPasword.checkToken);
-router.post('/users/reset/setpassword',passport.authenticate('users',{session:false}), ResetPasword.changePassword);
+router.post('/users/reset/request', ResetPasword.requestReset);
+router.post('/users/reset/check', ResetPasword.checkToken);
+router.post('/users/reset/setpassword', ResetPasword.changePassword);
 
 router.post('/users/update',passport.authenticate('users', {session:false}), uploads.any(), UserData.update);
 
