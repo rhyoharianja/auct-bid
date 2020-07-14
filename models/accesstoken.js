@@ -5,7 +5,17 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.STRING,
     url: DataTypes.TEXT,
     status: DataTypes.BOOLEAN,
-    expired: DataTypes.DATE
+    expired: DataTypes.DATE,
+    refId: {
+              type: DataTypes.INTEGER, 
+              allowNull: false,
+              defaultValue: 0,
+          },
+    token: {
+            type: DataTypes.INTEGER, 
+            allowNull: false,
+            defaultValue: 0,
+        },
   }, {});
 
   AccessToken.associate = function(models) {

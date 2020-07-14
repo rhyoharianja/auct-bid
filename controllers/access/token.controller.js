@@ -1,7 +1,7 @@
 const bcrypt         = require('bcrypt');
 const bcrypt_p       = require('bcrypt-promise');
-const { AccessToken } = require('../../models/accesstoken');
-const { User } = require('../../models/users');
+const { AccessToken } = require('../../models');
+const { User } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 const mailer = require('../../services/email.service');
 const Sequelize = require('sequelize');
@@ -18,8 +18,9 @@ const requestReset = async function (req, res) {
       }));
     if(errcheck) return ReE(res, errcheck, 422);
     if(users == null ) return ReE(res, {message: 'No User Found With The Email Given'}, 422);
-
+      console.log(users.id);
     let token = Math.floor(1000 + Math.random() * 9000);
+    console.log(token);
     [err, data] = await to(AccessToken.create({
       refId: users.id,
       type: 'reset-password',
@@ -32,16 +33,16 @@ const requestReset = async function (req, res) {
 
     let dataToken = data.toWeb();
 
-    [errmail, sendmail] = await to(mailer.sendEmail('reset-password', {
+    sendmail = mailer.sendEmail('reset-password', {
       useremail: users.email,
       userfullname: users.first + " " + users.last,
       token: data.token,
       expired: data.expired
-    }));
+    });
+    console.log(sendmail);
+    if( sendmail == false ) TE("Can't Send Email", true);
 
-    if(errmail) TE(errmail.message, true);
-
-    return ReS(sendmail,{message: 'Success Add New Token', data:dataToken, user: users}, 201);
+    return ReS(res,{message: 'Success Add New Token', data:dataToken, user: users}, 201);
 }
 module.exports.requestReset = requestReset;
 

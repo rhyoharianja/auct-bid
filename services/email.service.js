@@ -53,5 +53,5 @@ exports.sendEmail = function(type, data) {
         }
     }).then(console.log).catch(console.error);
         
-    return res.send('Email Send');
+    return true;
 }
