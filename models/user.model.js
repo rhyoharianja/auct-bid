@@ -31,7 +31,11 @@ module.exports = (sequelize, DataTypes) => {
                         allowNull: false,
                         defaultValue: 1,
                     },
-        fcm_reg_code: DataTypes.STRING
+        fcm_reg_code: {
+            type: DataTypes.STRING, 
+            allowNull: false,
+            defaultValue: "0",
+        },
     });
     
     Model.associate = function(models){
