@@ -20,7 +20,7 @@ const requestReset = async function (req, res) {
     if(users == null ) return ReE(res, {message: 'No User Found With The Email Given'}, 422);
       console.log(users.id);
     let token = Math.floor(1000 + Math.random() * 9000);
-    console.log(token);
+
     [err, data] = await to(AccessToken.create({
       refId: users.id,
       type: 'reset-password',
@@ -39,7 +39,7 @@ const requestReset = async function (req, res) {
       token: data.token,
       expired: data.expired
     });
-    console.log(sendmail);
+    
     if( sendmail == false ) TE("Can't Send Email", true);
 
     return ReS(res,{message: 'Success Add New Token', data:dataToken, user: users}, 201);

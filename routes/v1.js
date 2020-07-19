@@ -11,6 +11,9 @@ const ShippingtypesController = require('../controllers/admin/shippingtype.contr
 
 const ResetPasword = require('../controllers/access/token.controller');
 
+
+const molliePay = require('../services/mollie.service');
+
 const uploads    = require('../config/upload');
 
 const passport          = require('passport');
@@ -68,5 +71,9 @@ router.get('/dashboard/bidder/bidderlist',Dashboard.userDataBidderList);
 
 router.get('/shipping/type/:page', passport.authenticate('users', {session:false}), ShippingtypesController.getAll);
 router.get('/shipping/type/search/:search', passport.authenticate('users', {session:false}), ShippingtypesController.searchST);
+
+
+router.post('/payment/create', molliePay.createPayment);
+router.get('/payment/method/list', molliePay.methodPayment);
 
 module.exports = router;

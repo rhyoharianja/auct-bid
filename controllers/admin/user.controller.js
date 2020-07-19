@@ -1,5 +1,6 @@
 const { User }          = require('../../models');
 const authService       = require('../../services/auth.service');
+const  fcmService       = require('../../services/fcm.notification.services'); 
 const { to, ReE, ReS }  = require('../../services/util.service');
 
 const create = async function(req, res){
@@ -109,16 +110,27 @@ const login = async function(req, res){
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
     res.io.emit("login", user);
-    if(user.fcm_reg_code == "" || user.fcm_reg_code == null ) {
+    if(user.fcm_reg_code === "" || user.fcm_reg_code === "0" ||  user.fcm_reg_code === null) {
         user.set(
             {
                 fcm_reg_code: req.body.fcm_reg_code
             }
         )
         [err, user] = await to(user.save());
-        console.log(user);
         if(err) return ReE(res, err, 422);
     }
+    let mess = {
+        to : user.fcm_reg_code,
+        title : 'A user has been login',
+        body : user.first + ' ' + user.last + ' has been login'
+
+    }
+    let getFcmService =  fcmService.sendNotification(mess);
+    
+    console.log(getFcmService);
+
+    if(getFcmService == false ) return ReE(res, 'error occured trying to send nitification');
+
     return ReS(res, {token:user.getJWT(), user:user.toWeb()});
 }
 module.exports.login = login;
