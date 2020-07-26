@@ -15,8 +15,8 @@ const sendNotification = async function (reqData) {
             body: reqData.body
         },
         data: {  
-            my_key: reqData.to,
-            my_another_key: reqData.to
+            my_key: reqData.datatype,
+            my_another_key: reqData.datadeeplink
         }
     };
     console.log(message);

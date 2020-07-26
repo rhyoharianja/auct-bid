@@ -6,6 +6,7 @@ const { Stores,
     ShippingDetails, 
     Uploads } = require('../../models');
 
+const  fcmService = require('../../services/fcm.notification.services'); 
 const { to, ReE, ReS } = require('../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
@@ -59,6 +60,15 @@ const autoSetWinner = async function (req, res) {
             limit: 1,
         }));
         if(getbidwinner != null) {
+            let erruser, getuser;
+            [erruser, getuser] = await to(User.findOne(
+                    {
+                        where: {
+                            id: getbidwinner.buyerId
+                        }
+                    }
+                )
+            );
             let errupdate, getupdate;
             [errupdate, getupdate] = await to(Stores.update(
                 {
@@ -70,7 +80,27 @@ const autoSetWinner = async function (req, res) {
                         id: store.id
                     }
                 }
-            ))
+            ));
+            let errprod, getprod;
+            [errprod, getprod] =  await to(
+                Products.findOne(
+                    {
+                        where: {
+                            id: getbidwinner.productid
+                        }
+                    }
+                )
+            )
+            let mess = {
+                to : getuser.fcm_reg_code,
+                title : 'Wohoo, You Won For ' + getprod.name,
+                body : 'Congratulations! Your Item has been added to the cart, checkout now to get the items!',
+                datatype: "reminder",
+                datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + store.id + "}"
+        
+            }
+            let getFcmService =  fcmService.sendNotification(mess);
+            console.log(getFcmService);
         }
     });
     console.log(stores);

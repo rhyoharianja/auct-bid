@@ -60,6 +60,7 @@ const checkToken = async function (req, res) {
     if(err) return ReE(res, err, 422);
 
     if(data == null) return ReE(res, {message: 'No Token Found'}, 422); 
+    
     return ReS(data,{message: 'Token Found And Can Be Use', data:data}, 201);
 }
 module.exports.checkToken = checkToken;

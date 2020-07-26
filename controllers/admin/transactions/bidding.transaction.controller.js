@@ -6,6 +6,7 @@ const { Stores,
     ShippingDetails, 
     Uploads, StatusDesc } = require('../../../models');
 
+const  fcmService = require('../../../services/fcm.notification.services'); 
 const { to, ReE, ReS } = require('../../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
@@ -77,16 +78,21 @@ module.exports.confirmAdminBidding = confirmAdminBidding;
 
 const updateStatusBiddingAdmin = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let err, bids, errstat, statBid, data;
+    let err, bids, errstat, statBid, data, geterr, getdata, messagedata, messagedes;
 
     [errstat, statBid] = await to(StatusDesc.findOne({where: {statusCode: req.body.status} }));
 
     if(errstat) return ReE(res, errstat, 422);
+
     if(statBid.statusType == 'payment') {
+        messagedata = "Yeah, Your Payment Was Successful";
+        messagedes = "Payment Was Successful. We will prepare your item for processing";
         data = {
             paymentStatus: req.body.status
         };
     } else {
+        messagedata = "Your Item Is On Deliver";
+        messagedes = "Already send by courier to your address. Sit relaxed, enjoy your day!";
         data = {
             shippingStatus: req.body.status
         };
@@ -95,9 +101,41 @@ const updateStatusBiddingAdmin = async function (req, res) {
         data,
         {where: {id: req.body.id} }
     ));
-    if(err) return ReE(res, err, 422);
 
-    res.io.emit("updateStatusBiddingAdmin", bids);
-    return ReS(res,{message: 'Successfully Update Bid Status Transaction', data:bids}, 201);
+    [geterr, getdata] = await to(BiddingTransactions.findOne(
+        {
+            where: {
+                id: req.body.id
+            },
+            include: [
+                {
+                    model: User
+                },
+                {
+                    model: Products
+                },
+                {
+                    model: Stores
+                }
+            ]
+        }
+    ));
+
+    if(geterr) return ReE(res, geterr, 422);
+    
+    let mess = {
+        to : getdata.User.fcm_reg_code,
+        title : getprod.name + ' ' + messagedata,
+        body : messagedes,
+        datatype: "reminder",
+        datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + getdata.Store.id + "}"
+
+    }
+    let getFcmService =  fcmService.sendNotification(mess);
+    console.log(getFcmService);
+
+    res.io.emit("updateStatusBiddingAdmin", getdata);
+
+    return ReS(res,{message: 'Successfully Update Bid Status Transaction', data:getdata}, 201);
 }
 module.exports.updateStatusBiddingAdmin = updateStatusBiddingAdmin;
