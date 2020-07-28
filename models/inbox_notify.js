@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     read: DataTypes.INTEGER,
     status: DataTypes.INTEGER
   }, {});
-  inbox_notify.associate = function(models) {
+  inbox_notifies.associate = function(models) {
     // associations can be defined here
   };
   return inbox_notifies;
