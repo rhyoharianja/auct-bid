@@ -79,6 +79,6 @@ router.post('/payment/create', molliePay.createPayment);
 router.get('/payment/method/list', molliePay.methodPayment);
 
 router.get('/user/inbox/list', passport.authenticate('users', {session:false}), listInboxNotRead.listInboxNotRead);
-router.get('/user/inbox/setread', passport.authenticate('users', {session:false}), listInboxNotRead.setHasbeenRead);
+router.post('/user/inbox/setread', passport.authenticate('users', {session:false}), listInboxNotRead.setHasbeenRead);
 
 module.exports = router;
