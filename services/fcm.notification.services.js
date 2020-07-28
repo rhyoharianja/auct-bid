@@ -5,7 +5,11 @@ const serverKey = process.env.FIREBASE_SK;
 
 var fcm = new FCM(serverKey);
 
+const { inbox_notifies } = require('../models');
+const { to, ReE, ReS } = require('../services');
+
 const sendNotification = async function (reqData) {
+    let errsave, succsave;
     let message = {
         to: reqData.to, 
         collapse_key: 'green',
@@ -19,7 +23,17 @@ const sendNotification = async function (reqData) {
             my_another_key: reqData.datadeeplink
         }
     };
-    console.log(message);
+
+    [errsave, succsave] = await to(inbox_notifies.create({
+        fcm_code: reqData.to,
+        title: reqData.title,
+        body: reqData.body,
+        type: reqData.datatype,
+        deeplink: reqData.datadeeplink,
+        read: 0,
+        status: 1,
+    }));
+
     fcm.send(message, function(err, response){
         if (err) {
             console.log(err);

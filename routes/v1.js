@@ -9,6 +9,8 @@ const Dashboard    = require('../controllers/transactions/dashboard.controller')
 const RoomDataController    = require('../controllers/transactions/stores.controller');
 const ShippingtypesController = require('../controllers/admin/shippingtype.controller');
 
+const listInboxNotRead = require('../controllers/notification/fcmnotify.controller');
+
 const ResetPasword = require('../controllers/access/token.controller');
 
 
@@ -75,5 +77,8 @@ router.get('/shipping/type/search/:search', passport.authenticate('users', {sess
 
 router.post('/payment/create', molliePay.createPayment);
 router.get('/payment/method/list', molliePay.methodPayment);
+
+router.get('/user/inbox/list', passport.authenticate('users', {session:false}), listInboxNotRead.listInboxNotRead);
+router.get('/user/inbox/setread', passport.authenticate('users', {session:false}), listInboxNotRead.setHasbeenRead);
 
 module.exports = router;

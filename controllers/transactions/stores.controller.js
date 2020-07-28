@@ -132,18 +132,7 @@ const getDetailRoomAdmin = async function (req, res) {
                     ]
                 },
                 where: {
-                    id: req.params.id,
-                    // userWinner: {
-                    //     [Op.or]: [
-                    //         {
-                    //             [Op.ne]: null
-                    //         },
-                    //         {
-                    //             [Op.ne]: 0
-                                
-                    //         }
-                    //     ]
-                    // }
+                    id: req.params.id
                 },
                 include: [
                     { 

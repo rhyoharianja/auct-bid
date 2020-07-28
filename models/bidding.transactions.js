@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     BiddingTransactions.belongsTo(models.User, { foreignKey: 'buyerId' });
     BiddingTransactions.belongsTo(models.StatusDesc, { foreignKey: 'paymentStatus', as: 'payStatus' });
     BiddingTransactions.belongsTo(models.StatusDesc, { foreignKey: 'shippingStatus', as: 'shipStatus' });
+    BiddingTransactions.belongsTo(models.ShippingDetails, { foreignKey: 'shippingDetailId'});
   };
   BiddingTransactions.prototype.toWeb = function () {
     let json = this.toJSON();
