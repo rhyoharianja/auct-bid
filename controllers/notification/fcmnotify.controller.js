@@ -25,7 +25,8 @@ const setHasbeenRead = async function (req, res) {
         read: 1
     }, {
         where: {
-            fcm_code: currUser.fcm_reg_code
+            fcm_code: currUser.fcm_reg_code,
+            id: req.body.id
         }
     }));
 
