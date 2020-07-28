@@ -6,7 +6,7 @@ const serverKey = process.env.FIREBASE_SK;
 var fcm = new FCM(serverKey);
 
 const { inbox_notifies } = require('../models');
-const { to, ReE, ReS } = require('../services');
+const { to, ReE, ReS } = require('../services/util.service');
 
 const sendNotification = async function (reqData) {
     let errsave, succsave;
