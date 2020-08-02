@@ -201,9 +201,14 @@ const getDetailRoomAdmin = async function (req, res) {
                     }, 
                     {
                         model: BiddingTransactions,
+                        where: {
+                            biddingStatus: {
+                                [Op.lte]: 1 
+                            }
+                        },
                         as: 'listBidders',
                         include: [
-                            {model: User}
+                            {model: User,}
                         ]
                     },
                 ]
