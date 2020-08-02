@@ -24,15 +24,17 @@ const sendNotification = async function (reqData) {
         }
     };
 
-    [errsave, succsave] = await to(inbox_notifies.create({
-        fcm_code: reqData.to,
-        title: reqData.title,
-        body: reqData.body,
-        type: reqData.datatype,
-        deeplink: reqData.datadeeplink,
-        read: 0,
-        status: 1,
-    }));
+    if (typeof obj.foo === 'undefined') {
+        [errsave, succsave] = await to(inbox_notifies.create({
+            fcm_code: reqData.to,
+            title: reqData.title,
+            body: reqData.body,
+            type: reqData.datatype,
+            deeplink: reqData.datadeeplink,
+            read: 0,
+            status: 1,
+        }));
+    }
 
     fcm.send(message, function(err, response){
         if (err) {

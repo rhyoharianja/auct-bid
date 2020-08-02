@@ -36,6 +36,7 @@ const listNeedPaymentConfirmed = async function(req, res) {
                 on: {
                     '$BiddingTransactions.biddingStatus$': { [Op.lte]: 1 },
                     '$BiddingTransactions.paymentStatus$': 12,
+                    '$BiddingTransactions.biddingStatus$': 1,
                 },
                 include: [
                     { model: User }

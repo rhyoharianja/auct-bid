@@ -68,7 +68,8 @@ const changeAWinner = async function (req, res) {
                 {
                         where: {
                                 buyerId: data.userId,
-                                storeId: data.id
+                                storeId: data.id,
+                                biddingStatu: 1
                         }
                 }
         ));

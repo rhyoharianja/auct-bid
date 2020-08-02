@@ -122,7 +122,8 @@ const login = async function(req, res){
     let mess = {
         to : user.fcm_reg_code,
         title : 'A user has been login',
-        body : user.first + ' ' + user.last + ' has been login'
+        body : user.first + ' ' + user.last + ' has been login',
+        isLogin: "true"
 
     }
     let getFcmService =  fcmService.sendNotification(mess);
