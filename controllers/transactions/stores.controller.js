@@ -178,10 +178,7 @@ const getDetailRoomAdmin = async function (req, res) {
                             }, 
                             {
                                 model: ShippingDetails,
-                                attributes: [],
-                                on: {
-                                    '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetails.id' },
-                                },
+                                attributes: []
                             }
                         ]
                     },
