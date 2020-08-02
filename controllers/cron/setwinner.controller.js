@@ -17,13 +17,13 @@ const autoSetWinner = async function (req, res) {
     [err, stores] = await to(Stores.findAll(
         { 
             where: {
-                [Op.or]: [
+                [Op.and]: [
                     {
                         startBid: {
-                            [Op.lt]: new Date()
+                            [Op.gte]: new Date()
                         },
                         endBid: {
-                            [Op.lt]: new Date()
+                            [Op.lte]: new Date()
                         }
                     }, 
                     {
