@@ -89,7 +89,7 @@ const ListRoomBidHasWinner = async function (req, res) {
                                 model: ShippingDetails,
                                 attributes: [],
                                 on: {
-                                    '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetails.id' },
+                                    '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetail.id' },
                                 },
                             }
                         ]
@@ -123,6 +123,12 @@ const getDetailRoomAdmin = async function (req, res) {
                     include: [
                         [Sequelize.col('Product.name'), 'product_name'],
                         [Sequelize.col('Product.price'), 'product_price'],
+                        [Sequelize.col('winner.updatedAt'), 'last_update'],
+                        [Sequelize.col('winner.nominal'), 'winner_price'],
+                        [Sequelize.col('winner.payStatus.statusName'), 'payment_status'],
+                        [Sequelize.col('winner.shipStatus.statusName'), 'last_status'],
+                        [ Sequelize.literal('( SELECT IF (winner.shippingStatus != 0, winner.shippingStatus, winner.paymentStatus ) )'),'latest_status_code'],
+                        [ Sequelize.literal('( SELECT IF (winner.shippingStatus != 0, last_status, payment_status ) )'),'latest_status_name']
                     ]
                 },
                 where: {
@@ -140,6 +146,45 @@ const getDetailRoomAdmin = async function (req, res) {
                                     '$Product.name$': { [Op.col]: 'content' },
                                     '$Product.id$': { [Op.col]: 'contentId' },
                                 }
+                            }
+                        ]
+                    },
+                    {
+                        model: BiddingTransactions,
+                        as: 'winner',
+                        on: {
+                            '$Stores.userWinner$': { [Op.col]: 'winner.buyerId' },
+                            '$Stores.id$': { [Op.col]: 'winner.storeId' },
+                        },
+                        include: [
+                            {
+                                model: User,
+                                on: {
+                                    '$Stores.userWinner$': { [Op.col]: 'winner.User.id' },
+                                },
+                            },
+                            {
+                                model: StatusDesc,
+                                as: 'payStatus',
+                                attributes: [],
+                                on: {
+                                    '$winner.paymentStatus$': { [Op.col]: 'winner.payStatus.statusCode' },
+                                },
+                            },
+                            {
+                                model: StatusDesc,
+                                as: 'shipStatus',
+                                attributes: [],
+                                on: {
+                                    '$winner.shippingStatus$': { [Op.col]: 'winner.shipStatus.statusCode' },
+                                },
+                            }, 
+                            {
+                                model: ShippingDetails,
+                                attributes: [],
+                                on: {
+                                    '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetail.id' },
+                                },
                             }
                         ]
                     },
