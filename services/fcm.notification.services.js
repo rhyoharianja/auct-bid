@@ -24,7 +24,7 @@ const sendNotification = async function (reqData) {
         }
     };
 
-    if (typeof obj.foo === 'undefined') {
+    if (typeof reqData.isLogin === 'undefined') {
         [errsave, succsave] = await to(inbox_notifies.create({
             fcm_code: reqData.to,
             title: reqData.title,
