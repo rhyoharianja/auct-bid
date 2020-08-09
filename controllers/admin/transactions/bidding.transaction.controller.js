@@ -79,7 +79,7 @@ module.exports.confirmAdminBidding = confirmAdminBidding;
 
 const updateStatusBiddingAdmin = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let err, bids, errstat, statBid, data, geterr, getdata, messagedata, messagedes;
+    let err, bids, errstat, statBid, data, geterr, getdata, messagedata, messagedes, ership, sucessship;
 
     [errstat, statBid] = await to(StatusDesc.findOne({where: {statusCode: req.body.status} }));
 
@@ -94,6 +94,16 @@ const updateStatusBiddingAdmin = async function (req, res) {
     } else {
         messagedata = "Your Item Is On Deliver";
         messagedes = "Already send by courier to your address. Sit relaxed, enjoy your day!";
+        [ership, sucessship] = await to(ShippingDetails.update(
+            {
+                tracking_code : req.body.tracking_code
+            }, 
+            {
+                where : {
+                    id: req.body.shippingDetailId
+                }
+            }
+        ))
         data = {
             shippingStatus: req.body.status
         };
