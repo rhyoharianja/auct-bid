@@ -141,20 +141,22 @@ const updateStatusBiddingAdmin = async function (req, res) {
 
     if(geterr) return ReE(res, geterr, 422);
 
+    console.log(getdata);
+
     if(req.body.status = 31) {
         sendmail = mailer.sendEmail('deliver-receipt', {
             subject: 'Delivery Shipping Detail',
             useremail: getdata.User.email,
             userfullname: getdata.User.first + " " + getdata.User.last,
-            prodname: getdata.Products.name,
-            prodprice: getdata.Products.price,
+            prodname: getdata.Product.name,
+            prodprice: getdata.Product.price,
             delireceipt: req.body.tracking_code
           });
     }
     
     let mess = {
         to : getdata.User.fcm_reg_code,
-        title : getdata.Products.name + ' ' + messagedata,
+        title : getdata.Product.name + ' ' + messagedata,
         body : messagedes,
         datatype: "reminder",
         datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + getdata.Store.id + "}"
