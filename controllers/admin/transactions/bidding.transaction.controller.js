@@ -103,7 +103,8 @@ const updateStatusBiddingAdmin = async function (req, res) {
         messagedes = "Already send by courier to your address. Sit relaxed, enjoy your day!";
         [ership, sucessship] = await to(ShippingDetails.update(
             {
-                tracking_code : req.body.tracking_code
+                tracking_code : req.body.tracking_code,
+                courier_name : req.body.courier_name
             }, 
             {
                 where : {
