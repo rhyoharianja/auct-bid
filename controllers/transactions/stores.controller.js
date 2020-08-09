@@ -87,7 +87,6 @@ const ListRoomBidHasWinner = async function (req, res) {
                             }, 
                             {
                                 model: ShippingDetails,
-                                attributes: [],
                                 on: {
                                     '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetail.id' },
                                 },
@@ -181,7 +180,6 @@ const getDetailRoomAdmin = async function (req, res) {
                             }, 
                             {
                                 model: ShippingDetails,
-                                attributes: [],
                                 on: {
                                     '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetail.id' },
                                 },
@@ -293,7 +291,6 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                             },
                             {
                                 model: ShippingDetails,
-                                attributes: [],
                                 on: {
                                     '$winner.shippingDetailId$': { [Op.col]: 'winner.ShippingDetail.id' },
                                 },
