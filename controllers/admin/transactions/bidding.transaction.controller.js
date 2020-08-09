@@ -8,6 +8,7 @@ const { Stores,
 
 const  fcmService = require('../../../services/fcm.notification.services'); 
 const { to, ReE, ReS } = require('../../../services/util.service');
+const mailer = require('../../../services/email.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
@@ -103,7 +104,7 @@ const updateStatusBiddingAdmin = async function (req, res) {
                     id: req.body.shippingDetailId
                 }
             }
-        ))
+        ));
         data = {
             shippingStatus: req.body.status
         };
@@ -133,6 +134,16 @@ const updateStatusBiddingAdmin = async function (req, res) {
     ));
 
     if(geterr) return ReE(res, geterr, 422);
+    if(statBid.statusType = '') {
+        sendmail = mailer.sendEmail('deliver-receipt', {
+            subject: 'Delivery Shipping Detail',
+            useremail: getdata.User.email,
+            userfullname: getdata.User.first + " " + getdata.User.last,
+            prodname: getdata.Products.name,
+            prodprice: getdata.Products.price,
+            delireceipt: req.body.tracking_code
+          });
+    }
     
     let mess = {
         to : getdata.User.fcm_reg_code,

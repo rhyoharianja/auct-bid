@@ -34,6 +34,7 @@ const requestReset = async function (req, res) {
     let dataToken = data.toWeb();
 
     sendmail = mailer.sendEmail('reset-password', {
+      subject: 'Request Reset password',
       useremail: users.email,
       userfullname: users.first + " " + users.last,
       token: data.token,

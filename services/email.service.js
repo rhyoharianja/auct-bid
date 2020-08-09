@@ -41,6 +41,9 @@ exports.sendEmail = function(type, datas) {
     if(type == 'verification') {
         temp = 'verification.ejs';
     }
+    if(type == 'deliver-receipt') {
+      temp = 'deliver-receipt.ejs';
+    }
     ejs.renderFile(__dirname + "/../resources/static/template/email/" + temp, datas, function (err, data) {
       if (err) {
           console.log("error on ejs render : " + err);
@@ -48,7 +51,7 @@ exports.sendEmail = function(type, datas) {
           var mainOptions = {
               from: sender,
               to: datas.useremail,
-              subject: 'Request Password Reset',
+              subject: datas.subject,
               html: data
           };
           transporter.sendMail(mainOptions, function (err, info) {
