@@ -150,7 +150,7 @@ const updateStatusBiddingAdmin = async function (req, res) {
             useremail: getdata.User.email,
             userfullname: getdata.User.first + " " + getdata.User.last,
             prodname: getdata.Product.name,
-            prodprice: getdata.Product.price,
+            prodprice: getdata.nominal,
             delireceipt: req.body.tracking_code
           });
     }
