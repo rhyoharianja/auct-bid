@@ -154,7 +154,7 @@ const updateStatusBiddingAdmin = async function (req, res) {
     
     let mess = {
         to : getdata.User.fcm_reg_code,
-        title : getprod.name + ' ' + messagedata,
+        title : getdata.Products.name + ' ' + messagedata,
         body : messagedes,
         datatype: "reminder",
         datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + getdata.Store.id + "}"
