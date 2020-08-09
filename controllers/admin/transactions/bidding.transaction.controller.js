@@ -92,6 +92,12 @@ const updateStatusBiddingAdmin = async function (req, res) {
         data = {
             paymentStatus: req.body.status
         };
+    } else if(statBid.statusType == 'order') {
+        messagedata = "Order Confirmed";
+        messagedes = "Order Confirmed";
+        data = {
+            paymentStatus: req.body.status
+        };
     } else {
         messagedata = "Your Item Is On Deliver";
         messagedes = "Already send by courier to your address. Sit relaxed, enjoy your day!";
@@ -134,7 +140,8 @@ const updateStatusBiddingAdmin = async function (req, res) {
     ));
 
     if(geterr) return ReE(res, geterr, 422);
-    if(statBid.statusType = '') {
+
+    if(req.body.status = 31) {
         sendmail = mailer.sendEmail('deliver-receipt', {
             subject: 'Delivery Shipping Detail',
             useremail: getdata.User.email,
