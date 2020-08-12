@@ -3,10 +3,12 @@ const { to, ReE, ReS } = require('../../services/util.service');
 
 const listInboxNotRead = async function (req, res) {
     let err, data;
+    let currUser = req.user.dataValues;
 
     [err, data] = await to(inbox_notifies.findAll({
         where: {
-            read: 0
+            read: 0,
+            fcm_code: currUser.fcm_reg_code
         }
     }));
 
