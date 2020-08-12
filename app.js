@@ -22,6 +22,7 @@ const cron = require('node-cron');
 const fs = require('fs');
 
 const autoSetWinner = require('./controllers/cron/setwinner.controller');
+const notifNewProduct = require('./controllers/cron/newproduct.controller');
 
 app.use(function(req, res, next){
   res.io = io;
@@ -52,6 +53,12 @@ if(CONFIG.app==='dev'){
 app.use(cors());
 
 cron.schedule("*/5 * * * *", autoSetWinner.autoSetWinner);
+
+cron.schedule("50 * * * *", autoSetWinner.remindCompleteOrderOneHours);
+
+cron.schedule("50 * * * *", notifNewProduct.newproductAdd);
+
+cron.schedule("55 */2 * * *", autoSetWinner.remindCompleteOrderThreeHours);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagadmin));
 

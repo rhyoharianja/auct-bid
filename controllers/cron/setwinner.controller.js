@@ -20,20 +20,20 @@ const autoSetWinner = async function (req, res) {
                 [Op.and]: [
                     {
                         startBid: {
-                            [Op.gte]: new Date()
+                            [Op.lte]: new Date()
                         },
                         endBid: {
-                            [Op.lte]: new Date()
+                            [Op.gte]: new Date()
                         }
                     }, 
                     {
                         userWinner: {
                             [Op.or]: [
                                 {
-                                    [Op.ne]: null
+                                    [Op.is]: null
                                 },
                                 {
-                                    [Op.ne]: 0
+                                    [Op.is]: 0
                                     
                                 }
                             ]
@@ -45,7 +45,7 @@ const autoSetWinner = async function (req, res) {
         }
     ));
     if(err) return ReE(res, err, 422);
-    if(stores == null) return ReE(res, {message: 'No User Found With The Email Given'}, 422); 
+    if(stores == null) return ReE(res, {message: 'No Store Found'}, 422); 
     
     stores.forEach( async function(store, index, arr){
         let errbidwinner, getbidwinner;
@@ -107,3 +107,161 @@ const autoSetWinner = async function (req, res) {
 }
 
 module.exports.autoSetWinner = autoSetWinner;
+
+const remindCompleteOrderOneHours = async function (req, res) {
+    let err, stores;
+    var currDate = new Date();
+    [err, stores] = await to(Stores.findAll(
+        { 
+            where: {
+                [Op.and]: [
+                    {
+                        startBid: {
+                            [Op.lte]: new Date()
+                        },
+                        endBid: {
+                            [Op.lte]: new Date()
+                        }
+                    }, 
+                    {
+                        userWinner: {
+                            [Op.or]: [
+                                {
+                                    [Op.ne]: null
+                                },
+                                {
+                                    [Op.ne]: 0
+                                    
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        setWinnerDate: {
+                            [Op.lte]: new Date(currDate.setHours(currDate.getHours() + 1))
+                        }
+                    }
+                ]
+            }
+        }
+    ));
+
+    if(err) return ReE(res, err, 422);
+    if(stores == null) return ReE(res, {message: 'No Store Found'}, 422); 
+
+    stores.forEach( async function(store, index, arr){
+        let errbidwinner, getbidwinner;
+        [errbidwinner, getbidwinner] = await to(BiddingTransactions.findOne({
+            where: {
+                storeId: store.id,
+                buyerId: store.userWinner
+            },
+            include: [
+                { model: User }
+            ]
+        }));
+        if(getbidwinner != null) {
+            let errprod, getprod;
+            [errprod, getprod] =  await to(
+                Products.findOne(
+                    {
+                        where: {
+                            id: getbidwinner.productid
+                        }
+                    }
+                )
+            )
+            let mess = {
+                to : getbidwinner.User.fcm_reg_code,
+                title : 'Complete Your Order',
+                body : 'One More Step To Get The Item You Won - ' + getprod.name + '. You only have 1x24 hours before being given to the next winner',
+                datatype: "reminder",
+                datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + store.id + "}"
+        
+            }
+            let getFcmService =  fcmService.sendNotification(mess);
+            console.log(getFcmService);
+        }
+    });
+    console.log(stores);
+
+}
+
+module.exports.remindCompleteOrderOneHours = remindCompleteOrderOneHours;
+
+const remindCompleteOrderThreeHours = async function (req, res) {
+    let err, stores;
+    var currDate = new Date();
+    [err, stores] = await to(Stores.findAll(
+        { 
+            where: {
+                [Op.and]: [
+                    {
+                        startBid: {
+                            [Op.lte]: new Date()
+                        },
+                        endBid: {
+                            [Op.lte]: new Date()
+                        }
+                    }, 
+                    {
+                        userWinner: {
+                            [Op.or]: [
+                                {
+                                    [Op.ne]: null
+                                },
+                                {
+                                    [Op.ne]: 0
+                                    
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        setWinnerDate: {
+                            [Op.lte]: new Date(currDate.setHours(currDate.getHours() + 3))
+                        }
+                    }
+                ]
+            }
+        }
+    ));
+    stores.forEach( async function(store, index, arr){
+        let errbidwinner, getbidwinner;
+        [errbidwinner, getbidwinner] = await to(BiddingTransactions.findOne({
+            where: {
+                storeId: store.id,
+                buyerId: store.userWinner
+            },
+            include: [
+                { model: User }
+            ]
+        }));
+        if(getbidwinner != null) {
+            let errprod, getprod;
+            [errprod, getprod] =  await to(
+                Products.findOne(
+                    {
+                        where: {
+                            id: getbidwinner.productid
+                        }
+                    }
+                )
+            )
+            let mess = {
+                to : getbidwinner.User.fcm_reg_code,
+                title : 'Hurry Up, Complete Your Order',
+                body : 'Pay Imediately and have the item you won before - ' + getprod.name + '. You only have 1x24 hours before being given to the next winner',
+                datatype: "reminder",
+                datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + store.id + "}"
+        
+            }
+            let getFcmService =  fcmService.sendNotification(mess);
+            console.log(getFcmService);
+        }
+    });
+    console.log(stores);
+
+}
+
+module.exports.remindCompleteOrderThreeHours = remindCompleteOrderThreeHours;

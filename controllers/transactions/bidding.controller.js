@@ -6,6 +6,7 @@ const { KeyTransactions } = require('../../models');
 const { ShippingDetails } = require('../../models');
 const { Uploads } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
+const  fcmService = require('../../services/fcm.notification.services'); 
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
@@ -597,6 +598,17 @@ const orderBid = async function(req, res) {
         {where: {id: key.id, buyerId: user.id} }
     ));
     if(err3) return ReE(res, err3, 422);
+    if(store.allowKey == 3 ) {
+        let mess = {
+            to : user.fcm_reg_code,
+            title : 'Gold Door Reserved',
+            body : 'You already set for join the games, we will remind you 5 minutes before the game start. Don\'t miss it',
+            datatype: "reservation",
+            datadeeplink: "https://bidbong.com/notification?type=reservation"
+    
+        }
+        let getFcmService =  fcmService.sendNotification(mess);
+    }
 
     res.io.emit("usermakebid", bids);
     return ReS(res,{message: 'Success Create Bidding', data:bids}, 201);
