@@ -70,7 +70,7 @@ const newproductAdd = async function (req, res) {
                 datadeeplink: "https://bidbong.com/notification?type=dashboard"
         
             }
-            let getFcmService =  fcmService.sendNotification(mess);
+            let getFcmService =  fcmService.sendNotificationAll(mess);
             console.log(getFcmService);
         }
     });

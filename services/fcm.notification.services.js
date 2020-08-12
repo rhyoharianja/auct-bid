@@ -48,3 +48,46 @@ const sendNotification = async function (reqData) {
 }
 
 module.exports.sendNotification = sendNotification;
+
+const sendNotificationAll = async function (reqData) {
+    let getTo = reqData.to;
+    for (let inM = 0; inM < getTo.length; inM++) {
+        let errsave, succsave;
+        let message = {
+            to: getTo[inM], 
+            collapse_key: 'green',
+            
+            notification: {
+                title: reqData.title, 
+                body: reqData.body
+            },
+            data: {  
+                my_key: reqData.datatype,
+                my_another_key: reqData.datadeeplink
+            }
+        };
+    
+        if (typeof reqData.isLogin === 'undefined') {
+            [errsave, succsave] = await to(inbox_notifies.create({
+                fcm_code: reqData.to,
+                title: reqData.title,
+                body: reqData.body,
+                type: reqData.datatype,
+                deeplink: reqData.datadeeplink,
+                read: 0,
+                status: 1,
+            }));
+        }
+    
+        fcm.send(message, function(err, response){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Successfully sent with response: ", response);
+            }
+        });
+        
+    }
+}
+
+module.exports.sendNotificationAll = sendNotificationAll;
