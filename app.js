@@ -56,7 +56,7 @@ cron.schedule("*/5 * * * *", autoSetWinner.autoSetWinner);
 
 cron.schedule("50 * * * *", autoSetWinner.remindCompleteOrderOneHours);
 
-cron.schedule("*/5 * * * *", notifNewProduct.newproductAdd);
+cron.schedule("50 * * * *", notifNewProduct.newproductAdd);
 
 cron.schedule("55 */2 * * *", autoSetWinner.remindCompleteOrderThreeHours);
 
