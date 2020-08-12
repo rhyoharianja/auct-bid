@@ -69,7 +69,7 @@ const sendNotificationAll = async function (reqData) {
     
         if (typeof reqData.isLogin === 'undefined') {
             [errsave, succsave] = await to(inbox_notifies.create({
-                fcm_code: reqData.to,
+                fcm_code: getTo[inM],
                 title: reqData.title,
                 body: reqData.body,
                 type: reqData.datatype,
