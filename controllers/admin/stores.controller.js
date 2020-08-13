@@ -11,6 +11,38 @@ const create = async function(req, res) {
     [err, store] = await to(Stores.create(store_data));
     if(err) return ReE(res, err, 422);
 
+    let erruser, users;
+    [erruser, users] = await to(User.findAll());
+
+
+    let alluser = [];
+    users.forEach( async function(user, index, arr){
+        alluser.push(user.fcm_reg_code);
+    });
+
+    let errprod, getprod;
+    [errprod, getprod] =  await to(
+      Products.findOne(
+        {
+          where: {
+            id: store.productId
+          }
+        }
+      )
+    )
+    
+    if(getprod != null) {
+      let mess = {
+        to : alluser,
+        title : 'Special Item\'s On Sale',
+        body : getprod.name + ' is on sale. Get your seat to play now',
+        datatype: "product",
+        datadeeplink: "https://bidbong.com/notification?type=dashboard"
+      }
+      let getFcmService =  fcmService.sendNotificationAll(mess);
+      console.log(getFcmService);
+    }
+    
     let store_json = store.toWeb();
 
     return ReS(res,{message: 'Success Add New stores', data:store_json}, 201);
