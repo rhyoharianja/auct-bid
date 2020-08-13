@@ -110,7 +110,7 @@ const login = async function(req, res){
     [err, user] = await to(authService.authUser(req.body));
     if(err) return ReE(res, err, 422);
     res.io.emit("login", user);
-    if(user.fcm_reg_code === "" || user.fcm_reg_code === "0" ||  user.fcm_reg_code === null) {
+    if(user.fcm_reg_code === "" || user.fcm_reg_code === "0" ||  user.fcm_reg_code === null || user.fcm_reg_code != req.body.fcm_reg_code) {
         user.set(
             {
                 fcm_reg_code: req.body.fcm_reg_code
