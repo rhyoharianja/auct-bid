@@ -33,15 +33,20 @@ const newproductStartOnOneHour = async function (req, res) {
     if(err) return ReE(res, err, 422);
     if(stores == null) return ReE(res, {message: 'No Store Found'}, 422); 
 
-    let erruser, users;
-    [erruser, users] = await to(User.findAll());
-
-
-    let alluser = [];
-    users.forEach( async function(user, index, arr){
-        alluser.push(user.fcm_reg_code);
-    });
     stores.forEach( async function(store, index, arr){
+
+        let erruser, users;
+        [erruser, users] = await to(BiddingTransactions.findAll({
+            where: {
+                storeId : store.id
+            }
+        }));
+    
+    
+        let alluser = [];
+        users.forEach( async function(user, index, arr){
+            alluser.push(user.User.fcm_reg_code);
+        });
 
         let errprod, getprod;
         [errprod, getprod] =  await to(
@@ -92,15 +97,20 @@ const newproductStartOn10Menuites = async function (req, res) {
     if(err) return ReE(res, err, 422);
     if(stores == null) return ReE(res, {message: 'No Store Found'}, 422); 
 
-    let erruser, users;
-    [erruser, users] = await to(User.findAll());
-
-
-    let alluser = [];
-    users.forEach( async function(user, index, arr){
-        alluser.push(user.fcm_reg_code);
-    });
     stores.forEach( async function(store, index, arr){
+
+        let erruser, users;
+        [erruser, users] = await to(BiddingTransactions.findAll({
+            where: {
+                storeId : store.id
+            }
+        }));
+    
+    
+        let alluser = [];
+        users.forEach( async function(user, index, arr){
+            alluser.push(user.User.fcm_reg_code);
+        });
 
         let errprod, getprod;
         [errprod, getprod] =  await to(
