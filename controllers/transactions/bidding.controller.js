@@ -640,7 +640,8 @@ const updateOrderBid = async function(req, res){
             address : req.body.address,
             city : req.body.city,
             zipPostCode : req.body.zipPostCode,
-            country : req.body.country
+            country : req.body.country,
+            state : req.body.state
         };
         [err2, shipdata] = await to(ShippingDetails.findOne({ 
             where: {
