@@ -12,26 +12,22 @@ const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const newproductStartOnOneHour = async function (req, res) {
-    let err, stores;
     var currDate = new Date();
+    var nowDate = new Date();
+    var oneHourBefore = new Date(currDate.setHours(currDate.getHours() - 1));
+    let err, stores;
+    console.log(nowDate);
     [err, stores] = await to(Stores.findAll(
         { 
             where: {
-                [Op.and]: [
-                    {
-                        startBid: {
-                            [Op.gte]: new Date(currDate.setHours(currDate.getHours() - 1))
-                        },
-                        startBid: {
-                            [Op.lte]: new Date()
-                        }
-                    },
-                ]
+                startBid: {
+                    [Op.between]: [oneHourBefore, nowDate]
+                }
             }
         }
     ));
     if(err) return ReE(res, err, 422);
-    if(stores == null) return ReE(res, {message: 'No Store Found'}, 422); 
+    if(stores == undefined || stores.length == 0) return  console.log('Data Not Found Or No Schedule');
 
     stores.forEach( async function(store, index, arr){
 
@@ -76,26 +72,21 @@ const newproductStartOnOneHour = async function (req, res) {
 module.exports.newproductStartOnOneHour = newproductStartOnOneHour;
 
 const newproductStartOn10Menuites = async function (req, res) {
+    var currDate2 = new Date();
+    var nowDate2 = new Date();
+    var tenMinutesBefore = new Date(currDate2.setMinutes(currDate2.setMinutes() - 10));
     let err, stores;
-    var currDate = new Date();
     [err, stores] = await to(Stores.findAll(
         { 
             where: {
-                [Op.and]: [
-                    {
-                        startBid: {
-                            [Op.gte]: new Date(currDate.setMinutes(currDate.setMinutes() - 10))
-                        },
-                        startBid: {
-                            [Op.lte]: new Date()
-                        }
-                    },
-                ]
+                startBid: {
+                    [Op.between]: [tenMinutesBefore, nowDate2]
+                }
             }
         }
     ));
     if(err) return ReE(res, err, 422);
-    if(stores == null) return ReE(res, {message: 'No Store Found'}, 422); 
+    if(stores == undefined || stores.length == 0) return  console.log('Data Not Found Or No Schedule');
 
     stores.forEach( async function(store, index, arr){
 

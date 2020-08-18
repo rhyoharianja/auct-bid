@@ -52,15 +52,15 @@ if(CONFIG.app==='dev'){
 
 app.use(cors());
 
-cron.schedule("*/5 * * * *", autoSetWinner.autoSetWinner);
+cron.schedule("0/5 * * * *", autoSetWinner.autoSetWinner);
 
-cron.schedule("*/10 * * * *", notifNewProduct.newproductStartOn10Menuites);
+cron.schedule("0/10 * * * *", notifNewProduct.newproductStartOn10Menuites);
 
-cron.schedule("50 * * * *", autoSetWinner.remindCompleteOrderOneHours);
+cron.schedule("0 * * * *", autoSetWinner.remindCompleteOrderOneHours);
 
-cron.schedule("59 * * * *", notifNewProduct.newproductStartOnOneHour);
+cron.schedule("0 * * * *", notifNewProduct.newproductStartOnOneHour);
 
-cron.schedule("55 */2 * * *", autoSetWinner.remindCompleteOrderThreeHours);
+cron.schedule("0 */3 * * *", autoSetWinner.remindCompleteOrderThreeHours);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagadmin));
 
