@@ -3,6 +3,7 @@ const router         = express.Router();
 
 const rolesController = require('../controllers/admin/roles.controller');
 const categoriesController = require('../controllers/admin/categories.controller');
+const emailsController = require('../controllers/admin/emails.controller');
 const keysController = require('../controllers/admin/keys.controller');
 const productController = require('../controllers/admin/products.controller');
 const UserController    = require('../controllers/admin/user.controller');
@@ -58,6 +59,15 @@ router.post('/categories', passport.authenticate('admin', {session:false}), cate
 router.get('/categories/:id', passport.authenticate('admin', {session:false}), categoriesController.get);
 router.put('/categories', passport.authenticate('admin', {session:false}), categoriesController.update);
 router.delete('/categories/:id', passport.authenticate('admin', {session:false}), categoriesController.remove);
+
+// Email CRUD
+
+router.get('/emails', emailsController.getAll);
+router.post('/emails', emailsController.create);
+
+router.get('/emails/:id', emailsController.get);
+router.put('/emails', emailsController.update);
+router.delete('/emails/:id', emailsController.remove);
 
 // Keys CRUD
 
