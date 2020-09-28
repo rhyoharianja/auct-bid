@@ -13,6 +13,7 @@ const listInboxNotRead = require('../controllers/notification/fcmnotify.controll
 
 const ResetPasword = require('../controllers/access/token.controller');
 
+const iPayTotal = require('../services/ipaytotal');
 
 const molliePay = require('../services/mollie.service');
 
@@ -80,5 +81,9 @@ router.get('/payment/method/list', molliePay.methodPayment);
 
 router.get('/user/inbox/list', passport.authenticate('users', {session:false}), listInboxNotRead.listInboxNotRead);
 router.post('/user/inbox/setread', passport.authenticate('users', {session:false}), listInboxNotRead.setHasbeenRead);
+
+router.get('/payment/response/callback', iPayTotal.response3DSecure);
+router.post('/payment/response/webhook', iPayTotal.webhookResponse);
+router.post('/payment/get/detail', iPayTotal.detailPaymentTransaction);
 
 module.exports = router;
