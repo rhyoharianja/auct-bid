@@ -5,6 +5,7 @@ const { BiddingTransactions } = require('../../models');
 const { KeyTransactions } = require('../../models');
 const { ShippingDetails } = require('../../models');
 const { Uploads } = require('../../models');
+const iPayTotal = require('../../services/ipaytotal');
 const { to, ReE, ReS } = require('../../services/util.service');
 const  fcmService = require('../../services/fcm.notification.services'); 
 const Sequelize = require('sequelize');
@@ -694,15 +695,70 @@ const updateOrderBid = async function(req, res){
 }
 module.exports.updateOrderBid = updateOrderBid;
 
+const loadPayForm = async function (req, res) {
+    let errbids, databids, errproduct, dataproduct;
+    [errbids, databids] = await to(BiddingTransactions.findOne({where: {id: req.body.id} }));
+    if(errbids) return ReE(res, errbids, 422);
+
+    [errproduct, dataproduct] = await to(Products.findOne({where: {id: databids.productId} }));
+    if(errproduct) return ReE(res, errproduct, 422);
+
+    let datas = {
+        id: databids.id,
+        amount: dataproduct.price,
+        currency: 'USD'
+    }
+
+    return ReS(res,{message: 'Form Payment Bidding Transaction', data:datas}, 201);
+}
+module.exports.loadPayForm = loadPayForm;
+
 const payOrderBid = async function(req, res) {
-    let err, payOrder, data, user;
+    let err, payOrder, data, user, erruser, datauser, errship, dataship, errpay, datapay, pstatus;
     data = req.body;
     user = req.user.dataValues;
+
+    [erruser, datauser] = await to(User.findOne({where: {id: user.id} }));
+    if(erruser) return ReE(res, erruser, 422);
+
+    [errship, dataship] = await to(ShippingDetails.findOne({ 
+        where: {
+            userId: user.id
+        },
+        order: [[ 'createdAt', 'DESC' ]]
+    }));
+    if(errship) return ReE(res, errship, 422);
+
+    let paydata = {
+        id: req.body.id,
+        amount: req.body.amount,
+        currency: req.body.currency,
+        card_type: req.body.card_type,
+        card_no: req.body.card_no,
+        ccExpiryMonth: req.body.ccExpiryMonth,
+        ccExpiryYear: req.body.ccExpiryYear,
+        cvvNumber: req.body.cvvNumber,
+        user: datauser,
+        shipping: dataship
+    }
+
+    [errpay, datapay] = await to(iPayTotal.makePayment(paydata));
+    if(errship) return ReE(res, errship, 422);
+
+    if(datapay.status == 'fail') {
+        return ReE(res, { message: datapay.message, data: datapay.errors }, 406);
+    } else if(datapay.status == 'failed'){
+        pstatus = 14
+    } else {
+        psattus = 12
+    }
+
     [err, payOrder] = await to(BiddingTransactions.update(
         {
             paymentMethod: 1,
-            paymentType: 1,
-            paymentStatus: 12,
+            paymentType: req.body.card_type,
+            payment_trxid: datapay.order_id,
+            paymentStatus: pstatus,
             paymentDate: new Date()
         },
         {where: {id: req.body.id} }
