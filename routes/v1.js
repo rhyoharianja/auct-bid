@@ -86,4 +86,6 @@ router.get('/payment/response/callback', iPayTotal.response3DSecure);
 router.post('/payment/response/webhook', iPayTotal.webhookResponse);
 router.post('/payment/get/detail', iPayTotal.detailPaymentTransaction);
 
+router.post('/payment/test/makepayment', iPayTotal.makePaymentTest);
+
 module.exports = router;
