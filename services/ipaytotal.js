@@ -60,7 +60,7 @@ const makePaymentTest = async function (transactions){
         state: "NY",
         city: "New York",
         zip: "38564",
-        ip_address: "192.168.168.4",
+        ip_address: "31.207.39.156",
         birth_date: "06/12/1990",
         email: "test@gmail.com",
         phone_no: "+91999999999",
@@ -85,6 +85,8 @@ const makePaymentTest = async function (transactions){
     };
 
     let resdata = await axios.post(api_url, data);
+
+    console.log(resdata);
 
     return ReS(res,{message: 'Success Make Payment', data: resdata }, 201);
 }
