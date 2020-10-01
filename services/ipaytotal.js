@@ -90,9 +90,9 @@ const makePaymentTest = async function (req, res){
     let resdata = await axios.post(api_url, datareq);
 
     console.log('data response =================================');
-    console.log(resdata);
+    console.log(resdata.data);
 
-    return ReS(res,{message: 'Success Make Payment', data: resdata }, 201);
+    return ReS(res,{message: 'Success Make Payment', data: resdata.data }, 201);
 }
 module.exports.makePaymentTest = makePaymentTest;
 
