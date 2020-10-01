@@ -49,43 +49,47 @@ const makePayment = async function (transactions){
 }
 module.exports.makePayment = makePayment;
 
-const makePaymentTest = async function (transactions){
-    let data = {
-        api_key: api_key,
-        first_name: "First Name",
-        last_name: "Last Name",
-        address: "Address",
-        sulte_apt_no: "ORDER-78544646461235",
-        country: "US",
-        state: "NY",
-        city: "New York",
-        zip: "38564",
-        ip_address: "31.207.39.156",
-        birth_date: "06/12/1990",
-        email: "test@gmail.com",
-        phone_no: "+91999999999",
-        card_type: "2",
-        amount: "10.00",
-        currency: "USD",
-        card_no: "4242424242424242",
-        ccExpiryMonth: "02",
-        ccExpiryYear: "2020",
-        cvvNumber: "123",
-        shipping_first_name: "First Name",
-        shipping_last_name: "Last Name",
-        shipping_address: "Address",
-        shipping_country: "US",
-        shipping_state: "NY",
-        shipping_city: "New York",
-        shipping_zip: "35656",
-        shipping_email: "test@gmail.com",
-        shipping_phone_no: "+91999999999",
-        response_url: "http://31.207.39.156:3033/v1/payment/response/callback",
-        webhook_url: "http://31.207.39.156:3033/v1/payment/response/webhook",
-    };
+const makePaymentTest = async function (req, res){
+    let err, user, datareq;
+    datareq = req.body;
+    // let data = {
+    //     api_key: api_key,
+    //     first_name: "First Name",
+    //     last_name: "Last Name",
+    //     address: "Address",
+    //     sulte_apt_no: "ORDER-78544646461235",
+    //     country: "US",
+    //     state: "NY",
+    //     city: "New York",
+    //     zip: "38564",
+    //     ip_address: "31.207.39.156",
+    //     birth_date: "06/12/1990",
+    //     email: "test@gmail.com",
+    //     phone_no: "+91999999999",
+    //     card_type: "2",
+    //     amount: "10.00",
+    //     currency: "USD",
+    //     card_no: "4242424242424242",
+    //     ccExpiryMonth: "02",
+    //     ccExpiryYear: "2020",
+    //     cvvNumber: "123",
+    //     shipping_first_name: "First Name",
+    //     shipping_last_name: "Last Name",
+    //     shipping_address: "Address",
+    //     shipping_country: "US",
+    //     shipping_state: "NY",
+    //     shipping_city: "New York",
+    //     shipping_zip: "35656",
+    //     shipping_email: "test@gmail.com",
+    //     shipping_phone_no: "+91999999999",
+    //     response_url: "http://31.207.39.156:3033/v1/payment/response/callback",
+    //     webhook_url: "http://31.207.39.156:3033/v1/payment/response/webhook",
+    // };
+    console.log('data request =================================');
+    console.log(datareq);
+    let resdata = await axios.post(api_url, datareq);
 
-    let resdata = await axios.post(api_url, data);
-
+    console.log('data response =================================');
     console.log(resdata);
 
     return ReS(res,{message: 'Success Make Payment', data: resdata }, 201);
