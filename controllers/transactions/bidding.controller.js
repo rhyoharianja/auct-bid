@@ -769,7 +769,7 @@ const payOrderBid = async function(req, res) {
     
     res.io.emit("userupdatebid", payOrder);
     
-    return ReS(res,{message: 'Successfully Update Bid Payment', data:payOrder}, 201);
+    return ReS(res,{message: 'Successfully Update Bid Payment', data:payOrder, result: datapay}, 201);
 
 }
 module.exports.payOrderBid = payOrderBid;
