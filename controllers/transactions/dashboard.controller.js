@@ -92,7 +92,7 @@ const countDataBidder = async function (req, res) {
                 console.log(store);
                 console.log('storee.monthNum ' + store.monthNum);
                 console.log('dm.monthnum' + dm['monthNum']);
-                if(storee.monthNum == dm['monthNum']) {
+                if(store.monthNum == dm['monthNum']) {
                     console.log('nemu');
                     dm['count'] = store.count;
                 } else {
