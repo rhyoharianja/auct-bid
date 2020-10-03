@@ -9,9 +9,41 @@ const api_key = process.env.IPAYTOTLA_KEY;
 const api_url_detail = process.env.IPAYTOTAL_API_DETAIL;
 
 const makePayment = async function (transactions){
-    console.log(transactions);
-    let data = {'api_key' : api_key,'first_name' : transactions.first_name,'last_name' : transactions.last_name,'address' : transactions.address,'sulte_apt_no' : transactions.id,'country' : transactions.user.country,'state' : transactions.user.state,'city' : transactions.user.city,'zip' : transactions.user.zipcode,'ip_address' : transactions.user.ip_address,'birth_date' : transactions.user.birthdate,'email' : transactions.user.email,'phone_no' : transactions.user.phone,'card_type' : transactions.card_type,'amount' : transactions.amount,'currency' : transactions.currency,'card_no' : transactions.card_no,'ccExpiryMonth' : transactions.ccExpiryMonth,'ccExpiryYear' : transactions.ccExpiryYear,'cvvNumber' : transactions.cvvNumber,'shipping_first_name' : transactions.shipping.firstName,'shipping_last_name' : transactions.shipping.lastName,'shipping_address' : transactions.shipping.address,'shipping_country' : transactions.shipping.country,'shipping_state' : transactions.shipping.state,'shipping_city' : transactions.shipping.city,'shipping_zip' : transactions.shipping.zipPostCode,'shipping_email' : transactions.shipping.email,'shipping_phone_no' : transactions.shipping.phoneNumber,'response_url' : 'http://31.207.39.156:3033/v1/payment/response/callback','webhook_url' : 'http://31.207.39.156:3033/v1/payment/response/webhook'};
+    let data = {
+        'api_key' : api_key,
+        'first_name' : transactions.shipping.firstName,
+        'last_name' : transactions.shipping.lastName,
+        'address' : transactions.shipping.address,
+        'sulte_apt_no' : transactions.id,
+        'country' : transactions.shipping.country,
+        'state' : transactions.shipping.state,
+        'city' : transactions.shipping.city,
+        'zip' : transactions.shipping.zipPostCode,
+        'ip_address' : '31.207.39.156',
+        'birth_date' : '06/12/1990',
+        'email' : transactions.shipping.email,
+        'phone_no' : transactions.shipping.phoneNumber,
+        'card_type' : transactions.card_type,
+        'amount' : transactions.amount,
+        'currency' : transactions.currency,
+        'card_no' : transactions.card_no,
+        'ccExpiryMonth' : transactions.ccExpiryMonth,
+        'ccExpiryYear' : transactions.ccExpiryYear,
+        'cvvNumber' : transactions.cvvNumber,
+        'shipping_first_name' : transactions.shipping.firstName,
+        'shipping_last_name' : transactions.shipping.lastName,
+        'shipping_address' : transactions.shipping.address,
+        'shipping_country' : transactions.shipping.country,
+        'shipping_state' : transactions.shipping.state,
+        'shipping_city' : transactions.shipping.city,
+        'shipping_zip' : transactions.shipping.zipPostCode,
+        'shipping_email' : transactions.shipping.email,
+        'shipping_phone_no' : transactions.shipping.phoneNumber,
+        'response_url' : 'http://31.207.39.156:3033/v1/payment/response/callback',
+        'webhook_url' : 'http://31.207.39.156:3033/v1/payment/response/webhook',
+    };
     console.log(data);
+
     let res = await axios.post(api_url, data);
 
     return res.data;
