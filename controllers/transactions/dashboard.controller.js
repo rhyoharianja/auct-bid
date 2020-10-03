@@ -8,6 +8,21 @@ const { to, ReE, ReS } = require('../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
+const formatDates = function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month].join('-');
+}
+module.exports.formatDates = formatDates;
+
 const countData = async function (req, res) {
     const { count, rows } = await Stores.findAndCountAll();
 
@@ -34,6 +49,19 @@ const countDataBidder = async function (req, res) {
     var currDate = new Date();
     res.setHeader('Content-Type', 'application/json');
     let err, stores;
+    var month = new Array();
+    month[0] = "January";
+    month[1] = "February";
+    month[2] = "March";
+    month[3] = "April";
+    month[4] = "May";
+    month[5] = "June";
+    month[6] = "July";
+    month[7] = "August";
+    month[8] = "September";
+    month[9] = "October";
+    month[10] = "November";
+    month[11] = "December";
 
     [err, stores] = await to(BiddingTransactions.findAll({
         attributes: [
@@ -50,6 +78,29 @@ const countDataBidder = async function (req, res) {
         },
      }));
     if(err) return ReE(res, err, 422);
+    var result = [];
+    for (let im = 3; im >= 0; im--) {
+        var dateA = new Date();
+        var dateB = new Date(dateA.setMonth(dateA.getMonth() - im)).toISOString();
+        var dateC = new Date()
+        var mName = month[dateC.getMonth()-im];
+        var dm = [];
+        dm['monthNum'] = formatDates(dateB);
+        dm['monthName'] = mName;
+        dm['count'] = 0;
+        if (stores === undefined || stores.length == 0) {
+            for (let im2 = 0; im2 < stores.length; im2++) {
+                if(stores[im2]['monthNum'] == dm['monthNum']) {
+                    dm['count'] = store[im2]['count'];
+                }
+                
+            }
+        }
+        result.push(dm);
+
+    }
+
+    console.log(result);
 
     return ReS(res, {message:'Successfully Load Room bidder Counter', data:stores}, 201);
 }

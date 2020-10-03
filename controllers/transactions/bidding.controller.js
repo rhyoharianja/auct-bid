@@ -743,7 +743,7 @@ const payOrderBid = async function(req, res) {
     }
 
     [errpay, datapay] = await to(iPayTotal.makePayment(paydata));
-    if(errship) return ReE(res, errship, 422);
+    if(errpay) return ReE(res, errship, 422);
 
     if(datapay.status == 'fail') {
         return ReE(res, { message: datapay.message, data: datapay.errors }, 406);
@@ -766,6 +766,7 @@ const payOrderBid = async function(req, res) {
     if(err) return ReE(res, err, 422);
     
     res.io.emit("userupdatebid", payOrder);
+    
     return ReS(res,{message: 'Successfully Update Bid Payment', data:payOrder}, 201);
 
 }
