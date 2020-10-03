@@ -88,13 +88,13 @@ const countDataBidder = async function (req, res) {
         dm['monthNum'] = formatDates(dateB);
         dm['monthName'] = mName;
         if (stores !== undefined || stores.length != 0) {
-            stores.forEach( storee => {
-                console.log(storee[0]);
-                console.log('storee.monthNum ' + storee.monthNum);
+            stores.forEach( store => {
+                console.log(store);
+                console.log('storee.monthNum ' + store.monthNum);
                 console.log('dm.monthnum' + dm['monthNum']);
                 if(storee.monthNum == dm['monthNum']) {
                     console.log('nemu');
-                    dm['count'] = storee.count;
+                    dm['count'] = store.count;
                 } else {
                     console.log('ga nemu');
                 }
