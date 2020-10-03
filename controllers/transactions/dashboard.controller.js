@@ -82,13 +82,9 @@ const countDataBidder = async function (req, res) {
     for (let im = 3; im >= 0; im--) {
         var dateA = new Date();
         var dateB = new Date(dateA.setMonth(dateA.getMonth() - im)).toISOString();
-        var dateC = new Date()
-        var mName = month[dateC.getMonth()-im];
-        let dm = [];
-        dm['monthNum'] = formatDates(dateB);
-        dm['monthName'] = mName;
+        var dateC = new Date();
+        var getcount;
         if (stores !== undefined || stores.length != 0) {
-            let getcount;
             stores.forEach( async function(store, index, arr) {
                 console.log(store);
                 console.log('storee.monthNum ' + store.monthNum);
@@ -105,7 +101,11 @@ const countDataBidder = async function (req, res) {
         } else {
             dm['count'] = 0;
         }
-        result.push(dm);
+        result.push({
+            "monthNum": formatDates(dateB),
+            "monthName": month[dateC.getMonth()-im],
+            "count": getcount
+        });
 
     }
     return ReS(res, {message:'Successfully Load Room bidder Counter', data:result}, 201);
