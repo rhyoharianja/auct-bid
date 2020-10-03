@@ -89,9 +89,8 @@ const countDataBidder = async function (req, res) {
         dm['monthName'] = mName;
         dm['count'] = 0;
         if (stores !== undefined || stores.length != 0) {
-            console.log(stores);
             for (let im2 = 0; im2 < stores.length; im2++) {
-                console.log('numberNUm ==> ' +  stores[im2]['monthNum']);
+                console.log('numberNUmmm ==> ' +  stores.im2.monthNum);
                 console.log('numberNUm ==> ' +  stores[im2].monthNum);
                 if(stores[im2]['monthNum'] == dm['monthNum']) {
                     dm['count'] = store[im2]['count'];
