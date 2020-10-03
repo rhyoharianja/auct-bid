@@ -83,13 +83,13 @@ const countDataBidder = async function (req, res) {
         var dateA = new Date();
         var dateB = new Date(dateA.setMonth(dateA.getMonth() - im)).toISOString();
         var dateC = new Date();
-        var getcount;
+        var gcount;
         if (stores !== undefined || stores.length != 0) {
+            let getcount;
             stores.forEach( async function(store, index, arr) {
                 console.log(store);
                 console.log('storee.monthNum ' + store.monthNum);
-                console.log('dm.monthnum' + dm['monthNum']);
-                if(store.monthNum == dm['monthNum']) {
+                if(store.monthNum == formatDates(dateB)) {
                     console.log('nemu');
                     gecount = store.count;
                 } else {
@@ -97,14 +97,14 @@ const countDataBidder = async function (req, res) {
                     getcount = 0;
                 }
             });
-            dm['count'] = getcount;
+            gcount = getcount;
         } else {
-            dm['count'] = 0;
+            gcount = 0;
         }
         result.push({
             "monthNum": formatDates(dateB),
             "monthName": month[dateC.getMonth()-im],
-            "count": getcount
+            "count": gcount
         });
 
     }
