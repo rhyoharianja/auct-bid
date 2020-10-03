@@ -106,7 +106,7 @@ const countDataBidder = async function (req, res) {
 
     console.log(result);
 
-    return ReS(res, {message:'Successfully Load Room bidder Counter', data:result}, 201);
+    return ReS(res, {message:'Successfully Load Room bidder Counter', data:stores}, 201);
 }
 module.exports.countDataBidder = countDataBidder;
 
