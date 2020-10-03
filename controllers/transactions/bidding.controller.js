@@ -738,6 +738,7 @@ const payOrderBid = async function(req, res) {
         ccExpiryMonth: req.body.ccExpiryMonth,
         ccExpiryYear: req.body.ccExpiryYear,
         cvvNumber: req.body.cvvNumber,
+        country: req.body.country,
         user: datauser,
         shipping: dataship
     };
