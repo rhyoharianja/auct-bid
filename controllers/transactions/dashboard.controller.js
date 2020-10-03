@@ -88,8 +88,7 @@ const countDataBidder = async function (req, res) {
         dm['monthNum'] = formatDates(dateB);
         dm['monthName'] = mName;
         dm['count'] = 0;
-        console.log(stores);
-        if (stores === undefined || stores.length == 0) {
+        if (stores !== undefined || stores.length != 0) {
             console.log(stores);
             for (let im2 = 0; im2 < stores.length; im2++) {
                 console.log('numberNUm ==> ' +  stores[im2]['monthNum']);
