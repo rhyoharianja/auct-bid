@@ -740,7 +740,7 @@ const payOrderBid = async function(req, res) {
         cvvNumber: req.body.cvvNumber,
         user: datauser,
         shipping: dataship
-    }
+    };
 
     [errpay, datapay] = await to(iPayTotal.makePayment(paydata));
     if(errpay) return ReE(res, errship, 422);
