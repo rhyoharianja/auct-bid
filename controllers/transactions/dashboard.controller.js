@@ -88,25 +88,27 @@ const countDataBidder = async function (req, res) {
         dm['monthNum'] = formatDates(dateB);
         dm['monthName'] = mName;
         if (stores !== undefined || stores.length != 0) {
-            stores.forEach( store => {
+            let getcount;
+            stores.forEach( async function(store, index, arr) {
                 console.log(store);
                 console.log('storee.monthNum ' + store.monthNum);
                 console.log('dm.monthnum' + dm['monthNum']);
                 if(store.monthNum == dm['monthNum']) {
                     console.log('nemu');
-                    dm['count'] = store.count;
+                    gecount = store.count;
                 } else {
                     console.log('ga nemu');
+                    getcount = 0;
                 }
             });
+            dm['count'] = getcount;
+        } else {
+            dm['count'] = 0;
         }
         result.push(dm);
 
     }
-
-    console.log(result);
-
-    return ReS(res, {message:'Successfully Load Room bidder Counter', data:stores}, 201);
+    return ReS(res, {message:'Successfully Load Room bidder Counter', data:result}, 201);
 }
 module.exports.countDataBidder = countDataBidder;
 
