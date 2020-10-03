@@ -85,6 +85,7 @@ const countDataBidder = async function (req, res) {
         var dateC = new Date();
         var gcount;
         if (stores !== undefined || stores.length != 0) {
+            console.log(stores[0]);
             let getcount;
             stores.forEach( async function(store, index, arr) {
                 console.log(store);
