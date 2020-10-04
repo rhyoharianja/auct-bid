@@ -744,11 +744,11 @@ const payOrderBid = async function(req, res) {
     };
 
     [errpay, datapay] = await to(iPayTotal.makePayment(paydata));
+
     if(errpay) return ReE(res, errpay, 422);
-    console.log(datapay);
 
     if(datapay.status === 'fail') {
-        return ReS(res, { message: datapay.message, data: datapay }, 406);
+        return ReS(res, { message: datapay.message, data: datapay }, 201);
     } else if(datapay.status === 'failed'){
         pstatus = 14
     } else {
