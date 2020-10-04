@@ -748,7 +748,7 @@ const payOrderBid = async function(req, res) {
     if(errpay) return ReE(res, errpay, 422);
 
     if(datapay.status === 'fail') {
-        return ReS(res, { message: datapay.message, data: datapay }, 201);
+        return ReE(res, { message: datapay.message, data: datapay }, 201);
     } else if(datapay.status === 'failed'){
         pstatus = 14
     } else {
