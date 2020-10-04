@@ -41,7 +41,9 @@ const makePayment = async function (transactions){
         'shipping_city' : transactions.shipping.city,
         'shipping_zip' : transactions.shipping.zipPostCode,
         'shipping_email' : transactions.shipping.email,
-        'shipping_phone_no' : transactions.shipping.phoneNumber
+        'shipping_phone_no' : transactions.shipping.phoneNumber,
+        'response_url': "http://31.207.39.156:3033/v1/payment/response/callback",
+        'webhook_url': "http://31.207.39.156:3033/v1/payment/response/webhook",
     };
 
     let res = await axios.post(api_url, data);
