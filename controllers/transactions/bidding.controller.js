@@ -762,8 +762,8 @@ const payOrderBid = async function(req, res) {
             payment_trxid: datapay.order_id,
             paymentStatus: pstatus,
             paymentDate: new Date(),
-            payment_status: datapay.status,
-            payment_desc: datapay.message
+            ipayment_status: datapay.status,
+            ipayment_desc: datapay.message
         },
         {where: {id: req.body.id} }
     ));

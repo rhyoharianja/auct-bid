@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
                   defaultValue: 1,
                 },
     payment_trxid: DataTypes.DATE,
-    payment_status: DataTypes.STRING,
-    payment_desc: DataTypes.STRING
+    ipayment_status: DataTypes.STRING,
+    ipayment_desc: DataTypes.STRING
   }, {});
   BiddingTransactions.associate = function(models) {
     BiddingTransactions.belongsTo(models.Stores, { foreignKey: 'storeId' });

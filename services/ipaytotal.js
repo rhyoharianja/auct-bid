@@ -110,8 +110,8 @@ const response3DSecure = async function (req, res) {
                 payment_trxid: req.query.order_id,
                 paymentStatus: 12,
                 paymentDate: new Date(),
-                payment_status: req.query.status,
-                payment_desc: req.query.message
+                ipayment_status: req.query.status,
+                ipayment_desc: req.query.message
             },
             {where: {id: req.query.sulte_apt_no} }
         ));
