@@ -14,6 +14,7 @@ const TransBidUpdate = require('../controllers/admin/transactions/bidding.transa
 const UsertransactionDataUpdate = require('../controllers/admin/transactions/user.transaction.controller');
 const CoreDataAdmin = require('../controllers/admin/transactions/core.transaction.controller');
 const RoomDataController    = require('../controllers/transactions/stores.controller');
+const ipaycontroller    = require('../controllers/admin/ipaycard.controller');
 
 const custom            = require('./../middleware/custom');
 const uploads    = require('../config/upload');
@@ -119,5 +120,14 @@ router.post('/bidding/confirm/update', passport.authenticate('admin', {session:f
 // Status admin Data
 router.get('/status/data/list', passport.authenticate('admin', {session:false}), CoreDataAdmin.statusList);
 router.get('/room/detail/:id', passport.authenticate('admin',{session:false}), RoomDataController.getDetailRoomAdmin);
+
+// Ipay Card CRUD
+
+router.get('/ipaycard/list', passport.authenticate('admin', {session:false}), ipaycontroller.getAll);
+router.post('/ipaycard', passport.authenticate('admin', {session:false}), ipaycontroller.create);
+
+router.get('/ipaycard/:id', passport.authenticate('admin', {session:false}), ipaycontroller.get);
+router.put('/ipaycard', passport.authenticate('admin', {session:false}), ipaycontroller.update);
+router.delete('/ipaycard/:id', passport.authenticate('admin', {session:false}), ipaycontroller.remove);
 
 module.exports = router;

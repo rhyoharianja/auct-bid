@@ -2,6 +2,9 @@ require('dotenv').config();
 
 const axios = require('axios')
 const { to, ReE, ReS, TE }    = require('../services/util.service');
+const { BiddingTransactions } = require('../models');
+const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 const api_url = process.env.IPAYTOTAL_API;
 const api_key = process.env.IPAYTOTLA_KEY;
@@ -42,7 +45,6 @@ const makePayment = async function (transactions){
         'response_url' : 'http://31.207.39.156:3033/v1/payment/response/callback',
         'webhook_url' : 'http://31.207.39.156:3033/v1/payment/response/webhook',
     };
-    console.log(data);
 
     let res = await axios.post(api_url, data);
 
@@ -86,19 +88,36 @@ const makePaymentTest = async function (req, res){
     //     response_url: "http://31.207.39.156:3033/v1/payment/response/callback",
     //     webhook_url: "http://31.207.39.156:3033/v1/payment/response/webhook",
     // };
-    console.log('data request =================================');
-    console.log(datareq);
+    if(resdata.data.status === 'fail') {
+        return ReS(res, { message: resdata.data.message, data: resdata.data }, 406);
+    } else if(resdata.data.status === 'failed'){
+        pstatus = 14
+    } else {
+        pstatus = 12
+    }
+    
     let resdata = await axios.post(api_url, datareq);
-
-    console.log('data response =================================');
-    console.log(resdata.data);
 
     return ReS(res,{message: 'Success Make Payment', data: resdata.data }, 201);
 }
 module.exports.makePaymentTest = makePaymentTest;
 
 const response3DSecure = async function (req, res) {
+    let err, payOrder;
     if(req.query.status == 'success') {
+        [err, payOrder] = await to(BiddingTransactions.update(
+            {
+                payment_trxid: req.query.order_id,
+                paymentStatus: 12,
+                paymentDate: new Date(),
+                payment_status: req.query.status,
+                payment_desc: req.query.message
+            },
+            {where: {id: req.query.sulte_apt_no} }
+        ));
+    
+        if(err) return ReE(res, err, 422);
+
         return ReS(res,{message: 'Success Make Payment', data:req.query}, 201);
     } else {
         return ReS(res,{message: 'Failed Make Payment', data:req.query}, 422);

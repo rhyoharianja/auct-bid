@@ -76,6 +76,7 @@ const countDataBidder = async function (req, res) {
                 [Op.lte]: new Date().toISOString()
             }
         },
+        raw: true
      }));
     if(err) return ReE(res, err, 422);
     let result = [];
@@ -85,16 +86,11 @@ const countDataBidder = async function (req, res) {
         var dateC = new Date();
         var gcount;
         if (stores !== undefined || stores.length != 0) {
-            console.log(stores[0]);
             let getcount;
             stores.forEach( async function(store, index, arr) {
-                console.log(store);
-                console.log('storee.monthNum ' + store.monthNum);
                 if(store.monthNum == formatDates(dateB)) {
-                    console.log('nemu');
-                    gecount = store.count;
+                    getcount = store.count;
                 } else {
-                    console.log('ga nemu');
                     getcount = 0;
                 }
             });

@@ -747,12 +747,12 @@ const payOrderBid = async function(req, res) {
     if(errpay) return ReE(res, errpay, 422);
     console.log(datapay);
 
-    if(datapay.status == 'fail') {
+    if(datapay.status === 'fail') {
         return ReS(res, { message: datapay.message, data: datapay }, 406);
-    } else if(datapay.status == 'failed'){
+    } else if(datapay.status === 'failed'){
         pstatus = 14
     } else {
-        psattus = 12
+        pstatus = 12
     }
 
     [err, payOrder] = await to(BiddingTransactions.update(
@@ -761,10 +761,13 @@ const payOrderBid = async function(req, res) {
             paymentType: req.body.card_type,
             payment_trxid: datapay.order_id,
             paymentStatus: pstatus,
-            paymentDate: new Date()
+            paymentDate: new Date(),
+            payment_status: datapay.status,
+            payment_desc: datapay.message
         },
         {where: {id: req.body.id} }
     ));
+
     if(err) return ReE(res, err, 422);
     
     res.io.emit("userupdatebid", payOrder);
