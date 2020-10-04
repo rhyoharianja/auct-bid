@@ -100,7 +100,7 @@ const newproductStartOn10Menuites = async function (req, res) {
     
         let alluser = [];
         users.forEach( async function(user, index, arr){
-            alluser.push(user.User.fcm_reg_code);
+            if(user.User.fcm_reg_code !== undefined || user.User.fcm_reg_code !== "" ) alluser.push(user.User.fcm_reg_code);
         });
 
         let errprod, getprod;
