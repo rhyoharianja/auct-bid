@@ -745,6 +745,8 @@ const payOrderBid = async function(req, res) {
 
     [errpay, datapay] = await to(iPayTotal.makePayment(paydata));
 
+    console.log(datapay);
+
     if(errpay) return ReE(res, errpay, 422);
 
     if(datapay.status === 'fail') {
