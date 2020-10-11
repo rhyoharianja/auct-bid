@@ -126,10 +126,24 @@ const response3DSecure = async function (req, res) {
 module.exports.response3DSecure = response3DSecure;
 
 const webhookResponse = async function (req, res) {
-    if(req.body.transaction_status == 'success') {
-        return ReS(res,{message: 'Success Make Payment', data:req.body}, 201);
+    let err, payOrder;
+    if(req.query.status == 'success') {
+        [err, payOrder] = await to(BiddingTransactions.update(
+            {
+                payment_trxid: req.query.order_id,
+                paymentStatus: 12,
+                paymentDate: new Date(),
+                ipayment_status: req.query.status,
+                ipayment_desc: req.query.message
+            },
+            {where: {id: req.query.sulte_apt_no} }
+        ));
+    
+        if(err) return ReE(res, err, 422);
+
+        return ReS(res,{message: 'Success Make Payment', data:req.query}, 201);
     } else {
-        return ReS(res,{message: 'Failed Make Payment', data:req.body}, 422);
+        return ReS(res,{message: 'Failed Make Payment', data:req.query}, 422);
     }
 }
 module.exports.webhookResponse = webhookResponse;
