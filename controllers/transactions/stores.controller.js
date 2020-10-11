@@ -290,10 +290,7 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                                 model: ShippingDetails,
                                 include: [
                                     {
-                                        model: ShippingTypes,
-                                        on: {
-                                            '$winner.ShippingDetails.country$': { [Op.col]: 'winner.ShippingDetails.ShippingTypes.shippingCode' },
-                                        },
+                                        model: ShippingTypes
                                     }
                                 ]
                             }

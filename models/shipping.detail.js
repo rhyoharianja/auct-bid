@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     state: DataTypes.STRING
   }, {});
   ShippingDetails.associate = function(models) {
-    // associations can be defined here
+    ShippingDetails.belongsTo(models.ShippingTypes, { foreignKey: 'shippingType' });
   };
 
   ShippingDetails.prototype.toWeb = function () {
