@@ -5,10 +5,13 @@ const { Stores,
         KeyTransactions, 
         ShippingDetails, 
         Uploads, 
-        StatusDesc } = require('../../models');
+        StatusDesc,
+        ShippingTypes
+     } = require('../../models');
 const { to, ReE, ReS } = require('../../services/util.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
+const shippingType = require('../../models/shipping.type');
 
 const ListRoomBidHasWinner = async function (req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -86,7 +89,7 @@ const ListRoomBidHasWinner = async function (req, res) {
                                 },
                             }, 
                             {
-                                model: ShippingDetails,
+                                model: ShippingDetails
                             }
                         ]
                     },
@@ -285,6 +288,11 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                             },
                             {
                                 model: ShippingDetails,
+                                include: [
+                                    {
+                                        model: ShippingTypes
+                                    }
+                                ]
                             }
                         ]
                     },
