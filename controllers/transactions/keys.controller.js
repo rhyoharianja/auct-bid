@@ -89,9 +89,11 @@ const payKey = async function(req, res) {
     
     [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
         key.push(val.id);
+        let errkeys, getkeys;
+        getkeys = Keys.findOne({where: {id: val.keyId} });
         let paydata = {
-            id: req.body.id,
-            amount: req.body.amount,
+            id: val.id,
+            amount: getkeys.price,
             currency: req.body.currency,
             card_type: req.body.card_type,
             card_no: req.body.card_no,
@@ -103,11 +105,7 @@ const payKey = async function(req, res) {
             shipping: dataship
         };
         let keyVals = 'key';
-        [errpay, datapay] = await to(iPayTotal.makePayment(paydata, keyVals));
-
-        console.log(errpay);
-    
-        if(errpay) return ReE(res, errpay, 422);
+        datapay = iPayTotal.makePayment(paydata, keyVals);
     
         console.log(datapay);
     
@@ -131,7 +129,8 @@ const payKey = async function(req, res) {
             ipayment_desc: datapay.message
         },{
             where:{
-                id: val.id
+                id: val.id,
+                keyId: val.keyId
             },
             return: true
         });
