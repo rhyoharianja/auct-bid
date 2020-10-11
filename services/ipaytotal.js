@@ -120,7 +120,17 @@ const response3DSecure = async function (req, res) {
 
         return ReS(res,{message: 'Success Make Payment', data:req.query}, 201);
     } else {
-        return ReS(res,{message: 'Failed Make Payment', data:req.query}, 422);
+        [err, payOrder] = await to(BiddingTransactions.update(
+            {
+                payment_trxid: req.query.order_id,
+                paymentStatus: 15,
+                paymentDate: new Date(),
+                ipayment_status: req.query.status,
+                ipayment_desc: req.query.message
+            },
+            {where: {id: req.query.sulte_apt_no} }
+        ));
+        return ReE(res,{message: 'Failed Make Payment', data:req.query}, 201);
     }
 }
 module.exports.response3DSecure = response3DSecure;
@@ -143,7 +153,17 @@ const webhookResponse = async function (req, res) {
 
         return ReS(res,{message: 'Success Make Payment', data:req.query}, 201);
     } else {
-        return ReS(res,{message: 'Failed Make Payment', data:req.query}, 422);
+        [err, payOrder] = await to(BiddingTransactions.update(
+            {
+                payment_trxid: req.query.order_id,
+                paymentStatus: 15,
+                paymentDate: new Date(),
+                ipayment_status: req.query.status,
+                ipayment_desc: req.query.message
+            },
+            {where: {id: req.query.sulte_apt_no} }
+        ));
+        return ReE(res,{message: 'Failed Make Payment', data:req.query}, 201);
     }
 }
 module.exports.webhookResponse = webhookResponse;
