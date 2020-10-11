@@ -290,7 +290,10 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
                                 model: ShippingDetails,
                                 include: [
                                     {
-                                        model: ShippingTypes
+                                        model: ShippingTypes,
+                                        on: {
+                                            '$winner.ShippingDetails.country$': { [Op.col]: 'winner.ShippingDetails.ShippingTypes.shippingCode' },
+                                        },
                                     }
                                 ]
                             }
@@ -310,6 +313,7 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
     console.log(err);
 
     if(err) return ReE(res, err, 422);
+    console.log(rooms);
 
     return ReS(res, {message:'Successfully Load Current User Bids List', data:rooms}, 201);
 }
