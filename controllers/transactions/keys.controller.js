@@ -1,5 +1,5 @@
 const { Keys } = require('../../models');
-const { KeyTransactions } = require('../../models');
+const { KeyTransactions, ShippingDetails, ShippingTypes } = require('../../models');
 const { KeyTransactionsLogs } = require('../../models');
 const iPayTotal = require('../../services/ipaytotal');
 const { to, ReE, ReS } = require('../../services/util.service');
@@ -75,6 +75,11 @@ const payKey = async function(req, res) {
         where: {
             userId: user.id
         },
+        include: [
+            {
+                model: ShippingTypes
+            }
+        ],
         order: [[ 'createdAt', 'DESC' ]]
     }));
     if(errship) return ReE(res, errship, 422);
@@ -100,7 +105,7 @@ const payKey = async function(req, res) {
             ccExpiryMonth: req.body.ccExpiryMonth,
             ccExpiryYear: req.body.ccExpiryYear,
             cvvNumber: req.body.cvvNumber,
-            country: req.body.country,
+            country: dataship.ShippingTypes.shippingCode,
             user: datauser,
             shipping: dataship
         };
