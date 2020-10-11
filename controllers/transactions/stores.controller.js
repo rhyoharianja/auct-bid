@@ -109,7 +109,6 @@ const ListRoomBidHasWinner = async function (req, res) {
 
     return ReS(res, {message:'Successfully Load Current User Bids List', data:rooms}, 201);
 }
-
 module.exports.ListRoomBidHasWinner = ListRoomBidHasWinner;
 
 const getDetailRoomAdmin = async function (req, res) {
@@ -215,7 +214,6 @@ const getDetailRoomAdmin = async function (req, res) {
 
     return ReS(res, {message:'Successfully Load Current User Bids Detail', data:rooms}, 201);
 }
-
 module.exports.getDetailRoomAdmin = getDetailRoomAdmin;
 
 const ListRoomBidHasWinnerUser = async function (req, res) {
@@ -314,5 +312,4 @@ const ListRoomBidHasWinnerUser = async function (req, res) {
 
     return ReS(res, {message:'Successfully Load Current User Bids List', data:rooms}, 201);
 }
-
 module.exports.ListRoomBidHasWinnerUser = ListRoomBidHasWinnerUser;

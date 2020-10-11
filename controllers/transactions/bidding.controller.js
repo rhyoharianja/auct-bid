@@ -742,8 +742,8 @@ const payOrderBid = async function(req, res) {
         user: datauser,
         shipping: dataship
     };
-
-    [errpay, datapay] = await to(iPayTotal.makePayment(paydata));
+    let keyVals =  'order';
+    [errpay, datapay] = await to(iPayTotal.makePayment(paydata, keyVals));
 
     console.log(errpay);
     

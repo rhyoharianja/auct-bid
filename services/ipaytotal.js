@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const axios = require('axios')
 const { to, ReE, ReS, TE }    = require('../services/util.service');
-const { BiddingTransactions } = require('../models');
+const { BiddingTransactions, KeyTransactions } = require('../models');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
@@ -11,13 +11,13 @@ const api_key = process.env.IPAYTOTLA_KEY;
 
 const api_url_detail = process.env.IPAYTOTAL_API_DETAIL;
 
-const makePayment = async function (transactions){
+const makePayment = async function (transactions, keyVals){
     let data = {
         'api_key' : api_key,
         'first_name' : transactions.shipping.firstName,
         'last_name' : transactions.shipping.firstName,
         'address' : transactions.shipping.address,
-        'sulte_apt_no' : transactions.id,
+        'sulte_apt_no' : keyVals + '-' + transactions.id,
         'country' : transactions.country,
         'state' : transactions.shipping.state,
         'city' : transactions.shipping.city,
@@ -55,39 +55,6 @@ module.exports.makePayment = makePayment;
 const makePaymentTest = async function (req, res){
     let err, user, datareq;
     datareq = req.body;
-    // let data = {
-    //     api_key: api_key,
-    //     first_name: "First Name",
-    //     last_name: "Last Name",
-    //     address: "Address",
-    //     sulte_apt_no: "ORDER-78544646461235",
-    //     country: "US",
-    //     state: "NY",
-    //     city: "New York",
-    //     zip: "38564",
-    //     ip_address: "31.207.39.156",
-    //     birth_date: "06/12/1990",
-    //     email: "test@gmail.com",
-    //     phone_no: "+91999999999",
-    //     card_type: "2",
-    //     amount: "10.00",
-    //     currency: "USD",
-    //     card_no: "4242424242424242",
-    //     ccExpiryMonth: "02",
-    //     ccExpiryYear: "2020",
-    //     cvvNumber: "123",
-    //     shipping_first_name: "First Name",
-    //     shipping_last_name: "Last Name",
-    //     shipping_address: "Address",
-    //     shipping_country: "US",
-    //     shipping_state: "NY",
-    //     shipping_city: "New York",
-    //     shipping_zip: "35656",
-    //     shipping_email: "test@gmail.com",
-    //     shipping_phone_no: "+91999999999",
-    //     response_url: "http://31.207.39.156:3033/v1/payment/response/callback",
-    //     webhook_url: "http://31.207.39.156:3033/v1/payment/response/webhook",
-    // };
     if(resdata.data.status === 'fail') {
         return ReS(res, { message: resdata.data.message, data: resdata.data }, 406);
     } else if(resdata.data.status === 'failed'){
@@ -103,67 +70,135 @@ const makePaymentTest = async function (req, res){
 module.exports.makePaymentTest = makePaymentTest;
 
 const response3DSecure = async function (req, res) {
-    let err, payOrder;
-    if(req.query.status == 'success') {
-        [err, payOrder] = await to(BiddingTransactions.update(
-            {
-                payment_trxid: req.query.order_id,
-                paymentStatus: 12,
-                paymentDate: new Date(),
-                ipayment_status: req.query.status,
-                ipayment_desc: req.query.message
-            },
-            {where: {id: req.query.sulte_apt_no} }
-        ));
+    let err, payOrder, dats;
+    dats = req.query.sulte_apt_no.split('-');
+    if(dats[0] == 'order'){
+        if(req.query.status == 'success') {
+            [err, payOrder] = await to(BiddingTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 12,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+        
+            if(err) return ReE(res, err, 422);
     
-        if(err) return ReE(res, err, 422);
-
-        return ReS(res,{message: 'Success Make Payment', data:req.query}, 201);
+            return ReS(res,{message: 'Success Make Payment Order', data:req.query}, 201);
+        } else {
+            [err, payOrder] = await to(BiddingTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 15,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+            if(err) return ReE(res, err, 422);
+            return ReE(res,{message: 'Failed Make Payment Order', data:req.query}, 201);
+        }
     } else {
-        [err, payOrder] = await to(BiddingTransactions.update(
-            {
-                payment_trxid: req.query.order_id,
-                paymentStatus: 15,
-                paymentDate: new Date(),
-                ipayment_status: req.query.status,
-                ipayment_desc: req.query.message
-            },
-            {where: {id: req.query.sulte_apt_no} }
-        ));
-        return ReE(res,{message: 'Failed Make Payment', data:req.query}, 201);
+        if(req.query.status == 'success') {
+            [err, payOrder] = await to(KeyTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 12,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+        
+            if(err) return ReE(res, err, 422);
+    
+            return ReS(res,{message: 'Success Make Payment Keys', data:req.query}, 201);
+        } else {
+            [err, payOrder] = await to(KeyTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 15,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+            if(err) return ReE(res, err, 422);
+            return ReE(res,{message: 'Failed Make Payment Keys', data:req.query}, 201);
+        }
     }
 }
 module.exports.response3DSecure = response3DSecure;
 
 const webhookResponse = async function (req, res) {
-    let err, payOrder;
-    if(req.query.status == 'success') {
-        [err, payOrder] = await to(BiddingTransactions.update(
-            {
-                payment_trxid: req.query.order_id,
-                paymentStatus: 12,
-                paymentDate: new Date(),
-                ipayment_status: req.query.status,
-                ipayment_desc: req.query.message
-            },
-            {where: {id: req.query.sulte_apt_no} }
-        ));
+    let err, payOrder, dats;
+    dats = req.query.sulte_apt_no.split('-');
+    if(dats[0] == 'order'){
+        if(req.query.status == 'success') {
+            [err, payOrder] = await to(BiddingTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 12,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+        
+            if(err) return ReE(res, err, 422);
     
-        if(err) return ReE(res, err, 422);
-
-        return ReS(res,{message: 'Success Make Payment', data:req.query}, 201);
+            return ReS(res,{message: 'Success Make Payment Order', data:req.query}, 201);
+        } else {
+            [err, payOrder] = await to(BiddingTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 15,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+            if(err) return ReE(res, err, 422);
+            return ReE(res,{message: 'Failed Make Payment Order', data:req.query}, 201);
+        }
     } else {
-        [err, payOrder] = await to(BiddingTransactions.update(
-            {
-                payment_trxid: req.query.order_id,
-                paymentStatus: 15,
-                paymentDate: new Date(),
-                ipayment_status: req.query.status,
-                ipayment_desc: req.query.message
-            },
-            {where: {id: req.query.sulte_apt_no} }
-        ));
-        return ReE(res,{message: 'Failed Make Payment', data:req.query}, 201);
+        if(req.query.status == 'success') {
+            [err, payOrder] = await to(KeyTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 12,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+        
+            if(err) return ReE(res, err, 422);
+    
+            return ReS(res,{message: 'Success Make Payment Keys', data:req.query}, 201);
+        } else {
+            [err, payOrder] = await to(KeyTransactions.update(
+                {
+                    payment_trxid: req.query.order_id,
+                    paymentStatus: 15,
+                    paymentDate: new Date(),
+                    ipayment_status: req.query.status,
+                    ipayment_desc: req.query.message
+                },
+                {where: {id: dats[1]} }
+            ));
+            if(err) return ReE(res, err, 422);
+            return ReE(res,{message: 'Failed Make Payment Keys', data:req.query}, 201);
+        }
     }
 }
 module.exports.webhookResponse = webhookResponse;
