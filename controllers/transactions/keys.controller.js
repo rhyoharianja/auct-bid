@@ -101,9 +101,11 @@ const payKey = async function(req, res) {
     let getPrice = 0;
 
     ktf.forEach(async function(getKey, index, arr){
+        let errketKey, getkeys;
         console.log(getKey);
         key.push(getKey.id);
-        let getkeys = Keys.findOne({where: {id: getKey.keyId} });
+        [errketKey, getkeys] = await to(Keys.findOne({where: {id: getKey.keyId} }));
+
         console.log(getkeys);
         console.log(getkeys.price);
         getPrice += getkeys.price;
