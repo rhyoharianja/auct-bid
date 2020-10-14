@@ -173,8 +173,8 @@ const payKey = async function(req, res) {
     //       id: key
     //     }
     // }));
-
-    return ReS(res, {message:'Successfully Pay Current Key (s)', data:datapay}, 201);
+    console.log(datapay);
+    return ReS(res, {message:'Successfully Pay Current Key (s)', data:ktu, result:datapay }, 201);
 }
 module.exports.payKey = payKey;
 
