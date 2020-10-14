@@ -91,39 +91,52 @@ const payKey = async function(req, res) {
           paymentStatus: 10
         }
     }));
-    
-    [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
-        key.push(val.id);
-        let errkeys, getkeys;
-        getkeys = Keys.findOne({where: {id: val.keyId} });
-        let paydata = {
-            id: val.id,
-            amount: getkeys.price,
-            currency: req.body.currency,
-            card_type: req.body.card_type,
-            card_no: req.body.card_no,
-            ccExpiryMonth: req.body.ccExpiryMonth,
-            ccExpiryYear: req.body.ccExpiryYear,
-            cvvNumber: req.body.cvvNumber,
-            country: dataship.ShippingTypes.shippingCode,
-            user: datauser,
-            shipping: dataship
-        };
-        let keyVals = 'key';
-        datapay = iPayTotal.makePayment(paydata, keyVals);
-    
-        console.log(datapay);
-    
-        if(datapay.status === 'fail') {
-            return ReE(res, { message: datapay.message, data: datapay }, 201);
-        } else if(datapay.status === 'failed'){
-            pstatus = 15
-        } else if(datapay.status === '3d_redirect') {
-            pstatus = 14
-        } else {
-            pstatus = 12
-        }
 
+    if(err) return ReE(res, err, 422);
+
+    let getPrice = [];
+
+    ktf.forEach(async function(getKey, index, arr){
+        key.push(getKey.id);
+        let getkeys;
+        getkeys = Keys.findOne({where: {id: val.keyId} });
+        getPrice.push(getkeys.price);
+    })
+
+    let refIdKey = key.join("-");
+
+    let paydata = {
+        id: refIdKey,
+        amount: sum(getPrice),
+        currency: req.body.currency,
+        card_type: req.body.card_type,
+        card_no: req.body.card_no,
+        ccExpiryMonth: req.body.ccExpiryMonth,
+        ccExpiryYear: req.body.ccExpiryYear,
+        cvvNumber: req.body.cvvNumber,
+        country: dataship.ShippingTypes.shippingCode,
+        user: datauser,
+        shipping: dataship
+    };
+
+    let keyVals = 'key';
+    
+    datapay = iPayTotal.makePayment(paydata, keyVals);
+
+    console.log(datapay);
+
+    if(datapay.status === 'fail') {
+        return ReE(res, { message: datapay.message, data: datapay }, 201);
+    } else if(datapay.status === 'failed'){
+        pstatus = 15
+    } else if(datapay.status === '3d_redirect') {
+        pstatus = 14
+    } else {
+        pstatus = 12
+    }
+
+    [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
+        
         return KeyTransactions.update({
             paymentMethod: 1,
             paymentType: req.body.card_type,
