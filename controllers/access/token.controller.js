@@ -80,6 +80,8 @@ const changePassword = async function (req, res) {
     
     let newpassword = hash;
 
+    console.log('password baru : ' + newpassword);
+
     [err, data] = await to(User.update({
       password: newpassword
     }, {
