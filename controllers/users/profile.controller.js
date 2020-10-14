@@ -53,6 +53,9 @@ const update = async function (req, res) {
     let err, user, data, err2, shipdata,shipdatas;
     user = req.user;
     data = req.body;
+    data = {
+        zipcode: req.body.zipPostCode
+    };
     user.set(data);
     if (Array.isArray(req.files) && req.files.length > 0 ) {
         user.set({avatar : '/uploads/' + req.files[0].filename});
