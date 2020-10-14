@@ -1,4 +1,4 @@
-const { Keys } = require('../../models');
+const { Keys, User } = require('../../models');
 const { KeyTransactions, ShippingDetails, ShippingTypes } = require('../../models');
 const { KeyTransactionsLogs } = require('../../models');
 const iPayTotal = require('../../services/ipaytotal');
