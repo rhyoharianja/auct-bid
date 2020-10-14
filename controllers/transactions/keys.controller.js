@@ -118,11 +118,12 @@ const payKey = async function(req, res) {
 
     console.log(refIdKey);
 
-    console.log(getPrice);
+    let setprice = getPrice;
+    console.log(setprice);
 
     let paydata = {
         id: refIdKey,
-        amount: getPrice,
+        amount: setprice,
         currency: req.body.currency,
         card_type: req.body.card_type,
         card_no: req.body.card_no,
