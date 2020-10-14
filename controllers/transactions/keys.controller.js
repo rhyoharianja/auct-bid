@@ -83,7 +83,10 @@ const payKey = async function(req, res) {
         ],
         order: [[ 'createdAt', 'DESC' ]]
     }));
+
     if(errship) return ReE(res, errship, 422);
+
+    console.log(dataship);
 
     let key = [];
     [err, ktf] = await to(KeyTransactions.findAll({
