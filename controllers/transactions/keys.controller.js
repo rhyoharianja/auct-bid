@@ -25,7 +25,7 @@ const userKeyList = async function(req, res) {
                 include: Keys,
                 group: ['KeyTransactions.keyId'],
                 attributes: ['keyId', [Sequelize.fn('COUNT', 'KeyTransactions.keyId'), 'count']],
-                where: { buyerId : user.id, useStatus : 0 }
+                where: { buyerId : user.id, useStatus : 0, paymentStatus: 12 }
             }
         )
     );
@@ -120,7 +120,7 @@ const payKey = async function(req, res) {
     };
 
     let keyVals = 'key';
-    
+
     datapay = iPayTotal.makePayment(paydata, keyVals);
 
     console.log(datapay);
@@ -128,9 +128,9 @@ const payKey = async function(req, res) {
     if(datapay.status === 'fail') {
         return ReE(res, { message: datapay.message, data: datapay }, 201);
     } else if(datapay.status === 'failed'){
-        pstatus = 15
+        pstatus = 10
     } else if(datapay.status === '3d_redirect') {
-        pstatus = 14
+        pstatus = 10
     } else {
         pstatus = 12
     }
