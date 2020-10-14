@@ -126,7 +126,7 @@ const payKey = async function(req, res) {
         ccExpiryMonth: req.body.ccExpiryMonth,
         ccExpiryYear: req.body.ccExpiryYear,
         cvvNumber: req.body.cvvNumber,
-        country: dataship.ShippingTypes.shippingCode,
+        country: user.country,
         user: datauser,
         shipping: dataship
     };
