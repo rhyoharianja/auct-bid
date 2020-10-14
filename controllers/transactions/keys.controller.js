@@ -69,6 +69,7 @@ const payKey = async function(req, res) {
     user = req.user.dataValues;
     
     [erruser, datauser] = await to(User.findOne({where: {id: user.id} }));
+
     if(erruser) return ReE(res, erruser, 422);
 
     [errship, dataship] = await to(ShippingDetails.findOne({ 
@@ -94,16 +95,23 @@ const payKey = async function(req, res) {
 
     if(err) return ReE(res, err, 422);
 
+    console.log(ktf);
+    
     let getPrice = [];
 
     ktf.forEach(async function(getKey, index, arr){
+        console.log(getKey);
         key.push(getKey.id);
         let getkeys;
         getkeys = Keys.findOne({where: {id: val.keyId} });
         getPrice.push(getkeys.price);
     })
 
+    console.log(key);
+
     let refIdKey = key.join("-");
+    console.log(refIdKey);
+    console.log(getPrice);
 
     let paydata = {
         id: refIdKey,
@@ -156,11 +164,11 @@ const payKey = async function(req, res) {
 
     if(err) return ReE(res, err, 422);
     
-    [err, ktu] = await to(KeyTransactions.findAll({
-        where: {
-          id: key
-        }
-    }));
+    // [err, ktu] = await to(KeyTransactions.findAll({
+    //     where: {
+    //       id: key
+    //     }
+    // }));
 
     return ReS(res, {message:'Successfully Pay Current Key (s)', data:ktu}, 201);
 }
