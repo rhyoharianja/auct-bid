@@ -104,7 +104,8 @@ const payKey = async function(req, res) {
         console.log(getKey);
         key.push(getKey.id);
         let getkeys = Keys.findOne({where: {id: getKey.keyId} });
-        console.log(getKeys);
+        console.log(getkeys);
+        console.log(getkeys.price);
         getPrice += getkeys.price;
     })
     console.log("Key nya dibawah : ");
@@ -114,7 +115,7 @@ const payKey = async function(req, res) {
 
 
     console.log(refIdKey);
-    
+
     console.log(getPrice);
 
     let paydata = {
