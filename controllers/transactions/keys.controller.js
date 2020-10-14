@@ -128,9 +128,9 @@ const payKey = async function(req, res) {
     if(datapay.status === 'fail') {
         return ReE(res, { message: datapay.message, data: datapay }, 201);
     } else if(datapay.status === 'failed'){
-        pstatus = 10
+        pstatus = 15
     } else if(datapay.status === '3d_redirect') {
-        pstatus = 10
+        pstatus = 14
     } else {
         pstatus = 12
     }
