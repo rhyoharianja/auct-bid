@@ -71,7 +71,7 @@ const changePassword = async function (req, res) {
     let salt, hash;
 
     let userToken = req.body;
-    console.lo(userToken);
+    console.log(userToken);
     [err, salt] = await to(bcrypt.genSalt(10));
     if(err) return ReE(res, err, 422);
     
