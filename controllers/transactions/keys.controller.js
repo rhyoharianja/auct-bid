@@ -97,24 +97,24 @@ const payKey = async function(req, res) {
     }));
 
     if(err) return ReE(res, err, 422);
-
-    console.log(ktf);
     
     let getPrice = 0;
 
     ktf.forEach(async function(getKey, index, arr){
         console.log(getKey);
         key.push(getKey.id);
-        let getkeys;
-        getkeys = Keys.findOne({where: {id: getKey.keyId} });
+        let getkeys = Keys.findOne({where: {id: getKey.keyId} });
+        console.log(getKeys);
         getPrice += getkeys.price;
     })
-
+    console.log("Key nya dibawah : ");
     console.log(key);
 
     let refIdKey = key.join("-");
 
+
     console.log(refIdKey);
+    
     console.log(getPrice);
 
     let paydata = {
@@ -139,11 +139,14 @@ const payKey = async function(req, res) {
 
     if(datapay.status === 'fail') {
         return ReE(res, { message: datapay.message, data: datapay }, 201);
-    } else if(datapay.status === 'failed'){
+    }
+    if(datapay.status === 'failed'){
         pstatus = 15
-    } else if(datapay.status === '3d_redirect') {
+    }
+    if(datapay.status === '3d_redirect') {
         pstatus = 14
-    } else {
+    } 
+    if(datapay.status === 'success') {
         pstatus = 12
     }
 
