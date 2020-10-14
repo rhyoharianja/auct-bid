@@ -97,25 +97,26 @@ const payKey = async function(req, res) {
 
     console.log(ktf);
     
-    let getPrice = [];
+    let getPrice = 0;
 
     ktf.forEach(async function(getKey, index, arr){
         console.log(getKey);
         key.push(getKey.id);
         let getkeys;
-        getkeys = Keys.findOne({where: {id: val.keyId} });
-        getPrice.push(getkeys.price);
+        getkeys = Keys.findOne({where: {id: getKey.keyId} });
+        getPrice += getkeys.price;
     })
 
     console.log(key);
 
     let refIdKey = key.join("-");
+
     console.log(refIdKey);
     console.log(getPrice);
 
     let paydata = {
         id: refIdKey,
-        amount: sum(getPrice),
+        amount: getPrice,
         currency: req.body.currency,
         card_type: req.body.card_type,
         card_no: req.body.card_no,
