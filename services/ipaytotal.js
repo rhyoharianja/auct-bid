@@ -43,7 +43,7 @@ const makePayment = async function (transactions, keyVals){
         'shipping_email' : transactions.shipping.email,
         'shipping_phone_no' : transactions.shipping.phoneNumber,
         'response_url': "http://31.207.39.156:3033/v1/payment/response/callback",
-        'webhook_url': "http://31.207.39.156:3033/v1/payment/response/webhook",
+        // 'webhook_url': "http://31.207.39.156:3033/v1/payment/response/webhook",
     };
 
     let res = await axios.post(api_url, data);
@@ -138,8 +138,8 @@ module.exports.response3DSecure = response3DSecure;
 
 const webhookResponse = async function (req, res) {
     let err, payOrder, dats;
-    console.log(req.query);
-    dats = req.query.sulte_apt_no.split('-');
+    console.log(req.body);
+    dats = req.body.sulte_apt_no.split('-');
     if(dats[0] == 'order'){
         if(req.query.status == 'success') {
             [err, payOrder] = await to(BiddingTransactions.update(
