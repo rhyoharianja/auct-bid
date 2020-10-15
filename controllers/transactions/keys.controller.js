@@ -92,16 +92,22 @@ const payKey = async function(req, res) {
           buyerId: user.id,
           paymentStatus: 10
         },
-        include: Keys
+        include: [
+            {
+                model: Keys
+            }
+        ],
+        raw: true
     }));
 
     if(err) return ReE(res, err, 422);
     
     let getPrice = 0;
 
-    ktf.forEach(async function(getKey, index, arr){
+    ktf.forEach(function(getKey, index, arr){
         key.push(getKey.id);
         console.log(getKey);
+        console.log(getKey.Keys);
         console.log(getKey.Keys.price);
         getPrice += getKey.Keys.price;
     })
