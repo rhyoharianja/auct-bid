@@ -140,7 +140,8 @@ const payKey = async function(req, res) {
     console.log(datapay);
 
     if(datapay.status === 'fail') {
-        return ReE(res, { message: datapay.message, data: datapay }, 201);
+        pstatus = 15
+        // return ReE(res, { message: datapay.message, data: datapay }, 201);
     }
     if(datapay.status === 'failed'){
         pstatus = 15
@@ -172,6 +173,8 @@ const payKey = async function(req, res) {
     }));
 
     if(err) return ReE(res, err, 422);
+
+    if(datapay.status === 'fail' || datapay.status === 'failed') return ReE(res, { message: datapay.message, data: datapay }, 201);
 
     return ReS(res, {message:'Successfully Pay Current Key (s)', data:ktu, result:datapay }, 201);
 }
