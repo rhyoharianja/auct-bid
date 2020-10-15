@@ -96,8 +96,7 @@ const payKey = async function(req, res) {
             {
                 model: Keys
             }
-        ],
-        raw: true
+        ]
     }));
 
     if(err) return ReE(res, err, 422);
