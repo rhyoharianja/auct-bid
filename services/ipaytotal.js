@@ -103,32 +103,49 @@ const response3DSecure = async function (req, res) {
             return ReE(res,{message: 'Failed Make Payment Order', data:req.query}, 201);
         }
     } else {
+        let ktu;
         if(req.query.status == 'success') {
-            [err, payOrder] = await to(KeyTransactions.update(
-                {
-                    payment_trxid: req.query.order_id,
-                    paymentStatus: 12,
-                    paymentDate: new Date(),
-                    ipayment_status: req.query.status,
-                    ipayment_desc: req.query.message
-                },
-                {where: {id: dats[1]} }
-            ));
+            [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
+                console.log(val);
+                if(val !== 0) {
+                    return KeyTransactions.update({
+                        payment_trxid: req.query.order_id,
+                        paymentStatus: 12,
+                        paymentDate: new Date(),
+                        ipayment_status: req.query.status,
+                        ipayment_desc: req.query.message
+                    },{
+                        where:{
+                            id: val
+                        },
+                        return: true
+                    });
+                }
+            }));
         
             if(err) return ReE(res, err, 422);
     
             return ReS(res,{message: 'Success Make Payment Keys', data:req.query}, 201);
         } else {
-            [err, payOrder] = await to(KeyTransactions.update(
-                {
-                    payment_trxid: req.query.order_id,
-                    paymentStatus: 15,
-                    paymentDate: new Date(),
-                    ipayment_status: req.query.status,
-                    ipayment_desc: req.query.message
-                },
-                {where: {id: dats[1]} }
-            ));
+
+            [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
+                console.log(val);
+                if(val !== 0) {
+                    return KeyTransactions.update({
+                        payment_trxid: req.query.order_id,
+                        paymentStatus: 15,
+                        paymentDate: new Date(),
+                        ipayment_status: req.query.status,
+                        ipayment_desc: req.query.message
+                    },{
+                        where:{
+                            id: val
+                        },
+                        return: true
+                    });
+                }
+            }));
+
             if(err) return ReE(res, err, 422);
             return ReE(res,{message: 'Failed Make Payment Keys', data:req.query}, 201);
         }
