@@ -105,7 +105,7 @@ const response3DSecure = async function (req, res) {
     } else {
         let ktu;
         if(req.query.status == 'success') {
-            [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
+            [err, ktu] = await to(Sequelize.Promise.each(dats, function(val, index) {
                 console.log(val);
                 if(val !== 0) {
                     return KeyTransactions.update({
@@ -128,7 +128,7 @@ const response3DSecure = async function (req, res) {
             return ReS(res,{message: 'Success Make Payment Keys', data:req.query}, 201);
         } else {
 
-            [err, ktu] = await to(Sequelize.Promise.each(ktf, function(val, index) {
+            [err, ktu] = await to(Sequelize.Promise.each(dats, function(val, index) {
                 console.log(val);
                 if(val !== 0) {
                     return KeyTransactions.update({
