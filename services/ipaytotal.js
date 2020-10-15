@@ -138,6 +138,7 @@ module.exports.response3DSecure = response3DSecure;
 
 const webhookResponse = async function (req, res) {
     let err, payOrder, dats;
+    console.log(req.query.sulte_apt_no);
     dats = req.query.sulte_apt_no.split('-');
     if(dats[0] == 'order'){
         if(req.query.status == 'success') {

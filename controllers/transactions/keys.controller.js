@@ -64,7 +64,7 @@ const orderKey = async function(req, res) {
 module.exports.orderKey = orderKey;
 
 const payKey = async function(req, res) {
-    let err, ktf, ktu, user, erruser, datauser, errship, dataship, errpay, datapay, pstatus;
+    let err, ktf, ktu, user, erruser, datauser, errship, dataship, pstatus;
 
     user = req.user.dataValues;
     
@@ -138,9 +138,7 @@ const payKey = async function(req, res) {
 
     let keyVals = 'key';
 
-    datapay = iPayTotal.makePayment(paydata, keyVals);
-
-    console.log(datapay);
+    let datapay = iPayTotal.makePayment(paydata, keyVals);
 
     if(datapay.status === 'fail') {
         return ReE(res, { message: datapay.message, data: datapay }, 201);
