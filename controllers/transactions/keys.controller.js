@@ -64,7 +64,7 @@ const orderKey = async function(req, res) {
 module.exports.orderKey = orderKey;
 
 const payKey = async function(req, res) {
-    let err, ktf, ktu, user, erruser, datauser, errship, dataship, pstatus;
+    let err, ktf, ktu, user, erruser, datauser, errship, dataship, pstatus, errpay, datapay;
 
     user = req.user.dataValues;
     
@@ -111,16 +111,9 @@ const payKey = async function(req, res) {
         getPrice += getKey.Key.price;
     })
 
-    console.log("Key nya dibawah : ");
-    console.log(key);
-
     let refIdKey = key.join("-");
 
-
-    console.log(refIdKey);
-
     let setprice = getPrice;
-    console.log(setprice);
 
     let paydata = {
         id: refIdKey,
@@ -138,7 +131,13 @@ const payKey = async function(req, res) {
 
     let keyVals = 'key';
 
-    let datapay = iPayTotal.makePayment(paydata, keyVals);
+    [errpay, datapay] = await to(datapay = iPayTotal.makePayment(paydata, keyVals));
+
+    console.log(errpay);
+    
+    if(errpay) return ReE(res, errpay, 422);
+
+    console.log(datapay);
 
     if(datapay.status === 'fail') {
         return ReE(res, { message: datapay.message, data: datapay }, 201);
