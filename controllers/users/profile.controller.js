@@ -53,10 +53,8 @@ const update = async function (req, res) {
     let err, user, data, err2, shipdata,shipdatas;
     user = req.user;
     data = req.body;
-    data = {
-        zipcode: req.body.zipPostCode
-    };
     user.set(data);
+    user.set({zipcode: req.body.zipPostCode});
     if (Array.isArray(req.files) && req.files.length > 0 ) {
         user.set({avatar : '/uploads/' + req.files[0].filename});
     }
@@ -69,10 +67,10 @@ const update = async function (req, res) {
         shippingData = {
             userId : user.id,
             shippingType : req.body.shippingType,
-            firstName : req.body.firstName,
-            lastname : req.body.lastname,
+            firstName : req.body.first,
+            lastname : req.body.last,
             email : req.body.email,
-            phoneNumber : req.body.phoneNumber,
+            phoneNumber : req.body.phone,
             address : req.body.address,
             city : req.body.city,
             zipPostCode : req.body.zipPostCode,
