@@ -9,6 +9,9 @@ const { Op } = require('sequelize');
 const api_url = process.env.IPAYTOTAL_API;
 const api_key = process.env.IPAYTOTLA_KEY;
 
+
+const url_api = process.env.HOSTNAME;
+
 const api_url_detail = process.env.IPAYTOTAL_API_DETAIL;
 
 const makePayment = async function (transactions, keyVals){
@@ -42,7 +45,7 @@ const makePayment = async function (transactions, keyVals){
         'shipping_zip' : transactions.shipping.zipPostCode,
         'shipping_email' : transactions.shipping.email,
         'shipping_phone_no' : transactions.shipping.phoneNumber,
-        'response_url': "http://31.207.39.156:3033/v1/payment/response/callback",
+        'response_url': url_api + "v1/payment/response/callback",
         // 'webhook_url': "http://31.207.39.156:3033/v1/payment/response/webhook",
     };
 

@@ -12,12 +12,12 @@ paths:
         description: It enables a key to create an key
         required: false   # can also be true depending on key preference
         schema:           # Schema definition
-          $ref: '#/definitions/createKey' 
+          $ref: '#/definitions/Keys' 
       responses:          # server responses
         201:
           description: An object with key details
           schema:           # Schema definition
-            $ref: '#/definitions/createKey'
+            $ref: '#/definitions/Keys'
     get:                 # endpoint request type (post request)
       tags:               # Tag property
         - Keys            # Value of the tag
@@ -58,7 +58,7 @@ paths:
         description: key Update basic Data
         required: false
         schema:
-          $ref: '#/definitions/updateKey'
+          $ref: '#/definitions/Keys'
     delete:
       tags:
         - Keys
@@ -72,18 +72,7 @@ paths:
         required: true
         type: string
 definitions:        # Schema defination for request body
-  createKey:
-    type: object
-    properties:
-      name:
-        type: string
-      description:
-        type: string
-      price:
-        type: string
-      status:
-        type: number
-  updateKey:
+  Keys:
     type: object
     properties:
       id:

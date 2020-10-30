@@ -62,7 +62,7 @@ paths:
         required: true
         type: string
 definitions:        # Schema defination for request body
-  createUser:
+  User-Create:
     type: object
     properties:
       first:
@@ -77,14 +77,14 @@ definitions:        # Schema defination for request body
         type: string
       roleId:
         type: number
-  login:
+  User-Login:
     type: object
     properties:
       email:
         type: string
       password:
         type: string
-  updateUser:
+  User-Update:
     type: object
     properties:
       id:

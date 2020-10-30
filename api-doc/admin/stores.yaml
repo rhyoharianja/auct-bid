@@ -72,16 +72,7 @@ paths:
         required: true
         type: string
 definitions:        # Schema defination for request body
-  createCat:
-    type: object
-    properties:
-      name:
-        type: string
-      description:
-        type: string
-      status:
-        type: number
-  updateCat:
+  Store:
     type: object
     properties:
       id:

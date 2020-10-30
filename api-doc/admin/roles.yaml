@@ -12,12 +12,12 @@ paths:
         description: It enables a user to create an role
         required: false   # can also be true depending on user preference
         schema:           # Schema definition
-          $ref: '#/definitions/createRole' 
+          $ref: '#/definitions/Role' 
       responses:          # server responses
         201:
           description: An object with user details
           schema:           # Schema definition
-            $ref: '#/definitions/createRole'
+            $ref: '#/definitions/Role'
     get:                 # endpoint request type (post request)
       tags:               # Tag property
         - Roles            # Value of the tag
@@ -58,7 +58,7 @@ paths:
         description: Role Update basic Data
         required: false
         schema:
-          $ref: '#/definitions/updateRole'
+          $ref: '#/definitions/Role'
     delete:
       tags:
         - Roles
@@ -72,16 +72,7 @@ paths:
         required: true
         type: string
 definitions:        # Schema defination for request body
-  createRole:
-    type: object
-    properties:
-      name:
-        type: string
-      description:
-        type: string
-      status:
-        type: number
-  updateRole:
+  Role:
     type: object
     properties:
       id:

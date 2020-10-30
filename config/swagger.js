@@ -15,7 +15,7 @@ const definition = {
 // options for the swagger docs
 const options = {
     definition,
-  apis: ['./api-doc/**/*.yaml'],
+  apis: ['./routes/*.js'],
 };
 // initialize swagger-jsdoc
 module.exports = swagJSDoc(options);

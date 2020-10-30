@@ -1,4 +1,4 @@
-category:
+paths:
   /admin/categories/:                # path of the user from your endpoint
     post:                 # endpoint request type (post request)
       tags:               # Tag property
@@ -12,7 +12,7 @@ category:
         description: It enables a user to create an category
         required: false   # can also be true depending on user preference
         schema:           # Schema definition
-          $ref: '#/definitions/createCat' 
+          $ref: '#/definitions/Category' 
       responses:          # server responses
         201:
           description: An object with user details
@@ -58,7 +58,7 @@ category:
         description: category Update basic Data
         required: false
         schema:
-          $ref: '#/definitions/updateCat'
+          $ref: '#/definitions/Category'
     delete:
       tags:
         - Categories
@@ -72,16 +72,7 @@ category:
         required: true
         type: string
 definitions:        # Schema defination for request body
-  createCat:
-    type: object
-    properties:
-      name:
-        type: string
-      description:
-        type: string
-      status:
-        type: number
-  updateCat:
+  Category:
     type: object
     properties:
       id:
