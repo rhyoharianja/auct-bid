@@ -33,7 +33,7 @@ const autoSetWinner = async function (req, res) {
                                     [Op.is]: null
                                 },
                                 {
-                                    [Op.is]: 0
+                                    [Op.eq]: 0
                                     
                                 }
                             ]
