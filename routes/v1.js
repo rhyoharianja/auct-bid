@@ -91,7 +91,8 @@ router.post('/payment/get/detail', iPayTotal.detailPaymentTransaction);
 
 router.post('/payment/test/makepayment', iPayTotal.makePaymentTest);
 
-router.post('cron/setwinner', iPayTotal.detailPaymentTransaction);
-router.post('cron/notifNewProduct', iPayTotal.makePaymentTest);
+router.get('/cron/setwinner', autoSetWinner.autoSetWinner);
+router.get('/cron/setwinner/onehour', autoSetWinner.remindCompleteOrderOneHours);
+router.get('/cron/setwinner/threehour', autoSetWinner.remindCompleteOrderThreeHours);
 
 module.exports = router;
