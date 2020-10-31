@@ -44,6 +44,7 @@ const autoSetWinner = async function (req, res) {
             }
         }
     ));
+    console.log(err);
     if(err) return ReE(res, err, 422);
     if(stores == null) return ReE(res, {message: 'No Store Found'}, 422); 
     

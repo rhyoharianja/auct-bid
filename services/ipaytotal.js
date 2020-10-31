@@ -110,7 +110,7 @@ const response3DSecure = async function (req, res) {
         if(req.query.status == 'success') {
             [err, ktu] = await to(Sequelize.Promise.each(dats, function(val, index) {
                 console.log(val);
-                if(val !== 0) {
+                if(val !== 'key') {
                     return KeyTransactions.update({
                         payment_trxid: req.query.order_id,
                         paymentStatus: 12,
@@ -133,7 +133,7 @@ const response3DSecure = async function (req, res) {
 
             [err, ktu] = await to(Sequelize.Promise.each(dats, function(val, index) {
                 console.log(val);
-                if(val !== 0) {
+                if(val !== 'key') {
                     return KeyTransactions.update({
                         payment_trxid: req.query.order_id,
                         paymentStatus: 15,

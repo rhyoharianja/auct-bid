@@ -13,6 +13,9 @@ const listInboxNotRead = require('../controllers/notification/fcmnotify.controll
 
 const ResetPasword = require('../controllers/access/token.controller');
 
+const autoSetWinner = require('../controllers/cron/setwinner.controller');
+const notifNewProduct = require('../controllers/cron/newproduct.controller');
+
 const iPayTotal = require('../services/ipaytotal');
 
 const molliePay = require('../services/mollie.service');
@@ -87,5 +90,8 @@ router.post('/payment/response/webhook', iPayTotal.webhookResponse);
 router.post('/payment/get/detail', iPayTotal.detailPaymentTransaction);
 
 router.post('/payment/test/makepayment', iPayTotal.makePaymentTest);
+
+router.post('cron/setwinner', iPayTotal.detailPaymentTransaction);
+router.post('cron/notifNewProduct', iPayTotal.makePaymentTest);
 
 module.exports = router;
