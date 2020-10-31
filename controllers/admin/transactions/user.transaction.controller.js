@@ -7,6 +7,7 @@ const { Stores,
         Uploads } = require('../../../models');
 
 const { to, ReE, ReS } = require('../../../services/util.service');
+const  fcmService = require('../../../services/fcm.notification.services'); 
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
@@ -18,7 +19,18 @@ const setAWinner = async function (req, res) {
                         where: {
                                 buyerId: data.userId,
                                 storeId: data.id
-                        }
+                        },
+                        include: [
+                                {
+                                    model: User
+                                },
+                                {
+                                    model: Products
+                                },
+                                {
+                                    model: Stores
+                                }
+                        ]
                 }
         ));
         if(errbids) return ReE(res, errbids, 422);
@@ -52,6 +64,17 @@ const setAWinner = async function (req, res) {
         ));
         if(err) return ReE(res, err, 422);
         if(store[0] == 0) return ReE(res, 'No Room Winner Changed', 422);
+
+        let mess = {
+                to : bids.User.fcm_reg_code,
+                title : bids.Product.name + ' ' + messagedata,
+                body : messagedes,
+                datatype: "reminder",
+                datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + bids.Store.id + "}"
+        
+        }
+        let getFcmService =  fcmService.sendNotification(mess);
+        console.log(getFcmService);
         
         res.io.emit("setwinner", store);
         res.io.emit("setwinners", store);
@@ -70,7 +93,18 @@ const changeAWinner = async function (req, res) {
                                 buyerId: data.userId,
                                 storeId: data.id,
                                 biddingStatu: 1
-                        }
+                        },
+                        include: [
+                                {
+                                    model: User
+                                },
+                                {
+                                    model: Products
+                                },
+                                {
+                                    model: Stores
+                                }
+                        ]
                 }
         ));
         if(errbids) return ReE(res, errbids, 422);
@@ -106,7 +140,18 @@ const changeAWinner = async function (req, res) {
         ));
         if(err) return ReE(res, err, 422);
         if(store[0] == 0) return ReE(res, 'No Room Winner Changed', 422);
-
+        
+        let mess = {
+                to : bids.User.fcm_reg_code,
+                title : bids.Product.name + ' ' + messagedata,
+                body : messagedes,
+                datatype: "reminder",
+                datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + bids.Store.id + "}"
+        
+        }
+        let getFcmService =  fcmService.sendNotification(mess);
+        console.log(getFcmService);
+        
         res.io.emit("changewinner", store);
         return ReS(res, {message:'Successfully Set Winner', data:store}, 201);
 }
