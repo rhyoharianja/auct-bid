@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
                   allowNull: false,
                   defaultValue: 1,
                 },
-    payment_trxid: DataTypes.DATE,
+    payment_trxid: DataTypes.STRING,
     ipayment_status: DataTypes.STRING,
     ipayment_desc: DataTypes.STRING
   }, {});

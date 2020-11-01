@@ -33,7 +33,7 @@ exports.sendEmail = function(type, datas) {
         temp = 'biddingStatus.ejs';
     }
     if(type == 'order') {
-        temp = 'order.js';
+        temp = 'order.ejs';
     }
     if(type == 'payment') {
         temp = 'payment.ejs';

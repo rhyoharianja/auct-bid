@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     paymentDate: DataTypes.DATE,
     paymentExpired: DataTypes.DATE,
     useStatus: DataTypes.INTEGER,
-    payment_trxid: DataTypes.DATE,
+    payment_trxid: DataTypes.STRING,
     ipayment_status: DataTypes.STRING,
     ipayment_desc: DataTypes.STRING
   }, {});
