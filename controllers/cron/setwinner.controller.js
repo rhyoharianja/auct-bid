@@ -20,10 +20,10 @@ const autoSetWinner = async function (req, res) {
                 [Op.and]: [
                     {
                         startBid: {
-                            [Op.lte]: new Date()
+                            [Op.lt]: new Date()
                         },
                         endBid: {
-                            [Op.gte]: new Date()
+                            [Op.lt]: new Date()
                         }
                     }, 
                     {
@@ -118,10 +118,10 @@ const remindCompleteOrderOneHours = async function (req, res) {
                 [Op.and]: [
                     {
                         startBid: {
-                            [Op.lte]: new Date()
+                            [Op.lt]: new Date()
                         },
                         endBid: {
-                            [Op.lte]: new Date()
+                            [Op.lt]: new Date()
                         }
                     }, 
                     {
@@ -139,7 +139,7 @@ const remindCompleteOrderOneHours = async function (req, res) {
                     },
                     {
                         setWinnerDate: {
-                            [Op.lte]: new Date(currDate.setHours(currDate.getHours() + 1))
+                            [Op.lt]: new Date(currDate.setHours(currDate.getHours() + 1))
                         }
                     }
                 ]
@@ -199,10 +199,10 @@ const remindCompleteOrderThreeHours = async function (req, res) {
                 [Op.and]: [
                     {
                         startBid: {
-                            [Op.lte]: new Date()
+                            [Op.lt]: new Date()
                         },
                         endBid: {
-                            [Op.lte]: new Date()
+                            [Op.lt]: new Date()
                         }
                     }, 
                     {
@@ -220,7 +220,7 @@ const remindCompleteOrderThreeHours = async function (req, res) {
                     },
                     {
                         setWinnerDate: {
-                            [Op.lte]: new Date(currDate.setHours(currDate.getHours() + 3))
+                            [Op.lt]: new Date(currDate.setHours(currDate.getHours() + 3))
                         }
                     }
                 ]

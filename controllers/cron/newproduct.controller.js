@@ -94,7 +94,12 @@ const newproductStartOn10Menuites = async function (req, res) {
         [erruser, users] = await to(BiddingTransactions.findAll({
             where: {
                 storeId : store.id
-            }
+            },
+            include: [
+                    {
+                        model: User
+                    }
+            ]
         }));
     
     
