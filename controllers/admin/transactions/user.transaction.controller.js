@@ -8,6 +8,7 @@ const { Stores,
 
 const { to, ReE, ReS } = require('../../../services/util.service');
 const  fcmService = require('../../../services/fcm.notification.services'); 
+const mailer = require('../../../services/email.service');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
@@ -64,6 +65,15 @@ const setAWinner = async function (req, res) {
         ));
         if(err) return ReE(res, err, 422);
         if(store[0] == 0) return ReE(res, 'No Room Winner Changed', 422);
+
+        let sendmail = mailer.sendEmail('order', {
+                    subject: 'Congratulations ! You are The Winner',
+                    useremail: bids.User.email,
+                    userfullname: bids.User.first + " " + bids.User.last,
+                    prodname: bids.Product.name,
+                    prodprice: bids.nominal
+                });
+        console.log(sendmail);
 
         let mess = {
                 to : bids.User.fcm_reg_code,
@@ -140,6 +150,15 @@ const changeAWinner = async function (req, res) {
         ));
         if(err) return ReE(res, err, 422);
         if(store[0] == 0) return ReE(res, 'No Room Winner Changed', 422);
+
+        let sendmail = mailer.sendEmail('order', {
+                subject: 'Congratulations ! You are The Winner',
+                useremail: bids.User.email,
+                userfullname: bids.User.first + " " + bids.User.last,
+                prodname: bids.Product.name,
+                prodprice: bids.nominal
+            });
+        console.log(sendmail);
         
         let mess = {
                 to : bids.User.fcm_reg_code,
