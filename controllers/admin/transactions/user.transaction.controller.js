@@ -77,8 +77,8 @@ const setAWinner = async function (req, res) {
 
         let mess = {
                 to : bids.User.fcm_reg_code,
-                title : bids.Product.name + ' ' + messagedata,
-                body : messagedes,
+                title : 'You Win ' + bids.Product.name,
+                body : 'Congratulations ! You are The Winner',
                 datatype: "reminder",
                 datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + bids.Store.id + "}"
         
@@ -162,8 +162,8 @@ const changeAWinner = async function (req, res) {
         
         let mess = {
                 to : bids.User.fcm_reg_code,
-                title : bids.Product.name + ' ' + messagedata,
-                body : messagedes,
+                title : 'You Win ' + bids.Product.name,
+                body : 'Congratulations ! You are The Winner',
                 datatype: "reminder",
                 datadeeplink: "https://bidbong.com/notification?type=winner&room_id={" + bids.Store.id + "}"
         
